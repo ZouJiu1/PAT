@@ -1,4 +1,3 @@
-#include<map>
 #include<iostream>
 #include<algorithm>
 #include<bits/stdc++.h>
@@ -9,7 +8,6 @@ int main(void){
     string s;
     int x, j;
     cin>>s;
-    // map<int, string> mp{{""}}
     if(s.size()==3){
         x = s[0] - '0';
         for(j=0; j<x; j++)
