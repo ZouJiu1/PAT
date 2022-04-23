@@ -20,7 +20,7 @@ int main(void){
         }
         //要么是关于PAT对称，要么PAT之间加A，则P前和T后也要加
         bool x = (((x3-x2-2)*x2+x2*2+3+(x3-x2-2))==s.size()); //符合第二、三个条件
-        if((m['P']==1)&&(m['T']==1)&&(m['A']>=1)&&((x3-x2)>=2)&&(m.size()==3)&&x)             //APAAATAA        
+        if((m['P']==1)&&(m['T']==1)&&(m['A']>=1)&&((x3-x2)>=2)&&(m.size()==3)&&x)    
             cout<<"YES";
         else
             cout<<"NO";
