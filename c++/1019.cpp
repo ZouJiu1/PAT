@@ -8,10 +8,6 @@ bool compare_reverse(const char a, const char b){
     return a>b;
 }
 
-bool compare(const char a, const char b){
-    return a<b;
-}
-
 int process(){
     int num, n0, n1, res;
     string s0, s2;
