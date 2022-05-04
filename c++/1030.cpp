@@ -33,6 +33,19 @@ int main(void){
             }
         }
     }
+    // for(i = N-1; i>=0; i--){
+    //     for(j=0; j<i-result; j++){
+    //         if(vec[i]<=vec[j]*p)
+    //         {
+    //             tmp = i-j+1;
+    //             if(result<tmp)
+    //                 result = tmp;
+    //             break;
+    //         }
+    //     }
+    // }
+    // if(result==0)
+    //     result=1;
     cout<<result<<endl;
     return 0;
 }
