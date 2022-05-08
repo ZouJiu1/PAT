@@ -10,7 +10,6 @@ int main(void){
     string s0, s1, s2;
     getline(cin, s0);
     getline(cin, s1);
-    int add = s0.find('+');
     for(int i=0; i< s1.size(); i++){
         if(s0.find(toupper(s1[i]))!=string::npos)
             continue;
