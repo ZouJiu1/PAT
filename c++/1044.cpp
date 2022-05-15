@@ -28,12 +28,14 @@ int main(void){
             num = atoi(s0.c_str());
             tmp = num/13;
             if(tmp!=0){
-                cout<<s6[tmp-1]<<" ";
+                cout<<s6[tmp-1];
                 tmp = num%13;
-                if(tmp==0)
+                if(tmp==0){
+                    cout<<endl;
                     continue;
+                }
                 else
-                    cout<<s2[tmp]<<endl;
+                    cout<<" "<<s2[tmp]<<endl;
             }else{
                 tmp = num%13;
                 cout<<s2[tmp]<<endl;
