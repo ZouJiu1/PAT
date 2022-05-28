@@ -36,6 +36,11 @@ int main(void){
     num3 = stoi(s2);
     dl0 = num0/(double)num1;
     dl1 = num2/(double)num3;
+    if(dl0>dl1){
+        dl0 = dl1 + dl0;
+        dl1 = dl0 - dl1;
+        dl0 = dl0 - dl1;
+    }
     for(int i=1; i<n; i++){
         dl2 = i/(double)n;
         s0.erase(s0.begin(), s0.end());
