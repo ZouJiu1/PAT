@@ -51,9 +51,11 @@ int main(void){
     cout<<"No"<<endl;
     bl = false;
     bl0 = false;
-    while(!(bl&&bl0)){
+    bl9 = false;
+    while(!((bl&&bl0)||(bl&&bl9))){
         bl = judges(++n);
         bl0 = judges(n + 6);
+        bl9 = judges(n - 6);
     }
     cout<<n;
     return 0;
