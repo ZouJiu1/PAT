@@ -25,7 +25,7 @@ int main(void){
     m = v9[v9.size()-1]; //max
     k = v0[0]; //min
     if(m>=k){
-        cout<<"No "<<1;
+        cout<<"No "<<(m-k+1);
         return 0;
     }
     sub = k - m;
