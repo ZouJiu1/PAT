@@ -7,55 +7,39 @@
 using namespace std;
 
 int main(void){
-    int num, n, tmp, zer, alg, count;
-    double sum, x;
+    int num, n, zer, alg, counts=0;
+    double sum=0, tmp;
     string s0;
     cin>>n;
-    vector<string> vec;
+    char a[60], b[60]; 
     for(int i=0; i<n; i++){
-        cin>>s0;
-        vec.push_back(s0);
-    }
-    count = 0;
-    for(int i=0; i<n; i++){
-        zer = 0;
-        s0 = vec[i];
-        alg=0;
-        for(int j=0; j<s0.size(); j++){
-            if(s0[j]=='0'||s0[j]=='9'||s0[j]=='1'||s0[j]=='2'||
-               s0[j]=='3'||s0[j]=='4'||s0[j]=='5'||s0[j]=='6'||
-               s0[j]=='7'||s0[j]=='8') 
-               alg++;
-            else if(s0[j]=='.')
-                zer++;
-        }
-        if(s0.find('.')!=string::npos) alg++;
-        if(s0[0]=='-') alg++;
-        if((alg!=s0.size())||(zer>1)){
-            cout<<"ERROR: "<<s0<<" is not a legal number"<<endl;
-            continue;
-        }
-        if(s0.find('.')!=string::npos){
-            tmp = s0.find('.');
-            tmp = s0.size() - tmp - 1;
-            if(tmp>2){
-                cout<<"ERROR: "<<s0<<" is not a legal number"<<endl;
-                continue;
+        scanf("%s", a);
+        sscanf(a,"%lf", &tmp);
+        sprintf(b, "%.2f", tmp);
+        alg = 0;
+        for(int j=0; j<strlen(a); j++){
+            if(a[j]!=b[j]) {
+                alg=1;
+                break;
             }
         }
-        x = stof(s0);
-        if(x>1000||x<-1000){
-            cout<<"ERROR: "<<s0<<" is not a legal number"<<endl;
+        if(alg||tmp<-1000||tmp>1000){
+            cout<<"ERROR: "<<a<<" is not a legal number"<<endl;
             continue;
+        }else{
+            sum += tmp;
+            counts++;
         }
-        sum += x;
-        count +=1 ;
     }
-    if(count==0){
-        cout<<"The average of "<<count<<" numbers is Undefined";
+    if(counts==0){
+        cout<<"The average of "<<counts<<" numbers is Undefined";
         return 0;
     }
-    double avg = sum/(double)count;
-    printf("The average of %d numbers is %.2f", count, avg);
+    if(counts==1) {
+        printf("The average of 1 number is %.2f", sum);
+        return 0;
+    }
+    double avg = sum/(double)counts;
+    printf("The average of %d numbers is %.2f", counts, avg);
     return 0;
 }
