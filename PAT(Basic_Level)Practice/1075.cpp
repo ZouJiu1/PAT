@@ -20,36 +20,30 @@ int main(void){
     cin>>s0>>n>>m;
     s6=s0;
     vector<linked> vec;
-    int address[100001];
+    map<string, linked> mp;
     for(i = 0; i < n; i++){
         linked lkd;
         cin>>lkd.adr>>lkd.val>>lkd.nex;
-        vec.push_back(lkd);
-        address[stoi(lkd.adr)] = i;
+        mp[lkd.adr] = lkd;
     }
     vector<linked> vec3;
+    linked lkd;
     for(i=0; i<n; i++){
-        j = address[stoi(s0)];
-        if(vec[j].val<0){
-            vec3.push_back(vec[j]);
-        }
-        s0 = vec[j].nex;
+        lkd = mp[s0];
+        if(lkd.val<0) vec3.push_back(lkd);
+        s0 = lkd.nex;
     }
     s0 = s6;
     for(i=0; i<n; i++){
-        j = address[stoi(s0)];
-        if(vec[j].val<=m&&vec[j].val>=0){
-            vec3.push_back(vec[j]);
-        }
-        s0 = vec[j].nex;
+        lkd = mp[s0];
+        if(lkd.val<=m&&lkd.val>=0) vec3.push_back(lkd);
+        s0 = lkd.nex;
     }
     s0 = s6;
     for(i=0; i<n; i++){
-        j = address[stoi(s0)];
-        if(vec[j].val>m){
-            vec3.push_back(vec[j]);
-        }
-        s0 = vec[j].nex;
+        lkd = mp[s0];
+        if(lkd.val>m) vec3.push_back(lkd);
+        s0 = lkd.nex;
     }
     for(i=0; i<n; i++){
         cout<<vec3[i].adr<<" "<<vec3[i].val<<" ";
