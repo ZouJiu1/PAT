@@ -22,27 +22,22 @@ int main(void){
     string s0, s9;
     double d0, d2, d3;
     cin>>n0;
-    set<int> st, st0, st2;
+    set<int> st;
     map<int, double> mp0, mp2, sum;
     for(int i=0; i<n0; i++){
         cin>>n2>>d0;
         mp0[n2] = d0;
         st.insert(n2);
-        st0.insert(n2);
     }
     cin>>n0;
     for(int i=0; i<n0; i++){
         cin>>n2>>d0;
         mp2[n2] = d0;
         st.insert(n2);
-        st2.insert(n2);
     }
     set<int>::iterator itt, tti;
     for(set<int>::iterator it=st.begin(); it!=st.end(); it++) {
-        itt = st0.find(*it);
-        tti = st2.find(*it);
-        if(itt!=st0.end() && tti != st2.end()) mp2[*it] = mp2[*it] + mp0[*it];
-        else if(itt!=st0.end() && tti ==st2.end()) mp2[*it] = mp0[*it];
+        mp2[*it] = mp2[*it] + mp0[*it];
     }
     vector<samplex> vec;
     for(set<int>::iterator it=st.begin(); it!=st.end(); it++){
