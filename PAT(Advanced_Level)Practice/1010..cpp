@@ -5,57 +5,39 @@
 #include<map>
 #include<set>
 #include<bits/stdc++.h>
-
 using namespace std;
 
-int main(void){
-    map<char, int> mp;
-    int a, b, i, j, k, sum, sum0, sum2;
-    for(char i = '0'; i<='9'; i++) mp[i] = i - '0';
-    for(char i = 'a'; i <= 'z'; i++) mp[i] = i - 'a' + 10;
-    string s, s0, s2, s6, s9, s3;
-    cin>>s>>s2>>a>>s0;
-    sum0 = sum = 0;
-    reverse(s0.begin(), s0.end());
-    for(i = 0; i < s0.size(); i++) sum0 += mp[s0[i]] * pow(10, i);
-    if(a==1){
-        reverse(s.begin(), s.end());
-        for(i = 0; i < s.size(); i++) sum += mp[s[i]] * pow(sum0, i);
-        reverse(s2.begin(), s2.end());
-        for(i = 1; i < 1000000; i++){
-            sum2 = 0;
-            k = 666;
-            for(j = 0; j < s2.size(); j++) {
-                if(mp[tolower(s2[j])]>=i) {k=-666; break;}
-                sum2 += mp[tolower(s2[j])] * pow(i, j);
-            }
-            if(k<0) continue;
-            if(sum2==sum){
-                cout<<i;
-                return 0;
-            }
+long long todec10(string s, long long sum0){
+    long long sum=0, ind = 0, tmp=0;
+    for(auto j = s.rbegin(); j != s.rend(); j++) 
+        sum += (isdigit(*j) ? *j - '0' : *j-'a'+10)* pow(sum0, ind++);
+    return sum;
+}
+
+long long findmid(string s, long long num){
+    char t = *max_element(s.begin(), s.end());
+    long long low = (isdigit(t) ? t - '0' : t-'a'+10) + 1;
+    long long high = low > num ? low:num;
+    while(high >= low){
+        long long mid = (high + low)/2;
+        long long res = todec10(s, mid);
+        if(res > num||res < 0)  high = mid - 1;
+        else if(res == num){
+            return mid;
         }
-        cout<<"Impossible";
-        return 0;
-    }else{
-        reverse(s2.begin(), s2.end());
-        for(i = 0; i < s2.size(); i++) sum += mp[s2[i]] * pow(sum0, i);
-        reverse(s.begin(), s.end());
-        for(i = 1; i < 1000000; i++){
-            sum2 = 0;
-            k = 666;
-            for(j = 0; j < s.size(); j++){ 
-                if(mp[tolower(s[j])]>=i) {k=-666; break;}
-                sum2 += mp[tolower(s[j])] * pow(i, j);
-            }
-            if(k<0) continue;
-            if(sum2==sum){
-                cout<<i;
-                return 0;
-            }
-        }
-        cout<<"Impossible";
-        return 0;
+        else low = mid + 1;
     }
+    return -1;
+}
+int main(void){
+    long long a, k, s0;
+    string s, s2, s6, s9, s3;
+    cin>>s>>s2>>a>>s0;
+    if(a==1) k = findmid(s2, todec10(s, s0));
+    else k = findmid(s, todec10(s2, s0));
+    if(k==-1)
+        cout<<"Impossible";
+    else
+        printf("%lld", k);
     return 0;
 }
