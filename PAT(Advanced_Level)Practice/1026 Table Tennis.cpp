@@ -8,6 +8,7 @@ using namespace std;
 
 struct pairer{
     int timestamp;
+    int oritime;
     int playtime;
     int waittime;
     int start;
@@ -23,6 +24,7 @@ bool compare(const pairer& a, const pairer& b){
 
 bool compare_cc(const pairer& a, const pairer& b){
     if(a.start < b.start) return true;
+    else if(a.oritime < b.oritime && (a.oritime < 8*3600&&b.oritime <8*3600)) return true;
     else return false;
 }
 
@@ -51,7 +53,8 @@ int main(void){
         if(mn > 120){ mn = 120; }
         pr.playtime = mn * 60;
         pr.timestamp = hour * 3600 + min * 60 + sec;
-        if(pr.timestamp < (3600 * 8)) continue;
+        pr.oritime = hour * 3600 + min * 60 + sec;
+        if(pr.timestamp < (3600 * 8)) pr.timestamp = 8 * 3600;
         if(pr.timestamp >= (3600 * 21)) continue;
         v.push_back(pr);
     }
@@ -90,7 +93,7 @@ int main(void){
                     if(pr.leave > v[j].timestamp){ //waitting
                         v[j].leave = pr.leave + v[j].playtime;  //pre leave + now playing
                         v[j].start = pr.leave;
-                        v[j].waittime = pr.leave - v[j].timestamp;
+                        v[j].waittime = pr.leave - v[j].oritime;
                         v[j].tablenum = pr.tablenum;
                         pq.push_back(v[j]);
                         pr0 = v[i];
@@ -112,21 +115,43 @@ int main(void){
         if(pr.leave > v[i].timestamp){ //waitting
             v[i].leave = pr.leave + v[i].playtime;  //pre leave + now playing
             v[i].start = pr.leave;
-            v[i].waittime = pr.leave - v[i].timestamp;
+            v[i].waittime = pr.leave - v[i].oritime;
             v[i].tablenum = pr.tablenum;
             pq.erase(pq.begin() + ind);
         }else{ //no waitting
             int minmin = 9999999;
-            for(int ij = 0; ij < pq.size(); ij++){ //check someplace no people table
-                if(pq[ij].leave <= v[i].timestamp && pq[ij].tablenum < minmin){
-                    minmin = pq[ij].tablenum;
-                    ind = ij;
+            if(v[i].vip==0){
+                for(int ij = 0; ij < pq.size(); ij++){ //check someplace no people table
+                    if(pq[ij].leave <= v[i].timestamp && pq[ij].tablenum < minmin){
+                        minmin = pq[ij].tablenum;
+                        ind = ij;
+                    }
+                }
+            }
+            else{
+                for(int ij = 0; ij < pq.size(); ij++){ //check someplace no people table
+                    it = vipset.find(pq[ij].tablenum);
+                    if(pq[ij].leave <= v[i].timestamp && pq[ij].tablenum < minmin && it!=vipset.end()){
+                        minmin = pq[ij].tablenum;
+                        ind = ij;
+                    }
+                }
+                if(minmin > 99999){ 
+                    for(int ij = 0; ij < pq.size(); ij++){ //check someplace no people table
+                        if(pq[ij].leave <= v[i].timestamp && pq[ij].tablenum < minmin){
+                            minmin = pq[ij].tablenum;
+                            ind = ij;
+                        }
+                    }   
                 }
             }
             pr = pq[ind];
             v[i].leave = v[i].timestamp + v[i].playtime;
             v[i].start = v[i].timestamp;
-            v[i].waittime = 0;
+            if(v[i].oritime < 8*3600)
+                v[i].waittime = pr.leave - v[i].oritime;
+            else
+                v[i].waittime = 0;
             v[i].tablenum = pr.tablenum;
             pq.erase(pq.begin() + ind);
         }
@@ -138,7 +163,7 @@ int main(void){
     int cal, cal0, cal6;
     int tablecount[k] = {0};
     for(int i = 0; i < v.size(); i++){
-        cal = v[i].timestamp;
+        cal = v[i].oritime;
         cal0 = v[i].start;
         cal6 = v[i].waittime;
         if(v[i].start >= (3600 * 21)) continue;
