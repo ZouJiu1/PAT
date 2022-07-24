@@ -6,6 +6,59 @@
 
 using namespace std;
 
+vector<int> v, v0;
+int m, n, mid, tempsum;
+
+int _binary_search_(int i){
+    int left = i;
+    int right = m;
+    while(left < right){
+        mid = (left + right)/2;
+        if((v[mid] - v[i - 1]) >= n) right = mid;
+        else left = mid + 1;
+    }
+    mid = right;
+    tempsum = v[right] - v[i - 1];
+    return tempsum;
+}
+
+int main(void){
+    int i, j, k, h, sum, minsum;
+    cin>>m>>n;
+    v.resize(m + 1);
+    v[0] = 0;
+    for(i = 1; i <= m; i++){
+        cin>>k;
+        v[i] = (k + v[i - 1]);
+    }
+    minsum = v[m];
+    for(i = 1; i <= m; i++){
+        tempsum = _binary_search_(i);
+        if(tempsum > minsum) continue;
+        if(tempsum >= n){
+            if(tempsum < minsum){
+                v0.clear();
+                minsum = tempsum;
+            }
+            v0.push_back(i);
+            v0.push_back(mid);
+        }
+    }
+    for(i = 0; i < v0.size()/2; i++){
+        printf("%d-%d\n", v0[i * 2], v0[i * 2 + 1]);
+    }
+    return 0;
+}
+
+/*
+#include<iostream>
+#include<vector>
+#include<string>
+#include<map>
+#include<bits/stdc++.h>
+
+using namespace std;
+
 typedef struct _record{
     int start;
     int end;
@@ -78,3 +131,4 @@ int main(void){
     }
     return 0;
 }
+*/
