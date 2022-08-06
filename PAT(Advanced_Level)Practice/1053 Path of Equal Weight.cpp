@@ -111,3 +111,60 @@ int main(void){
     }
     return 0;
 }
+/*
+递归
+*/
+#include<iostream>
+#include<vector>
+#include<stack>
+#include<string>
+#include<bits/stdc++.h>
+
+using namespace std;
+vector<int> v, v0[101], vs[101];
+int i, j, m, n, t, counts, x, y, cnt=0;
+long long k;
+
+int pathes[101];
+
+void dfs(int start, int nodenum, int sum){
+    if(sum > k) return;
+    if(sum==k){
+        if(v0[start].size()!=0) return;
+        for(int i = 0; i < nodenum; i++){
+            printf("%d", pathes[i]);
+            if(i!=nodenum-1) printf(" ");
+        }
+        printf("\n");
+        return;
+    }else{
+        for(int i = 0; i < v0[start].size(); i++){
+            pathes[nodenum] = v[v0[start][i]];
+            dfs(v0[start][i], nodenum + 1, sum + v[v0[start][i]]);
+        }
+    }
+}
+
+bool compare(int &a, int &c){
+    if(v[a] > v[c]) return true;
+    else return false;
+}
+
+int main(void){
+    cin>>m>>n>>k; 
+    for(i=0; i<m; i++){
+        cin>>t;
+        v.push_back(t);
+    }
+    for(i=0; i<n; i++){
+        cin>>x>>t;
+        for(j=0; j<t; j++){
+            cin>>y;
+            v0[x].push_back(y);
+        }
+        sort(v0[x].begin(), v0[x].end(), compare);
+    }
+    pathes[0]=v[0];
+    dfs(0, 1, v[0]);
+    return 0;
+}
