@@ -18,7 +18,7 @@ int main(void){
     }
     y = 0;
     for(i=0; i<x; i++){
-        if(s0[i]==s00[i]&&((s0[i]>='a'&&s0[i]<='g')||(s0[i]>='A'&&s0[i]<='G'))&&y==0){
+        if(s0[i]==s00[i]&&(s0[i]>='A'&&s0[i]<='G')&&y==0){
             cout<<wee[tolower(s0[i]) - 'a']<<" ";
             y++;
             continue;
@@ -29,10 +29,8 @@ int main(void){
         }
     }
     x = min(s000.length(), s0000.length());
-    y = 0;
     for(i=0; i<x; i++){
-        if(isalpha(s000[i])) y++;
-        if(s000[i]==s0000[i]&&isalpha(s000[i])){
+        if(s000[i]==s0000[i]&&((s000[i]>='A'&&s000[i]<='Z')||(s000[i]>='a'&&s000[i]<='z'))){
             printf("%02d", i);
             break;
         }
