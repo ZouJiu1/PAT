@@ -45,11 +45,17 @@ int main(void){
     memset((void *)status, false, sizeof(bool) * (prime + 1));
     for(i = 0; i < n; i++){
         q = v[i]%prime;
-        if(status[q]==false){
-            status[q] = true;
-            vv.push_back(to_string(q));
+        xx = -999;
+        for(j = 0; j < prime; j++){
+            q = (v[i] + j*j)%prime;
+            if(status[q]==false){
+                status[q] = true;
+                vv.push_back(to_string(q));
+                xx = 999;
+                break;
+            }
         }
-        else
+        if(xx < 0)
             vv.push_back("-");
     }
     for(i = 0; i < n; i++){
