@@ -44,8 +44,15 @@ int main(void){
                 mul = mul/j;
         }
     }
+
     for(i = 0; i < n; i++){
+        if(vec[i].denominator==0)
+            continue;
         sum += (mul/vec[i].denominator) * vec[i].numerator;
+    }
+    if(sum==0){
+        cout<<0;
+        return 0;
     }
     if(sum%mul==0){
         cout<<sum/mul;
