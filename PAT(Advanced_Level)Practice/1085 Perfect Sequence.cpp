@@ -1,3 +1,4 @@
+/*排序然后左右遍历 */
 #include<iostream>
 #include<string>
 #include<vector>
