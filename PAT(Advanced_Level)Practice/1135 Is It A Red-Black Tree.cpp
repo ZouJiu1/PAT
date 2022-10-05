@@ -27,19 +27,34 @@ struct nod* generate_redblack(struct nod *root, int val) {
 
 set<int> black_st;
 
-void dfs(struct nod *root, int black) {
-    if(root==NULL) return;
-    if(root->l==NULL && root->r==NULL) { //leave
-        if(root->val > 0)
-            black_st.insert(black + 1);
-        else black_st.insert(black);
-    }
-    if(root->val > 0)
-        dfs(root->l, black + 1);
-    else dfs(root->l, black);
-    if(root->val > 0)
-        dfs(root->r, black + 1);
-    else dfs(root->r, black);
+// void dfs(struct nod *root, int black) {
+//     if(root==NULL) return;
+//     if(root->l==NULL && root->r==NULL) { //leave
+//         if(root->val > 0)
+//             black_st.insert(black + 1);
+//         else black_st.insert(black);
+//     }
+//     if(root->val > 0)
+//         dfs(root->l, black + 1);
+//     else dfs(root->l, black);
+//     if(root->val > 0)
+//         dfs(root->r, black + 1);
+//     else dfs(root->r, black);
+// }
+
+int getnum(struct nod *root) {
+    if(root==NULL) return 0;
+    int l = getnum(root->l);
+    int r = getnum(root->r);
+    return root->val > 0 ? max(l, r) + 1:max(l, r);
+}
+
+bool dfs(struct nod *root) {
+    if(root==NULL) return true;
+    int l = getnum(root->l);
+    int r = getnum(root->r);
+    if(l!=r) return false;
+    return dfs(root->l) && dfs(root->r);
 }
 
 int main(void) {
@@ -67,14 +82,15 @@ int main(void) {
         queue<struct nod*> q;
         q.push(root);
         int mr = -9;
-        while(q.size() > 0) {
+        if(dfs(root)==false) mr = 9;
+        while(q.size() > 0 && mr <0) {
             struct nod* nd = q.front();
-            dfs(nd, 0);
-            if(black_st.size()!=1) {
-                mr = 9;
-                break;
-            }
-            black_st.clear();
+            // dfs(nd, 0);
+            // if(black_st.size()!=1) {
+            //     mr = 9;
+            //     break;
+            // }
+            // black_st.clear();
             if(nd->l!=NULL) q.push(nd->l);
             if(nd->r!=NULL) q.push(nd->r);
             if(nd->val < 0) {
