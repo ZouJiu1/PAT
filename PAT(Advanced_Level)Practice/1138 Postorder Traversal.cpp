@@ -32,7 +32,7 @@ void gettree(nodees *nd,
     b_r1 = y+1;
     e_r1 = end_r0;
     y = min(end_l + 1, end_l - (end_r0 - y) + 1);
-    b_l0 = begin_l;
+    b_l0 = begin_l; 
     e_l0 = y-1;
     b_l1 = y;
     e_l1 = end_l;
