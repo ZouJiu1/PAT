@@ -1,3 +1,4 @@
+#include<set>
 #include<iostream>
 #include<vector>
 #include<string>
@@ -13,38 +14,33 @@ int main(void) {
     int x1, x2;
     for(i = 0; i < n; i++) v[i].resize(2);
     for(i = 0; i < n; i++) {
-        cin>>x1>>x2;
+        scanf("%d %d", &x1, &x2);
         v[i][0] = x1;
         v[i][1] = x2;
     }
     int ww = n;
-    cin>>ww;
-    vector<vector<int>> v1;
-    v1.resize(ww);
+    scanf("%d", &ww);
+    vector<set<int>> vrt;
+    vrt.resize(ww);
     for(i = 0; i < ww; i++) {
-        cin>>k;
+        scanf("%d", &k);
         v1[i].resize(k);
         for(j = 0; j < k; j++) {
-            cin>>x1;
-            v1[i][j] = x1;
+            scanf("%d", &x1);
+            vrt[i].insert(x1);
         }
      }
      for(i = 0; i < ww; i++) {
-        vector<int> status(n, 0);
+        int sum = 0;
         int mr = -9;
-        for(j = 0; j < v1[i].size(); j++) {
-            for(x1 = 0; x1 < n; x1++) {
-                if(v[x1][0]==v1[i][j]||v[x1][1]==v1[i][j]) status[x1] = 1;
-            }
+        for(x1 = 0; x1 < n; x1++) {
+            if(vrt[i].find(v[x1][0])!=vrt[i].end() ||
+                vrt[i].find(v[x1][1])!=vrt[i].end())
+                sum++;
         }
-        for(j = 0; j < n; j++) {
-            if(status[j]==0) {
-                mr = 9;
-                break;
-            }
-        }
-        if(mr > 0) cout<<"No"<<endl;
+        if(sum!=n) cout<<"No"<<endl;
         else cout<<"Yes"<<endl;
      }
     return 0;
+
 }
