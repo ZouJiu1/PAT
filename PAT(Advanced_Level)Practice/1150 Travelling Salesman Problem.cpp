@@ -1,6 +1,6 @@
 #include<iostream>
 #include<vector>
-using namespace std;
+using namespace std; 
 int main(void) {
     int i, j, k, m, n, x1, x2, x3, w;
     cin>>m>>w;
