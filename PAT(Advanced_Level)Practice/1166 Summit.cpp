@@ -1,0 +1,59 @@
+#include<iostream>
+#include<vector>
+#include<set>
+using namespace std;
+struct nod {int l, r;};
+int main(void) {
+    int i, j, k, m, n, x1, x2, ori;
+    cin>>m>>n;
+    bool arr[209][209] = {false};
+    vector<nod> vt;
+    nod nd;
+    for(i = 0; i < n; i++) {
+        cin>>nd.l>>nd.r;
+        arr[nd.l][nd.r] = arr[nd.r][nd.l] = true;
+        vt.push_back(nd);
+    }
+    cin>>n;
+    for(i = 0; i < n; i++) {
+        cin>>k;
+        set<int> st, st0;
+        vector<int> v, v0;
+        int mr = -9;
+        for(j = 0; j < k; j++) {
+            cin>>x1;
+            v0.push_back(x1);
+            st0.insert(x1);
+        }
+        for(j = 0; j < k; j++) {
+            for(x1 = j+1; x1< k; x1++) {
+                if(arr[v0[j]][v0[x1]]==false){
+                    mr = 9;
+                    printf("Area %d needs help.\n", i+1);
+                    break;
+                }
+            }
+            if(mr > 0) break;
+        }
+        if(mr > 0) continue;
+        int kk = -9;
+        for(j = 1; j <=m; j++) {
+            if(st0.find(j)!=st0.end()) continue;
+            mr = -9;
+            for(x1 = 0; x1 < v0.size(); x1++) {
+                if(arr[v0[x1]][j]==false) {
+                    mr = 9; 
+                    break;
+                }
+            }
+            if(mr < 0) {
+                kk = 9;
+                printf("Area %d may invite more people, such as %d.\n", i+1, j);
+                break;
+            }
+        }
+        if(kk > 0) continue;
+        printf("Area %d is OK.\n", i+1);
+    }
+    return 0;
+}
