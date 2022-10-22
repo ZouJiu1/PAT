@@ -1,3 +1,91 @@
+update
+#include<iostream>
+#include<vector>
+#include<algorithm>
+#include<string>
+#include<unordered_map>
+#include<cmath>
+using namespace std;
+int mat[1016][1016], inf = 999999999, status[1016], dis[1016], i, j, k, y, m, n, mr, house, g, route, limit, z5, z6, minmin;
+string t1, t2;
+unordered_map<string, int> mp;
+unordered_map<int, string> rmp;
+struct nod {
+    int sum, alp;   
+    float avg, min;};
+bool compare(nod &a, nod &c) {
+    if(a.min > c.min) return true;
+    else if(a.min==c.min){
+        if(a.avg < c.avg) return true;
+        else return a.alp < c.alp;
+    }else return false;
+}
+int main(void){
+    cin>>house>>g>>route>>limit;
+    nod nd;
+    fill(mat[0], mat[0] + 1016 * 1016, inf);
+    for(i = 1; i <= g; i++) {
+        mp["G" + to_string(i)] = i + house;
+        rmp[i + house] = "G" + to_string(i);
+    }
+    for(i = 0; i < route; i++) {
+        cin>>t1>>t2>>m;
+        if(t1[0]=='G')  z5 = mp[t1];
+        else z5 = stoi(t1);
+        if(t2[0]=='G') z6 = mp[t2];
+        else z6 = stoi(t2);
+        mat[z5][z6] = mat[z6][z5] = m;
+    }
+    vector<nod> v;
+    for(i = house+1; i <=house+ g; i++) {
+        fill(status, status+1016, 0);
+        fill(dis, dis+1016, inf);
+        dis[i] = 0;
+        for(j = 1; j <= g + house; j++) {
+            minmin = inf;
+            for(k = 1; k <= g+house; k++) {
+                if(status[k]==0 && minmin > dis[k]){
+                    minmin = dis[k];
+                    z6 = k;
+                }
+            }
+            status[z6] = 1;
+            for(k = 1; k <= g+house; k++) {
+                if(status[k]==0&&dis[k] > dis[z6] + mat[z6][k])
+                    dis[k] = dis[z6] + mat[z6][k];
+            }
+        }
+        mr = -9;
+        nd.sum = 0;
+        minmin = inf;
+        for(j = 1; j <=house; j++) {
+            if(dis[j] > limit) {
+                mr = 9;
+                break;
+            }
+            nd.sum += dis[j];
+            if(minmin > dis[j]) minmin = dis[j];
+        }
+        if(mr < 0) {
+            nd.alp = i;
+            nd.avg = nd.sum/(float)house;
+            nd.min = (float)minmin;
+            v.push_back(nd);
+        }
+    }
+    if(v.size()==0) {
+        cout<<"No Solution\n";
+        return 0;
+    }
+    sort(v.begin(), v.end(), compare);
+    cout<<rmp[v[0].alp]<<endl;
+    printf("%.1f %.1f\n", v[0].min, round(v[0].avg*10)/(float)10.0);
+    return 0;
+}
+
+
+
+before old
 /*
 迪杰特斯拉算法，gas station地点要满足几个条件
 
