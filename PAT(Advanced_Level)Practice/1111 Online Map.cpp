@@ -1,3 +1,125 @@
+///update
+#include<iostream>
+#include<vector>
+#include<algorithm>
+using namespace std;
+int status[506], dis[506], tim[506], pre[506], nodnum[506], t[506][506], w[506][506];
+int i, j, m, n, k, x1, x2, x3, x4, x5;
+int inf = 999999999, minmin;
+
+int main(void) {
+    cin>>m>>n;
+    fill(status, status+506, 0);
+    fill(dis, dis+506, inf);
+    fill(t[0], t[0]+506*506, inf);
+    fill(tim, tim+506, inf);
+    fill(w[0], w[0]+506*506, inf);
+    for(i = 0; i < n; i++) {
+        scanf("%d %d %d %d %d", &x1, &x2, &x3, &x4, &x5);
+        w[x1][x2] = x4;
+        t[x1][x2] = x5;
+        if(x3==0){
+            w[x2][x1] = x4;
+            t[x2][x1] = x5;
+        }
+    }
+    cin>>x1>>x2;
+    x4 = x2;
+    dis[x1] = 0;
+    for(i = 0; i < m; i++) pre[i] = i;
+    for(i = 0; i < m; i++) {
+        minmin = inf;
+        for(j = 0; j < m; j++) {
+            if(status[j]==0 && dis[j] < minmin) {
+                minmin = dis[j];
+                x3 = j;
+            }
+        }
+        status[x3] = 1;
+        for(j = 0; j < m; j++) {
+            if(status[j]==0 && dis[j] > dis[x3] + w[x3][j]) {
+                dis[j] = dis[x3] + w[x3][j];
+                pre[j] = x3;
+                tim[j] = tim[x3] + t[x3][j];
+            } else if(status[j]==0 && dis[j]==dis[x3]+w[x3][j] && tim[j] > tim[x3] + t[x3][j]) {
+                dis[j] = dis[x3] + w[x3][j];
+                pre[j] = x3;
+                tim[j] = tim[x3] + t[x3][j];
+            }
+        }
+    }
+    vector<int> v1, v2;
+    while(pre[x2]!=x1) {
+        v1.push_back(x2);
+        x2 = pre[x2];
+    }
+    v1.push_back(x2);
+    v1.push_back(x1);
+    reverse(v1.begin(), v1.end());
+    fill(status, status+506, 0);
+    fill(tim, tim+506, inf);
+    tim[x1] = 0;
+    for(i = 0; i < m; i++) pre[i] = i;
+    for(i = 0; i < m; i++) {
+        minmin = inf;
+        for(j = 0; j < m; j++) {
+            if(status[j]==0 && tim[j] < minmin) {
+                minmin = tim[j];
+                x3 = j;
+            }
+        }
+        status[x3] = 1;
+        for(j = 0; j < m; j++) {
+            if(status[j]==0 && tim[j] > tim[x3] + t[x3][j]) {
+                nodnum[j] = nodnum[x3] + 1;
+                pre[j] = x3;
+                tim[j] = tim[x3] + t[x3][j];
+            } else if(status[j]==0 && tim[j] == tim[x3] + t[x3][j] && nodnum[j] > nodnum[x3] + 1) {
+                nodnum[j] = nodnum[x3] + 1;
+                pre[j] = x3;
+                tim[j] = tim[x3] + t[x3][j];
+            }
+        }
+    }
+    x2 = x4;
+    while(pre[x2]!=x1) {
+        v2.push_back(x2);
+        x2 = pre[x2];
+    }
+    v2.push_back(x2);
+    v2.push_back(x1);
+    reverse(v2.begin(), v2.end());
+    int sum0 = 0, sum1 = 0;
+    for(i = 0; i < v1.size() - 1; i++){
+        sum0 += w[v1[i]][v1[i+1]];
+    }
+    for(i = 0; i < v2.size() - 1; i++){
+        sum1 += t[v2[i]][v2[i+1]];
+    }
+    if(v2==v1){
+        printf("Distance = %d; Time = %d: ", sum0, sum1);
+        for(i = 0; i < v2.size(); i++){
+            cout<<v2[i];
+            if(i!=v2.size()-1) cout<<" -> ";
+        }
+    } else {
+        printf("Distance = %d: ", sum0);
+        for(i = 0; i < v1.size(); i++){
+            cout<<v1[i];
+            if(i!=v1.size()-1) cout<<" -> ";
+        }
+        printf("\nTime = %d: ", sum1);
+        for(i = 0; i < v2.size(); i++){
+            cout<<v2[i];
+            if(i!=v2.size()-1) cout<<" -> ";
+        }
+    }
+    return 0;
+}
+
+
+
+///before
 #include<iostream>
 #include<vector>
 #include<string>
