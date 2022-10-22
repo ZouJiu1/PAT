@@ -1,3 +1,64 @@
+update
+#include<iostream>
+#include<vector>
+#include<algorithm>
+using namespace std;
+int i, j, k, z1, z2, mat[505][505], cw[505][505], status[505], dis[505], cost[505], pre[505];
+int inf = 999999999, cities, highway, start, en, minmin, sum1 = 0, sum2 = 0;
+int main(void) {
+    cin>>cities>>highway>>start>>en;
+    fill(mat[0], mat[0] + 505 * 505, inf);
+    fill(cw[0], cw[0] + 505 * 505, inf);
+    fill(status, status + 505, 0);
+    fill(dis, dis+505, inf);
+    fill(cost, cost+505, inf);
+    dis[start] = 0;
+    cost[start] = 0;
+    for(i = 0; i < highway; i++) {
+        cin>>j>>k>>z1>>z2;
+        mat[j][k] = mat[k][j] = z1;
+        cw[j][k] = cw[k][j] = z2;
+    }
+    for(i = 0; i < cities; i++) {
+        minmin = inf;
+        for(j = 0; j < cities; j++) {
+            if(status[j]==0&&minmin > dis[j]) {
+                minmin = dis[j];
+                k = j;
+            }
+        }
+        status[k] = 1;
+        for(j = 0; j < cities; j++) {
+            if(status[j]==0&&dis[j] > dis[k] + mat[k][j]){
+                pre[j] = k;
+                dis[j] = dis[k] + mat[k][j];
+                cost[j] = cost[k] + cw[k][j];
+            }else if(status[j]==0&&dis[j] == dis[k] + mat[k][j]&& cost[j] > cost[k] + cw[k][j]) {
+                pre[j] = k;
+                dis[j] = dis[k] + mat[k][j];
+                cost[j] = cost[k] + cw[k][j];
+            }
+        }
+    }
+    k = en;
+    vector<int> v;
+    while(pre[k]!=start){
+        v.push_back(k);
+        k = pre[k];
+    }
+    v.push_back(k);
+    v.push_back(start);
+    reverse(v.begin(), v.end());
+    for(i = 0; i < v.size()-1; i++) {
+        cout<<v[i]<<" ";
+        sum1 += mat[v[i]][v[i+1]];
+        sum2 += cw[v[i]][v[i+1]];
+    }
+    cout<<v[v.size()-1]<<" "<<sum1<<" "<<sum2<<endl;
+    return 0;
+}
+
+old before
 /*迪杰特斯拉方式，要注意距离相同时，要判断costes并保存相应的路径 */
 #include<iostream>
 #include<vector>
