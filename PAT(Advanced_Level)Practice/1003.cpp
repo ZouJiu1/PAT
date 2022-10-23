@@ -1,4 +1,58 @@
+update
+#include<iostream>
+#include<vector>
+#include<algorithm>
+using namespace std;
+int mat[600][600], status[600], dis[600], res[600], people[600];
+vector<int> pre[600];
+int inf = 999999999, cnt = 0, en, start;
+void dfs(int end) {
+    if(end==start) cnt++;
+    for(int i =0; i < pre[end].size(); i++) 
+        dfs(pre[end][i]);
+}
+int main(void){
+    int i, j, k, m, n, city, road, minmin;
+    cin>>city>>road>>start>>en;
+    for(i = 0; i < city; i++) scanf("%d", &res[i]);
+    fill(mat[0], mat[0]+600*600, inf);
+    for(i = 0; i < road; i++) {
+        cin>>m>>n>>k;
+        mat[m][n] = mat[n][m] = k;
+    }
+    fill(status, status+600, 0);
+    fill(dis, dis+600, inf);
+    fill(people, people+600, inf);
+    dis[start] = 0;
+    people[start] = res[start];
+    for(i = 0; i < city; i++) {
+        minmin = inf;
+        for(j = 0; j < city; j++) {
+            if(status[j]==0&&dis[j] < minmin) {
+                minmin = dis[j];
+                k = j;
+            }
+        }
+        status[k] = 1;
+        for(j = 0; j < city; j++) {
+            if(status[j]==0&&dis[j] > dis[k] + mat[k][j]) {
+                dis[j] = dis[k] + mat[k][j];
+                pre[j].clear();
+                pre[j].push_back(k);
+                people[j] = people[k] + res[j];
+            }else if(status[j]==0&&dis[j] == dis[k] + mat[k][j]) {
+                pre[j].push_back(k);
+                if(people[j] < people[k] + res[j])
+                    people[j] = people[k] + res[j];
+            }
+        }
+    }
+    dfs(en);
+    cout<<cnt<<" "<<people[en];
+    return 0;
+}
 
+old before
 #include<iostream>
 #include<algorithm>
 #include<vector>
