@@ -1,3 +1,33 @@
+update
+#include<iostream>
+#include<algorithm>
+#include<vector>
+using namespace std;
+int main(int argc, char **argv){
+    int i, j, k, m, n, v[101], a[101];
+    cin>>m;
+    for(i = 1; i <= m; i++) scanf("%d", &v[i]);
+    for(i = 1; i <=m; i++){
+        for(j = i+1; j<=m; j++){
+            vector<int> record;
+            fill(a, a+101, 1);
+            a[i] = a[j] = -1;
+            for(k = 1; k <= m; k++) {
+                if(v[k] * a[abs(v[k])] < 0) record.push_back(k);
+                if(record.size()>2) break;
+            }
+            if(record.size()==2&&a[record[0]] + a[record[1]]==0){
+                cout<<i<<" "<<j<<endl;
+                return 0;
+            }
+        }
+    }
+    cout<<"No Solution"<<endl;
+    return 0;
+}
+
+
+old before
 #include<iostream>
 #include<algorithm>
 #include<vector>
