@@ -1,3 +1,83 @@
+update
+#include<iostream>
+#include<vector>
+#include<algorithm>
+using namespace std;
+int mat[600][600], tim[600], status[600], bike[600], minmin, inf=999999999;
+int minback=inf, minneed=inf, cap, ts, rn, sp, perfect;
+vector<int> pre[600], tmppath, minpath;
+void dfs(int p) {
+    int i, j;
+    tmppath.push_back(p);
+    if(p==0) {
+        int bac = 0, nee = 0;
+        for(i = tmppath.size()-2; i >= 0; i--) {
+            if(perfect - bike[tmppath[i]] < 0) {
+                bac += -(perfect - bike[tmppath[i]]);
+            }else{
+                if(bac - (perfect - bike[tmppath[i]]) > 0)
+                    bac = bac - (perfect - bike[tmppath[i]]);
+                else {
+                    nee += perfect - bike[tmppath[i]] - bac;
+                    bac = 0;
+                }
+            }
+        }
+        if(minneed > nee || (minneed==nee && minback > bac)) {
+            minneed = nee;
+            minback = bac;
+            minpath = tmppath;
+        }
+        tmppath.pop_back();
+        return;
+    }
+    for(j = 0; j < pre[p].size(); j++)
+        dfs(pre[p][j]);
+    tmppath.pop_back();
+}
+int main(void) {
+    int i, j, k, m, n, y, z;
+    cin>>cap>>ts>>sp>>rn;
+    perfect = cap/2;
+    fill(mat[0], mat[0]+600*600, inf);
+    for(i = 1; i <= ts; i++) scanf("%d", &bike[i]);
+    for(i = 0; i < rn; i++) {
+        scanf("%d %d %d", &m, &n, &z);
+        mat[m][n] = mat[n][m] = z;
+    }
+    fill(tim, tim+600, inf);
+    fill(status, status+600, 0);
+    tim[0] = 0;
+    for(i = 0; i < ts+1; i++) {
+        minmin = inf;
+        for(j = 0; j < ts+1; j++) {
+            if(status[j]==0&&minmin > tim[j]) {
+                minmin = tim[j];
+                y = j;   
+            }
+        }
+        status[y] = 1;
+        for(j = 0; j < ts+1; j++) {
+            if(status[j]==0 && tim[j] > tim[y] + mat[y][j]) {
+                tim[j] = tim[y] + mat[y][j];
+                pre[j].clear();
+                pre[j].push_back(y);
+            } else if (status[j]==0 && tim[j]==tim[y] + mat[y][j])
+                pre[j].push_back(y);
+        }
+    }
+    dfs(sp);
+    cout<<minneed<<" ";
+    for(i = minpath.size()-1; i >=0; i--) {
+        cout<<minpath[i];
+        if(i!=0) cout<<"->";
+    }
+    cout<<" "<<minback<<endl;
+    return 0;
+}
+
+
+old before
 #include<iostream>
 #include<algorithm>
 #include<vector>
