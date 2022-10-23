@@ -1,3 +1,35 @@
+update
+#include<iostream>
+#include<vector>
+using namespace std;
+vector<int> v[101];
+int level[101], maxmax = -999999999;
+void dfs(int p, int lev) {
+    if(v[p].size()==0) level[lev]++;
+    if(maxmax < lev) maxmax = lev;
+    for(int i = 0; i < v[p].size(); i++) {
+        dfs(v[p][i], lev + 1);
+    }
+}
+int main(void){
+    int i, j, k, m, n, z, y;
+    cin>>m>>n;
+    for(i = 0; i < n; i++) {
+        cin>>k>>z;
+        for(j = 0; j < z; j++) {
+            cin>>y;
+            v[k].push_back(y);
+        }
+    }
+    dfs(1, 0);
+    for(i = 0; i <= maxmax; i++){
+        cout<<level[i];
+        if(i!=maxmax) cout<<" ";
+    }
+    return 0;
+}
+
+old before
 /*
 使用了多叉树，要注意这里要输出每代的人数，所以在结构体里添加了层次记录layers，以及是否存在child，使用了迭代，
 逐次将每个人的结构体附着到上层，属于层次遍历，
