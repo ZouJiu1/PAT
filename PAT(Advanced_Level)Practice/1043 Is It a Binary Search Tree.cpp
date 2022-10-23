@@ -1,3 +1,77 @@
+update
+#include<iostream>
+#include<vector>
+using namespace std;
+struct nod{
+    nod *l = NULL, *r = NULL;
+    int val;
+};
+nod* gen_(nod *root, int val) {
+    if(root==NULL) {
+        root = new(nod);
+        root->val = val;
+    } else if(val < root->val)
+        root->l = gen_(root->l, val);
+    else if(val >= root->val) 
+        root->r = gen_(root->r, val);
+    return root;
+}
+nod* gen_rev(nod *root, int val) {
+    if(root==NULL) {
+        root = new(nod);
+        root->val = val;
+    } else if(val >= root->val)
+        root->l = gen_rev(root->l, val);
+    else if(val < root->val) 
+        root->r = gen_rev(root->r, val);
+    return root;
+}
+vector<int> pre_ord, pos_ord, sav;
+void pre(nod *root){
+    if(root==NULL) return;
+    pre_ord.push_back(root->val);
+    pre(root->l);
+    pre(root->r);
+}
+void post(nod *root){
+    if(root==NULL) return;
+    post(root->l);
+    post(root->r);
+    pos_ord.push_back(root->val);
+}
+int main(int argc, char **argv) {
+    int i, j, k, m, n;
+    cin>>m;
+    nod *root = NULL;
+    for(i = 0; i < m; i++) {
+        scanf("%d", &k);
+        sav.push_back(k);
+    }
+    if(m==1) {
+        cout<<"YES"<<endl<<sav[0]<<endl;
+        return 0;
+    }
+    if(sav[0] <= sav[sav.size()-1]){
+        for(i = 0; i < m; i++) 
+            root = gen_(root, sav[i]);
+    }
+    else {
+        for(i = 0; i < m; i++) 
+            root = gen_rev(root, sav[i]);
+    }
+    pre(root);
+    if(sav!=pre_ord){
+        cout<<"NO"<<endl;
+        return 0;
+    }
+    post(root);
+    cout<<"YES\n"<<pos_ord[0];
+    for(i = 1; i < pos_ord.size(); i++) cout<<" "<<pos_ord[i];
+    return 0;
+}
+
+
+old before
 /* 先根据题意产生二叉树，找到小于或者大于rootnode的位置，并排除不符合条件的序列，
 
 然后使用递归，后续遍历即可*/
