@@ -1,3 +1,33 @@
+update
+#include<iostream>
+#include<vector>
+#include<map>
+using namespace std;
+int post[31], in[31];
+map<int, int> mp, inm;
+void pre(int root, int start, int end, int index){
+    if(start > end) return;
+    int i = inm[post[root]];
+    mp[index] = post[root];
+    pre(root - (end - i + 1), start, i - 1, 2 * index + 1);
+    pre(root - 1, i + 1, end, 2 * index + 2);
+}
+int main(int argc, char **argv){
+    int i, j, k, m, n;
+    cin>>m;
+    for(i = 0; i < m; i++) scanf("%d", &post[i]);
+    for(i = 0; i < m; i++) {
+        scanf("%d", &in[i]);
+        inm[in[i]] = i;
+    }
+    pre(m-1, 0, m-1, 0);
+    map<int, int>::iterator it = mp.begin();
+    cout<<it++->second;
+    while(it!=mp.end()) printf(" %d", (it++)->second);
+    return EXIT_SUCCESS;
+}
+
+old before
 /*
 已经二叉树的中序遍历序列，以及后序遍历序列，求层序遍历序列
 
