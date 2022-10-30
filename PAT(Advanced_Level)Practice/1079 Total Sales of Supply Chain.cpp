@@ -1,3 +1,38 @@
+update
+#include<iostream>
+#include<vector>
+#include<unordered_map>
+using namespace std;
+int m, n, y, z, k;
+double pri, per, sum = 0.0;
+vector<int> mem[100001];
+unordered_map<int, int> mp;
+void dfs(int start, double price) {
+    if(mem[start].size()==0 && mp[start] + 0 != 0) sum += price * mp[start];
+    for(int i = 0; i < mem[start].size(); i++) 
+        dfs(mem[start][i], price * (1.0 + per));
+}
+int main(int argc, char **argv) {
+    int i, j;
+    cin>>n>>pri>>per;
+    per = per/(double)100.0;
+    for(i = 0; i < n; i++) {
+        cin>>m;
+        for(j = 0; j < m; j++) {
+            cin>>k;
+            mem[i].push_back(k);
+        }
+        if(m==0) {
+            cin>>k;
+            mp[i] = k;
+        }
+    }
+    dfs(0, pri);
+    printf("%.1f\n", sum);
+    return EXIT_SUCCESS;
+}
+
+old before
 #include<iostream>
 #include<vector>
 #include<string>
