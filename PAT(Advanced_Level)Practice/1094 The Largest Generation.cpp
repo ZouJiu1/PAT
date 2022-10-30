@@ -1,3 +1,37 @@
+dfs
+#include<iostream>
+#include<vector>
+using namespace std;
+vector<int> v[101];
+int m, n, k, y, num[101], maxmax = -99999999;
+void dfs(int start, int level) {
+    num[level]++;
+    if(v[start].size()==0) {
+        if(num[level] > maxmax) {
+            maxmax = num[level];
+            y = level;
+        }
+        return;
+    }
+    for(int i = 0; i < v[start].size(); i++)
+        dfs(v[start][i], level + 1);
+}
+int main(int argc, char **argv) {
+    int i, j, z;
+    cin>>m>>n;
+    for(i = 0; i < n; i++) {
+        cin>>k>>z;
+        for(j = 0; j < z; j++) {
+            cin>>y;
+            v[k].push_back(y);
+        }
+    }
+    dfs(1, 1);
+    cout<<maxmax<<" "<<y<<endl;
+    return 0;
+}
+
+bfs
 #include<iostream>
 #include<vector>
 #include<queue>
