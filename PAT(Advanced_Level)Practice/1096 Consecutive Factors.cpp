@@ -47,3 +47,36 @@ int main(void) {
     }
     return 0;
 }
+
+update
+#include<cmath>
+#include<vector>
+#include<string>
+#include<iostream>
+using namespace std;
+int main(void) {
+    int i, j, k, m, n, w=0, y, len=0;
+    cin>>m;
+    int mul = 1, sqr = (int)sqrt(m) + 1;
+    for(j = 2; j <= sqr; j++) {
+        mul = 1;
+        for(i = j; i <= sqr; i++) {
+            mul *= i;
+            if(m % mul!=0) break;
+        }
+        if(i - j> len){
+            len = i - j;
+            w = j;
+        }
+    }
+    
+    if(w==0) {
+        cout<<1<<endl<<m;
+    }else
+        cout<<len<<endl;
+    for(i = 0; i < len; i++) {
+        cout<<w + i;
+        if(i!=len-1) cout<<"*";
+    }
+    return 0;
+}
