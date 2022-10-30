@@ -1,3 +1,37 @@
+update
+#include<vector>
+#include<iostream>
+using namespace std;
+int m, n, k;
+double pri, per, maxmax = -999999999.0;
+vector<int> v[100001];
+vector<double> maxpri;
+void dfs(int start, double price) {
+    if(v[start].size() == 0) {
+        maxpri.push_back(price);
+        if(price > maxmax) maxmax = price;
+    }
+    for(int i = 0; i < v[start].size(); i++)
+        dfs(v[start][i], price * (1.0 + per));
+}
+int main(int argc, char **argv) {
+    int i, j = 0, rt;
+    cin>>n>>pri>>per;
+    per = per / (double)100.0;
+    for(i = 0; i < n; i++) {
+        scanf("%d", &k);
+        if(k!=-1) v[k].push_back(i);
+        else rt = i;
+    }
+    dfs(rt, pri);
+    for(i = 0; i < maxpri.size(); i++) {
+        if(maxpri[i]==maxmax) j++;
+    }
+    printf("%.2f %d", maxmax, j);
+    return 0;
+}
+
+old before
 #include<iostream>
 #include<string>
 #include<vector>
