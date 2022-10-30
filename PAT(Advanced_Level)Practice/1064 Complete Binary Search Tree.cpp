@@ -1,3 +1,29 @@
+update
+
+#include<iostream>
+#include<vector>
+#include<algorithm>
+using namespace std;
+int m, cnt = 0;
+int v[1001], level[1001];
+void inorder(int ind) {
+    if(ind >= m) return;
+    inorder(2 * ind + 1);
+    level[ind] = v[cnt++];
+    inorder(2 * ind + 2);
+}
+int main(void){
+    int i, j, k, n;
+    cin>>m;
+    for(i = 0; i < m; i++) scanf("%d", &v[i]);
+    sort(v, v+m);
+    inorder(0);
+    printf("%d", level[0]);
+    for(i = 1; i < m; i++) printf(" %d", level[i]);
+    return 0;
+}
+
+old before
 /*
 完全二叉树和二叉搜索树，使用等比数列的计算公式，排序以后去掉最后一层的元素个数，其他的最middle的就是输出节点，不要构建树的，
 
