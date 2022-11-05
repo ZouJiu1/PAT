@@ -1,3 +1,56 @@
+update
+#include<iostream>
+#include<algorithm>
+#include<string>
+#include<vector>
+#include<queue>
+using namespace std;
+struct nod{string l, r;};
+nod ar[11];
+vector<int> in, le;
+void recursion(int start) {
+    if(ar[start].l!="-") recursion(stoi(ar[start].l));
+    in.push_back(start);
+    if(ar[start].r!="-") recursion(stoi(ar[start].r));
+}
+void level(int start) {
+    queue<int> q;
+    q.push(start);
+    int i, j;
+    while(!q.empty()){
+        i = q.front();
+        le.push_back(i);
+        if(ar[i].l!="-") q.push(stoi(ar[i].l));
+        if(ar[i].r!="-") q.push(stoi(ar[i].r));
+        q.pop();
+    }
+}
+void printvec(vector<int> v){
+    printf("%d", v[0]);
+    for(int i = 1; i < v.size(); i++) printf(" %d", v[i]);
+    printf("\n");
+}
+int main(int argc, char **argv) {
+    int m, n, i, j, k = 0;
+    nod nd;
+    cin>>m;
+    bool exist[11];
+    fill(exist, exist+11, false);
+    for(i = 0; i < m; i++) {
+        cin>>nd.r>>nd.l;
+        ar[i] = nd;
+        if(nd.r!="-") exist[stoi(nd.r)] = true;
+        if(nd.l!="-") exist[stoi(nd.l)] = true;
+    }
+    while(exist[k]!=false) k++;
+    recursion(k);
+    level(k);
+    printvec(le);
+    printvec(in);
+    return 0;
+}
+
+old before
 #include<iostream>
 #include<vector>
 #include<string>
