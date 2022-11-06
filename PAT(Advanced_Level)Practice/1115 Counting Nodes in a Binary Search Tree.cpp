@@ -1,3 +1,35 @@
+update
+#include<iostream>
+#include<vector>
+using namespace std;
+struct nod {
+    nod *l=NULL, *r=NULL; 
+    int val;
+};
+int maxmax = -9999999, level[1001];
+nod *bstinsert(nod *root, int val, int lev) {
+    if(root==NULL){
+        root = new(nod);
+        root->val = val;
+        level[lev]++;
+        if(maxmax < lev) maxmax = lev;
+    }else if(val <= root->val) root->l = bstinsert(root->l, val, lev + 1);
+    else root->r = bstinsert(root->r, val, lev + 1);
+    return root;
+}
+int main(int argc, char **argv) {
+    int m, n, i, j, k;
+    cin>>m;
+    nod *root = NULL;
+    for(i = 0; i < m; i++) {
+        cin>>n;
+        root = bstinsert(root, n, 0);
+    }
+    printf("%d + %d = %d\n", level[maxmax], level[maxmax - 1], level[maxmax]+level[maxmax - 1]);
+    return 0;
+}
+
+old before
 #include<iostream>
 #include<vector>
 #include<queue>
