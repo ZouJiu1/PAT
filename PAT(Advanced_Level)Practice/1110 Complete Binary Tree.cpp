@@ -33,6 +33,9 @@
 - -
 
 */
+
+old before
+
 #include<iostream>
 #include<vector>
 #include<string>
@@ -120,5 +123,43 @@ int main(void) {
     int all = (int)(pow(2, l-1)) + lastlayer - 1;
     if(all==m && vt==parent) cout<<"YES "<<k;
     else cout<<"NO "<<root;
+    return 0;
+}
+
+
+update
+
+#include<iostream>
+#include<vector>
+#include<string>
+#include<algorithm>
+using namespace std;
+int m, last, maxmax = -999999999;
+struct nod{string l="-", r="-";};
+nod ar[22];
+void recursion(int root, int index) {
+    if(maxmax < index) {
+        maxmax = index;
+        last = root;
+    }
+    if(ar[root].l!="-") recursion(stoi(ar[root].l), index * 2);
+    if(ar[root].r!="-") recursion(stoi(ar[root].r), index * 2 + 1);
+}
+int main(int argc, char **argv) {
+    int i, j, n, k = 0, y;
+    cin>>m;
+    nod nd;
+    bool status[22];
+    fill(status, status+22, false);
+    for(i = 0; i < m; i++) {
+        cin>>nd.l>>nd.r;
+        if(nd.l!="-") status[stoi(nd.l)] = true; 
+        if(nd.r!="-") status[stoi(nd.r)] = true; 
+        ar[i] = nd;
+    }
+    while(status[k]!=false) k++;
+    recursion(k, 1);
+    if(maxmax!=m) printf("NO %d\n", k);
+    else printf("YES %d", last);
     return 0;
 }
