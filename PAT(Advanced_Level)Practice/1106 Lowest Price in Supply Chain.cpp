@@ -1,3 +1,38 @@
+update
+#include<iostream>
+#include<vector>
+#include<cmath>
+using namespace std;
+vector<int> v[100001], vec;
+int m;
+double price, per, minmin = 999999999.0;
+void recursion(int start, int depth) {
+    if(v[start].size()==0) {
+        vec.push_back(depth);
+        if(depth < minmin) minmin = depth;
+    }
+    for(int i = 0; i < v[start].size(); i++)
+        recursion(v[start][i], depth + 1);
+}
+int main(int argc, char **argv) {
+    int n, i, j, k, y = 0;
+    cin>>m>>price>>per;
+    per = per/(float)100.0;
+    for(i = 0; i < m; i++) {
+        cin>>n;
+        for(j = 0; j < n; j++) {
+            cin>>k;
+            v[i].push_back(k);
+        }
+    }
+    recursion(0, 0);
+    for(i = 0; i < vec.size(); i++)
+        if(vec[i]==minmin) y++;
+    printf("%.4f %d\n", price * pow(1+per, minmin), y);
+    return 0;
+}
+
+old before
 #include<iostream>
 #include<vector>
 #include<string>
