@@ -1,3 +1,4 @@
+old before
 #include<iostream>
 #include<algorithm>
 #include<stdlib.h>
@@ -99,5 +100,38 @@ int main(){
         if(i!=vtr.size() - 1) cout<<" ";
     }
     cout<<endl;
+    return 0;
+}
+
+update
+#include<iostream>
+#include<vector>
+using namespace std;
+int pre[31], post[31], m, in[31], cnt = 0, one = 1;
+void recursion(int prel, int prer, int postl, int postr) {
+    int k = prel, val = post[postr];
+    if(prel==prer){
+        in[cnt++] = pre[prel];
+        return;
+    }
+    if(pre[prel]==post[postr]) {
+        while(k<=prer&&pre[k]!=post[postr-1]) k++;
+        if(k-prel>1)
+            recursion(prel + 1, k - 1, postl, postl + (k - prel - 1) - 1);
+        else
+            one = 0;
+        in[cnt++] = pre[prel];
+        recursion(k, prer, postl + (k - prel - 1), postr - 1);
+    }
+}
+int main(int argc, char **argv) {
+    int i, j, k, n;
+    cin>>m;
+    for(i = 0; i < m; i++) scanf("%d", &pre[i]);
+    for(i = 0; i < m; i++) scanf("%d", &post[i]);
+    recursion(0, m-1, 0, m - 1);
+    printf("%s\n%d", one==0? "No":"Yes", in[0]);
+    for(i=1; i < m; i++) printf(" %d", in[i]);
+    printf("\n");
     return 0;
 }
