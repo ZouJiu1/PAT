@@ -1,3 +1,5 @@
+old before
+
 #include<iostream>
 #include<algorithm>
 #include<stdlib.h>
@@ -109,5 +111,67 @@ int main(){
         cout<<res[i];
         if(i!=res.size()-1) cout<<" ";
     }
+    return 0;
+}
+
+update
+
+#include<iostream>
+#include<vector>
+#include<queue>
+#include<algorithm>
+using namespace std;
+int m, in[31], post[31], tmple;
+vector<int> lev[31], res;
+struct nod{ struct nod *l=NULL, *r=NULL; int val; };
+nod* recursion(nod *root, int start, int l, int r) {
+    int k = l;
+    if(l > r) return NULL;
+    if(root==NULL) {
+        root = new(nod);
+        root->val = post[start];
+    }
+    while(in[k]!=post[start]) k++;
+    root->l = recursion(root->l, start - (r - k) - 1, l, k - 1);
+    root->r = recursion(root->r, start - 1, k + 1, r);
+    return root;
+}
+
+void width_firstly_recursion(nod *root) {
+    queue<nod *> q;
+    queue<int> ll;
+    q.push(root);
+    ll.push(0);
+    nod *tmp;
+    while(q.size()!=0) {
+        tmp = q.front();
+        tmple = ll.front();
+        lev[tmple].push_back(tmp->val);
+        if(tmp->l!=NULL) {
+            q.push(tmp->l);
+            ll.push(tmple + 1);
+        }
+        if(tmp->r!=NULL) {
+            q.push(tmp->r);
+            ll.push(tmple + 1);
+        }
+        q.pop();
+        ll.pop();
+    }
+}
+int main(void) {
+    int i, j, n, k;
+    cin>>m;
+    for(i = 0; i < m; i++) scanf("%d", &in[i]);
+    for(i = 0; i < m; i++) scanf("%d", &post[i]);
+    nod *root = NULL;
+    root = recursion(root, m - 1, 0, m - 1);
+    width_firstly_recursion(root);
+    for(i = 0; i < 31; i++) if(i%2==0) reverse(lev[i].begin(), lev[i].end());
+    for(i = 0; i < 31; i++) {
+        for(j = 0; j < lev[i].size(); j++) res.push_back(lev[i][j]);
+    }
+    printf("%d", res[0]);
+    for(i = 1; i < res.size(); i++) printf(" %d", res[i]);
     return 0;
 }
