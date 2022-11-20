@@ -1,3 +1,29 @@
+update
+
+#include<iostream>
+using namespace std;
+int m, n, pre[60000], in[60000], y, post[1];
+void recursion(int start, int l, int r) {
+    if(l > r) return;
+    y = l;
+    while(in[y]!=pre[start]) y++;
+    recursion(start + 1,       l, y - 1);
+    recursion(start + (y - l) + 1, y + 1, r);
+    post[0] = pre[start];
+    cout<<post[0]<<endl;
+    exit(0);
+}
+int main(int argc, char *argv) {
+    int i, j, k;
+    cin>>m;
+    for(i = 0; i < m; i++) scanf("%d", &pre[i]);
+    for(i = 0; i < m; i++) scanf("%d", &in[i]);
+    recursion(0, 0, m - 1);
+    return 0;
+}
+
+old before
+
 #include<iostream>
 #include<algorithm>
 #include<vector>
