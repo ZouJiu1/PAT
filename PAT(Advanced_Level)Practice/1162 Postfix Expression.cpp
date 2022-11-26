@@ -41,15 +41,28 @@ using namespace std;
 struct nod{string kk; int l, r;};
 bool bl[21];
 nod arr[21];
-string recursion(int root) {
-    if(root==-1) return "";
-    if(arr[root].l * arr[root].r > 0) 
-        return "(" + recursion(arr[root].l) + recursion(arr[root].r) + arr[root].kk + ")";
+string recursion(int rot) {
+    if(rot==-1) return "";
+    if(arr[rot].l * arr[rot].r > 0) 
+        return "(" + recursion(arr[rot].l) + recursion(arr[rot].r) + arr[rot].kk + ")";
     else
-        return "(" + recursion(arr[root].l) + arr[root].kk + recursion(arr[root].r) + ")";
+        return "(" + recursion(arr[rot].l) + arr[rot].kk + recursion(arr[rot].r) + ")";
+}
+void recursion_version(int rot) {
+    if(rot==-1) return;
+    printf("(");
+    recursion_version(arr[rot].l);
+    if(arr[rot].l * arr[rot].r > 0) {
+        recursion_version(arr[rot].r);
+        cout<<arr[rot].kk;
+    } else {
+        cout<<arr[rot].kk;
+        recursion_version(arr[rot].r);
+    }
+    printf(")");
 }
 int main(int argc, char **argv) {
-    int i, j, k, m, n, y, z, root = 1;
+    int i, j, k, m, n, y, z, rot = 1;
     string t;
     cin>>m;
     nod nd;
@@ -60,8 +73,9 @@ int main(int argc, char **argv) {
         bl[nd.l] = true;
         bl[nd.r] = true;
     }
-    while(bl[root]==true) root++;
-    t = recursion(root);
-    cout<<t<<endl;
+    while(bl[rot]==true) rot++;
+    // t = recursion(rot);
+    // cout<<t<<endl;
+    recursion_version(rot);
     return EXIT_SUCCESS;
 }
