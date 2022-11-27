@@ -1,3 +1,4 @@
+old before
 #include<iostream>
 #include<vector>
 #include<map>
@@ -42,5 +43,45 @@ int main(void) {
         }
     }
     printf("%.1f\n", sum/(float)x1);
+    return 0;
+}
+
+update
+#include<iostream>
+#include<unordered_map>
+using namespace std;
+bool isprime(int a) {
+    if(a<=1) return false;
+    for(int i = 2; i * i <= a; i++) 
+        if(a%i==0) return false;
+    return true;
+}
+int main(int argc, char **argv) {
+    int i, j, msize, k, m, n, y, z, sum = 0;
+    cin>>msize>>n>>m;
+    while(!isprime(msize)) msize++;
+    unordered_map<int, int> ump;
+    for(i = 0; i < n; i++) {
+        cin>>y;
+        k = -9;
+        for(j = 0; j <= msize; j++) {
+            z = (y + j * j) % msize;
+            if(ump[z] == 0) {
+                ump[z] = y;
+                k = 9;
+                break;
+            }
+        }
+        if(k < 0) printf("%d cannot be inserted.\n", y);
+    }
+    for(i = 0; i < m; i++) {
+        cin>>y;
+        for(j = 0; j <= msize; j++) {
+            z = (y + j * j) % msize;
+            sum++;
+            if(ump[z]==y||ump[z]+0 == 0) break;
+        }
+    }
+    printf("%.1f", sum/(float)m);
     return 0;
 }
