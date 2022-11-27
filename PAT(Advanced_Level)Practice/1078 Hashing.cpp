@@ -1,3 +1,5 @@
+old before
+
 #include<iostream>
 #include<vector>
 #include<string>
@@ -61,6 +63,39 @@ int main(void){
     for(i = 0; i < n; i++){
         cout<<vv[i];
         if(i!=n-1) cout<<" ";
+    }
+    return 0;
+}
+
+update
+#include<iostream>
+#include<algorithm>
+using namespace std;
+bool isprime(int a) {
+    if(a<=1) return false;
+    for(int i = 2; i * i <= a; i++) 
+        if(a%i==0) return false;
+    return true;
+}
+int main(int argc, char **argv) {
+    int i, j, k, m, n, y, z, status[100001];
+    fill(status, status+100001, 0);
+    cin>>m>>n;
+    while(!isprime(m)) m++;
+    for(i = 0; i < n; i++) {
+        cin>>y;
+        k = -9;
+        for(j = 0; j < m; j++) {
+            z = (y + j * j) % m;
+            if(status[z] == 0) {
+                printf("%d", z);
+                status[z] = 1;
+                k = 9;
+                break;
+            }
+        }
+        if(k < 0) printf("-");
+        if(i!=n - 1) printf(" ");
     }
     return 0;
 }
