@@ -1,4 +1,102 @@
-update
+update2
+#include<iostream>
+#include<vector>
+#include<string>
+#include<unordered_map>
+#include<algorithm>
+using namespace std;
+int citys, roads, start, rom, cnt = 0, happiness[206], inf = 999999999;
+int counts = 0;
+int matrix[206][206], status[206], hap[206], nod[206], cost[206], pre[206];
+float avghap[206];
+unordered_map<int, string> ump;
+unordered_map<string, int> rev_ump;
+vector<int> route[206], fin;
+string t, t1;
+void recursion(int citys) {
+    if(citys==0) counts++;
+    for(int i = 0; i < route[citys].size(); i++) {
+        recursion(route[citys][i]);
+    }
+}
+int main(int argc, char **argv) {
+    cin>>citys>>roads>>t;
+    ump[0] = t;
+    rev_ump[t] = 0;
+    int i, j, k, m, n;
+    for(i = 1; i < citys; i++) {
+        cin>>t>>happiness[i];
+        if(t=="ROM") rom = i;
+        ump[i] = t;
+        rev_ump[t] = i;
+    }
+    fill(matrix[0], matrix[0]+206*206, inf);
+    fill(status, status+206, 0);
+    fill(nod, nod+206, 0);
+    fill(hap, hap+206, inf);
+    fill(cost, cost+206, inf);
+    fill(avghap, avghap+206, 0.0);
+    for(i = 0; i < roads; i++) {
+        cin>>t>>t1>>m;
+        matrix[rev_ump[t]][rev_ump[t1]]=matrix[rev_ump[t1]][rev_ump[t]] = m;
+    }
+    hap[0] = 0;
+    cost[0] = 0;
+    avghap[0] = 0;
+    for(i = 0; i < citys; i++) {
+        int minmin = inf;
+        for(j = 0; j < citys; j++) {
+            if(status[j]==0&&minmin > cost[j]){
+                minmin = cost[j];
+                m = j;
+            }
+        }
+        status[m] = 1;
+        for(j = 0; j < citys; j++) {
+            if(status[j]==0&&cost[j] > cost[m]+matrix[m][j]){
+                cost[j] = cost[m]+matrix[m][j];
+                nod[j] = nod[m] + 1;
+                hap[j] = hap[m] + happiness[j];
+                avghap[j] = hap[j]/(float)nod[j];
+                route[j].clear();
+                route[j].push_back(m);
+                pre[j] = m;
+            }else if(status[j]==0&&cost[j] == cost[m]+matrix[m][j]){
+                if(hap[j] < hap[m] + happiness[j]){
+                    cost[j] = cost[m]+matrix[m][j];
+                    nod[j] = nod[m] + 1;
+                    hap[j] = hap[m] + happiness[j];
+                    avghap[j] = hap[j]/(float)nod[j];
+                    pre[j] = m;
+                }else if(hap[j] == hap[m] + happiness[j]){
+                    if(avghap[j] < ((hap[m] + happiness[j])/(float)(nod[m] + 1)) ) {
+                        cost[j] = cost[m]+matrix[m][j];
+                        nod[j] = nod[m] + 1;
+                        hap[j] = hap[m] + happiness[j];
+                        avghap[j] = hap[j]/(float)nod[j];
+                        pre[j] = m;
+                    }
+                }
+                route[j].push_back(m);
+            }
+        }
+    }
+    recursion(rom);
+    printf("%d %d %d %d\n", counts, cost[rom], hap[rom], (int)(avghap[rom]));
+    n = rom;
+    while(pre[n]!=0) {
+        fin.push_back(n);
+        n = pre[n];
+    }
+    fin.push_back(n);
+    fin.push_back(0);
+    reverse(fin.begin(), fin.end());
+    cout<<ump[fin[0]];
+    for(i = 1; i < fin.size(); i++) cout<<"->"<<ump[fin[i]];
+    return EXIT_SUCCESS;
+}
+
+update1
 #include<iostream>
 #include<vector>
 #include<unordered_map>
