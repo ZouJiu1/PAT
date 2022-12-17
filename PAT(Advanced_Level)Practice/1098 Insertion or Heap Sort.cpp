@@ -1,3 +1,4 @@
+old before
 #include<iostream>
 #include<vector>
 #include<string>
@@ -103,5 +104,46 @@ int main(void){
         cout<<"Heap Sort"<<endl;
         printvec(s6);
     }
+    return 0;
+}
+
+update
+#include<iostream>
+#include<vector>
+#include<algorithm>
+using namespace std;
+vector<int> maxheapify(vector<int> arr, int start, int end) {
+    int dad = start;
+    int son = dad * 2 + 1;
+    while(son <= end) {
+        if(son + 1 <= end && arr[son+1] > arr[son]) son++;
+        if(arr[dad] >= arr[son]) return arr;
+        swap(arr[dad], arr[son]);
+        dad = son;
+        son = dad * 2 + 1;
+    }
+    return arr;
+}
+int main() {
+    int i, j, m, n, k=1, z, y;
+    cin>>m;
+    vector<int> v1(m), v2(m);
+    for(i = 0; i < m; i++) cin>>v1[i];
+    for(i = 0; i < m; i++) cin>>v2[i];
+    while(k < m && v2[k]>=v2[k-1]) k++; //要加=等号的
+    y = k;
+    while(k < m && v1[k]==v2[k]) k++;  //insertion前者是有序的，后面的和不排序的v1一致
+    if(k==m) {
+        printf("Insertion Sort\n");
+        sort(v2.begin(), v2.begin() + y + 1);
+    }else{
+        printf("Heap Sort\n");
+        z = m - 1;
+        while(v2[z] > v2[z-1]) z--;
+        swap(v2[0], v2[z]);
+        v2 = maxheapify(v2, 0, z-1);
+    }
+    printf("%d", v2[0]);
+    for(i = 1; i < m; i++) printf(" %d", v2[i]);
     return 0;
 }
