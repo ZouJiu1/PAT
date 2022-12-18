@@ -105,33 +105,77 @@ int main(){
 
 update
 #include<iostream>
-#include<vector>
 using namespace std;
-int pre[31], post[31], m, in[31], cnt = 0, one = 1;
-void recursion(int prel, int prer, int postl, int postr) {
-    int k = prel, val = post[postr];
-    if(prel==prer){
-        in[cnt++] = pre[prel];
+int pre[31], pot[31], unique = 1, in[31], cnt=0;
+void recursion(int prel, int prer, int potl, int potr) {
+    if(prel==prer) {
+        in[cnt++] = pot[potr];
         return;
     }
-    if(pre[prel]==post[postr]) {
-        while(k<=prer&&pre[k]!=post[postr-1]) k++;
-        if(k-prel>1)
-            recursion(prel + 1, k - 1, postl, postl + (k - prel - 1) - 1);
-        else
-            one = 0;
-        in[cnt++] = pre[prel];
-        recursion(k, prer, postl + (k - prel - 1), postr - 1);
+    if(pre[prel]==pot[potr]){
+        int k = pot[potr - 1], ll=prel;    
+        while(ll <= prer && pre[ll]!=k) ll++; //后序的倒数第二个，划开左右子树(包括自身倒数第二个)
+        if(ll - prel > 1) {
+            recursion(prel+1, ll-1, potl, potl + (ll - prel -1) - 1);
+        }else{
+            unique = 0;
+        }
+        in[cnt++] = pot[potr];
+        recursion(ll, prer, potl + (ll - prel - 1), potr - 1);
+    }else{
+        //这两个序列不能产生一棵树
     }
 }
-int main(int argc, char **argv) {
-    int i, j, k, n;
+
+int main() {
+    int i, j, k, m, n;
     cin>>m;
-    for(i = 0; i < m; i++) scanf("%d", &pre[i]);
-    for(i = 0; i < m; i++) scanf("%d", &post[i]);
-    recursion(0, m-1, 0, m - 1);
-    printf("%s\n%d", one==0? "No":"Yes", in[0]);
-    for(i=1; i < m; i++) printf(" %d", in[i]);
+    for(i = 0; i < m; i++) cin>>pre[i];
+    for(i = 0; i < m; i++) cin>>pot[i];
+    recursion(0, m-1, 0, m-1);
+    if(unique) printf("Yes\n");
+    else printf("No\n");
+    printf("%d", in[0]);
+    for(i = 1; i < cnt; i++) printf(" %d", in[i]);
     printf("\n");
-    return 0;
+    return EXIT_SUCCESS;
+}
+
+update2 前序的第二个
+#include<iostream>
+using namespace std;
+int pre[31], pot[31], unique = 1, in[31], cnt=0;
+void recursion(int prel, int prer, int potl, int potr) {
+    if(prel==prer) {
+        in[cnt++] = pot[potr];
+        return;
+    }
+    if(pre[prel]==pot[potr]){
+        int k = pre[prel + 1], ll=potl;    
+        while(ll <= potr && pot[ll]!=k) ll++; //前序第二个，划开左右子树(包括自身倒数第二个)
+        if(potr - ll > 1) {
+            recursion(prel+1, prer - (potr - ll - 1), potl, ll);
+        }else{
+            unique = 0;
+            recursion(prel+1, prer - (potr - ll - 1), potl, ll);
+        }
+        in[cnt++] = pot[potr];
+        recursion(prer - (potr - ll - 1) + 1, prer, ll+1, potr - 1);
+    }else{
+        //这两个序列不能产生一棵树
+    }
+}
+
+int main() {
+    int i, j, k, m, n;
+    cin>>m;
+    for(i = 0; i < m; i++) cin>>pre[i];
+    for(i = 0; i < m; i++) cin>>pot[i];
+    recursion(0, m-1, 0, m-1);
+    if(unique) printf("Yes\n");
+    else printf("No\n");
+    printf("%d", in[0]);
+    for(i = 1; i < cnt; i++) printf(" %d", in[i]);
+    printf("\n");
+    return EXIT_SUCCESS;
 }
