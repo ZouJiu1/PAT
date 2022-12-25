@@ -1,3 +1,40 @@
+update1
+#include<iostream>
+#include<vector>
+using namespace std;
+int main(int argc, char **argv) {
+    int i, j, m, n, y, z, k;
+    cin>>m>>n;
+    vector<int> arr[1001], res, ru(1001), tmp(1001);
+    fill(tmp.begin(), tmp.begin() + 1001, 0);
+    for(i = 0; i < n; i++) {
+        cin>>y>>z;
+        arr[y].push_back(z); 
+        tmp[z] += 1;
+    }
+    cin>>y;
+    for(i = 0; i < y; i++) {
+        int mr = -9;
+        ru = tmp;
+        for(k = 0; k < m; k++) {
+            cin>>z;
+            if(ru[z]==0 && mr < 0) {
+                for(j = 0; j < arr[z].size(); j++) {
+                    ru[arr[z][j]]--;
+                }
+            } else if(mr < 0) {
+                mr = 9;
+            }
+        }
+        if(mr > 0) res.push_back(i); 
+    }
+    printf("%d", res[0]);
+    for(i = 1; i < res.size(); i++) printf(" %d", res[i]);
+    return EXIT_SUCCESS;
+}
+
+old version
+
 #include<iostream>
 #include<vector>
 #include<unordered_map>
