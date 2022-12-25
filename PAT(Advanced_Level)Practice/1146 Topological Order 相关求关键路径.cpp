@@ -41,39 +41,33 @@ int main(int argc, char **argv) {
         tmp[nd.y] += 1;                  //入度
         ump[y + nd.y * 1000] = ump[y * 1000 + nd.y] = nd.tim;
 
-        k = nd.y;
-        nd.y = y;
-        revarr[k].push_back(nd); 
+        // k = nd.y;
+        // nd.y = y;
+        // revarr[k].push_back(nd); 
     }
+    int point;
     while(res.size()!=m) { //求出拓扑序列
         for(i = 1; i <= m; i++) {
             if(tmp[i]==0 && status[i]==0) {
                 status[i] = 1;
                 res.push_back(i);
                 for(j = 0; j < arr[i].size(); j++) {
-                    tmp[arr[i][j].y]--;
+                    point = arr[i][j].y;
+                    tmp[point]--;
+                    if(earlytim[point] < earlytim[i] + ump[i*1000 + point])
+                        earlytim[point] = earlytim[i] + arr[i][j].tim;
                 }
                 break;
             }
         }
-    }
-    rev = res;
-    reverse(rev.begin(), rev.end());
-    earlytim[res[0]] = 0;
-    for(i = 1; i < m; i++) {
-        int maxmax = -999999;
-        k = res[i];
-        for(j = 0; j < revarr[k].size(); j++) { //k之前的不固定 earlytim[revarr[k][j].y]
-            maxmax = max(maxmax, earlytim[revarr[k][j].y] + ump[k * 1000 + revarr[k][j].y]);
-        }
-        earlytim[k] = maxmax;
     }
     lasttim[res[m - 1]] = earlytim[res[m - 1]];
     for(i = m - 2; i >= 0; i--) {
         int minmin = 999999999;
         k = res[i];
         for(j = 0; j < arr[k].size(); j++) { //k之后的不固定
-            minmin = min(minmin, lasttim[arr[k][j].y] - ump[k * 1000 + arr[k][j].y]);
+            point = arr[k][j].y;
+            minmin = min(minmin, lasttim[point] - ump[k * 1000 + point]);
         }
         lasttim[k] = minmin;
     }
