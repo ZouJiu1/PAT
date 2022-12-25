@@ -40,10 +40,6 @@ int main(int argc, char **argv) {
         arr[y].push_back(nd);
         tmp[nd.y] += 1;                  //入度
         ump[y + nd.y * 1000] = ump[y * 1000 + nd.y] = nd.tim;
-
-        // k = nd.y;
-        // nd.y = y;
-        // revarr[k].push_back(nd); 
     }
     int point;
     while(res.size()!=m) { //求出拓扑序列
