@@ -1,3 +1,37 @@
+update2
+#include<iostream>
+#include<unordered_map>
+using namespace std;
+unordered_map<int, int> ump;
+bool isprime(int m) {
+    if(m<=1) return false;
+    for(int i = 2; i * i <= m; i++) {
+        if(m%i==0) return false;
+    }
+    return true;
+}
+int main(void) {
+    int m, n, i, j, k, y, z;
+    cin>>m>>n;
+    while(!isprime(m)) m++;
+    for(i = 0; i < n; i++) {
+        cin>>k;
+        z = -9;
+        for(j = 0; j < m; j++) {
+            y = (k + j * j) % m;
+            if(ump[y]==0) {
+                ump[y] = k;
+                z = 9;
+                printf("%d", y);
+                break;
+            }
+        }
+        if(z < 0) printf("-");
+        if(i!=n-1) printf(" ");
+    }
+    return EXIT_SUCCESS;
+}
+
 old before
 
 #include<iostream>
