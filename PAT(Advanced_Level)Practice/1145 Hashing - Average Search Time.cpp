@@ -1,3 +1,47 @@
+update2
+#include<iostream>
+#include<unordered_map>
+using namespace std;
+bool isprime(int a) {
+    if(a <= 1) return false;
+    for(int i = 2; i * i <= a; i++) {
+        if(a%i==0) return false;
+    }
+    return true;
+}
+int main(int argc, char **argv) {
+    int m, n, i, j, k, y, z, w;
+    cin>>m>>n>>k;
+    while(!isprime(m)) m++;
+    unordered_map<int, int> ump;
+    for(i = 0; i < n; i++) {
+        int mr = -9;
+        cin>>w;
+        for(j = 0; j < m; j++) {
+            z = (w + j * j) % m;
+            if(ump[z]==0) {
+                ump[z] = w;
+                mr = 9;
+                break;
+            }
+        }
+        if(mr < 0) printf("%d cannot be inserted.\n", w);
+    }
+    int sum = 0;
+    for(i = 0; i < k; i++) {
+        cin>>w;
+        for(j = 0; j <= m; j++) {
+            sum++;
+            z = (w + j * j) % m;
+            if(ump[z]==w||ump[z]==0) {
+                break;
+            }
+        }
+    }
+    printf("%.1f\n", sum/(float)k);
+    return EXIT_SUCCESS;
+}
+
 old before
 #include<iostream>
 #include<vector>
