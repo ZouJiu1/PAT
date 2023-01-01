@@ -1,3 +1,4 @@
+old before
 #include<iostream>
 #include<vector>
 #include<string>
@@ -114,6 +115,97 @@ int main(void) {
         printf("%04d %d %.3f %.3f\n", rtv[i].minmin, 
             rtv[i].count, rtv[i].sum0,
             rtv[i].sum1);
+    }
+    return 0;
+}
+update1
+#include<iostream>
+#include<vector>
+#include<map>
+#include<set>
+#include<algorithm>
+using namespace std;
+int arr[100000];
+struct nod{int num, areas, person;};
+struct nod2{
+    float avgnum=0, avgarea=0;
+    int person=0, num=0;
+};
+int findfather(int a){
+    int tmp = a;
+    while(arr[a]!=a) a=arr[a];
+    arr[tmp] = a;
+    return a;
+}
+void unionjoin(int a, int c) {
+    int aa = findfather(a);
+    int cc = findfather(c);
+    if(aa > cc) arr[aa] = cc;
+    else arr[cc] = aa;
+}
+bool compare(nod2 a, nod2 c) {
+    if(a.avgarea > c.avgarea) return true;
+    else if(abs(a.avgarea - c.avgarea) < 0.0000001) {
+        return a.person < c.person;
+    }else return false;
+}
+int main(int argc, char **argv) {
+    int i, j, k, m, n, y, z, p0, p1, num, areas;
+    for(i = 0; i < 100000; i++) arr[i] = i;
+    cin>>m;
+    nod nd;
+    vector<int> all;
+    map<int, nod> nda;
+    set<int> st;
+    for(i = 0; i < m; i++) {
+        vector<int> vec;
+        cin>>z>>p0>>p1>>n;
+        nd.person = z;
+        vec.push_back(z);
+        if(p0!=-1) vec.push_back(p0);
+        if(p1!=-1) vec.push_back(p1);
+        for(j = 0; j < n; j++) {
+            cin>>y;
+            vec.push_back(y);
+        }
+        cin>>num>>areas;
+        nd.num = num;
+        nd.areas = areas;
+        nda[nd.person] = nd;
+        sort(vec.begin(), vec.end());
+        for(j=0; j < vec.size() - 1; j++) {
+            unionjoin(vec[j], vec[j+1]);
+            // all.push_back(vec[j]);
+            st.insert(vec[j]);
+        }
+        // all.push_back(vec[vec.size() - 1]);
+        st.insert(vec[vec.size() - 1]);
+    }
+    y = 0;
+    nod2 nd2={0};
+    map<int, int> mp0, mp1, mp2;
+    int w;
+    for(set<int>::iterator it=st.begin(); it!=st.end(); it++){
+        w = *it;
+        if(findfather(w)==w) y++;
+        z = findfather(w);
+        mp0[z]++;
+        mp1[z] += nda[w].num;
+        mp2[z] += nda[w].areas;
+
+    }
+    vector<nod2> vv;
+    for(map<int, int>::iterator it=mp0.begin(); it!=mp0.end(); it++) {
+        nd2.person = it->first;
+        nd2.num = mp0[it->first];
+        nd2.avgnum = mp1[it->first] / (float)nd2.num;
+        nd2.avgarea = mp2[it->first] / (float)nd2.num;
+        vv.push_back(nd2);
+    }
+    sort(vv.begin(), vv.end(), compare);
+    printf("%d\n", vv.size());
+    for(i = 0; i < vv.size(); i++) {
+        printf("%04d %d %.3f %.3f\n", vv[i].person, vv[i].num, vv[i].avgnum, vv[i].avgarea);
     }
     return 0;
 }
