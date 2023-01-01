@@ -1,3 +1,4 @@
+old before
 #include<iostream>
 #include<vector>
 #include<string>
@@ -69,4 +70,56 @@ int main(void){
         if(i!=cnt - 1) printf(" ");
     }
     return 0;
+}
+
+update 1
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<vector>
+using namespace std;
+
+int arr[1006], reflect[1006];
+
+int findfather(int a) {
+    int tmp = a;
+    while(arr[a]!=a) a = arr[a];
+    arr[tmp] = a;
+    return a;
+}
+void unionjoin(int a, int c) {
+    int aa = findfather(a);
+    int cc = findfather(c);
+    if(aa != cc) arr[aa] = cc;
+}
+bool compare(int a, int c) {return a > c;};
+int main(int argc, char **argv) {
+    int i, j, k, m, n, y, z;
+    cin>>m;
+    fill(reflect, reflect+1006, 0);
+    for(i = 0; i < 1006; i++) arr[i] = i;
+    for(i = 1; i <= m; i++) {
+        scanf("%d:", &n);
+        for(j = 0; j < n; j++) {
+            cin>>k;
+            if(reflect[k]==0)
+                reflect[k]=i;
+            unionjoin(i, findfather(reflect[k]));
+        }
+    }
+    z = 0;
+    map<int, int> mp;
+    for(i = 1; i <= m; i++) {
+        if(findfather(i)==i) z++;
+        mp[findfather(i)]++;
+    }
+    vector<int> v;
+    for(map<int, int>::iterator it=mp.begin(); it!=mp.end(); it++) {
+        v.push_back(it->second);
+    }
+
+    sort(v.begin(), v.end(), compare);
+    printf("%d\n%d", z, v[0]);
+    for(i = 1; i < v.size(); i++) printf(" %d", v[i]);
+    return EXIT_SUCCESS;
 }
