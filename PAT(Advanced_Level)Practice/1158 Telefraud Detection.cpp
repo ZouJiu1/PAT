@@ -1,3 +1,4 @@
+old before
 #include<iostream>
 #include<vector>
 #include<unordered_map>
@@ -83,4 +84,71 @@ int main(void) {
 		cout << endl;
 	}
 	return 0;
+}
+update1
+#include<iostream>
+#include<vector>
+#include<unordered_map>
+using namespace std;
+int arr[1006];
+int findfather(int a) {
+    int tmp = a;
+    while(arr[a]!=a) a=arr[a]; 
+    arr[tmp] =a;
+    return a;
+}
+void unionjoin(int a, int c) {
+    int aa = findfather(a);
+    int cc = findfather(c);
+    if(aa < cc) arr[cc] = aa;
+    else arr[aa] = cc;
+}
+int main(void) {
+    int i, j, k, m, n, y, z, num, caller, receiver, tim;
+    cin>>m>>n>>num;
+    unordered_map<int, int> ump;
+    for(i = 0; i < 1006; i++) arr[i] = i;
+    for(i = 0; i < num; i++) {
+        cin>>caller>>receiver>>tim;
+        ump[caller*10000+receiver] += tim;
+    }
+    vector<int> tel;
+    for(i = 1; i <= n; i++) {
+        y = z = 0;
+        for(j = 1; j <= n; j++) {
+            if(ump[i*10000 + j]<=5 && ump[i*10000 + j] > 0) {
+                y++;
+                if(ump[j*10000 + i] > 0) z++;
+            }
+        }
+        if(y > m && z * 5 <= y) {
+            tel.push_back(i);
+        }
+    }
+	if (tel.size() == 0) {
+		cout << "None" << endl;
+		return 0;
+	}
+    for(i = 0; i < tel.size(); i++) {
+        y = tel[i];
+		for(j = i + 1; j < tel.size(); j++) {
+			z = tel[j];
+			if(ump[y*10000 + z] > 0 && ump[z*10000 + y] > 0){
+				unionjoin(y, z);
+			}
+		}
+    }
+	vector<int> status(1006, 0);
+    for(i = 0; i < tel.size(); i++) {
+		if(status[tel[i]]==1) continue;
+		cout<<tel[i];
+		for(j = i + 1; j < tel.size(); j++) {
+			if(findfather(tel[i])==findfather(tel[j])){
+				cout<<" "<<tel[j];
+				status[tel[j]] =1;
+			}
+		}
+		cout<<endl;
+	}
+    return 0;
 }
