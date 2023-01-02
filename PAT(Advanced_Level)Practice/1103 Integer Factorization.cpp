@@ -1,3 +1,4 @@
+old before
 #include<iostream>
 #include<vector>
 #include<cmath>
@@ -60,6 +61,58 @@ int main(void) {
     for(i = 0; i < v.size(); i++) {
         cout<<v[i]<<"^"<<w;
         if(i!=v.size() - 1) cout<<" + ";
+    }
+    return 0;
+}
+
+update1
+#include<iostream>
+#include<vector>
+#include<cmath>
+#include<math.h>
+using namespace std;
+int n, k, p, maxtmpsum=-999999999;
+vector<int> v, tmp, arr;
+void power() {
+    for(int i = 0; i <= n; i++) {
+        int kk = (int)pow(i, p);
+        if(kk > n) return; 
+        arr.push_back(kk);
+    }
+}
+void recursion(int index, int sum, int tempk, int maxsum){
+    if(tempk==k) {
+        if(sum==n && maxsum > maxtmpsum) {
+            maxtmpsum = maxsum;
+            v = tmp;
+        }
+        return;
+    }
+    while(index >= 1) {
+        if(sum + arr[index] <= n) {
+            tmp[tempk] = index;
+            recursion(index, sum + arr[index], tempk+1, maxsum + index);
+        }
+        if(index==1) return;
+        index--;
+    }
+}
+
+int main(void) {
+    int i, j, m;
+    cin>>n>>k>>p;
+    v.resize(k);
+    tmp.resize(k);
+    power();
+    recursion(arr.size()-1, 0, 0, 0);
+    if(maxtmpsum < 0) {
+        printf("Impossible\n");
+        return 0;
+    }
+    printf("%d = ", n);
+    for(i = 0; i < k; i++) {
+        if(i!=0) printf(" + ");
+        printf("%d^%d", v[i], p);
     }
     return 0;
 }
