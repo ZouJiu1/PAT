@@ -88,13 +88,19 @@ void recursion(int index, int sum, int tempk, int maxsum){
         }
         return;
     }
-    while(index >= 1) {
-        if(sum + arr[index] <= n) {
-            tmp[tempk] = index;
-            recursion(index, sum + arr[index], tempk+1, maxsum + index);
+    // while(index >= 1) {
+    //     if(sum + arr[index] <= n) {
+    //         tmp[tempk] = index;
+    //         recursion(index, sum + arr[index], tempk+1, maxsum + index);
+    //     }
+    //     if(index==1) return;
+    //     index--;
+    // }
+    for(int i = index; i >= 1; i--) {
+        if(sum + arr[i] <= n) {
+            tmp[tempk] = i;
+            recursion(i, sum + arr[i], tempk + 1, maxsum + i);
         }
-        if(index==1) return;
-        index--;
     }
 }
 
