@@ -8,7 +8,7 @@
 #include<queue>
 using namespace std;
 int inf = 999999999, status[600], dis[600], send, back, capacity, ccmax, N, Sp, M;
-int curnum[600], perfect, minmin = inf, minval = inf, se, ba;
+int curnum[600], perfect, minmin = inf, minval = inf;
 typedef pair<int, int> p;
 vector<p> v[600];
 vector<int> pth[600], tmp, res;
@@ -29,8 +29,6 @@ void recursion(int end) {
                 }
             }
         }
-        se = send;
-        ba = back;
         if(send < minval || (send == minval && back < minmin)) {
             minmin = back;
             minval = send;
