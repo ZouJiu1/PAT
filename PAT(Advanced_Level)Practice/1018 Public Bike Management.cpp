@@ -1,3 +1,97 @@
+/*
+堆优化迪杰特斯拉版本1 Dijkstra algorithm  
+不用邻接表，节省了内存的
+*/
+#include<iostream>
+#include<vector>
+#include<algorithm>
+#include<queue>
+using namespace std;
+int inf = 999999999, status[600], dis[600], send, back, capacity, ccmax, N, Sp, M;
+int curnum[600], perfect, minmin = inf, minval = inf, se, ba;
+typedef pair<int, int> p;
+vector<p> v[600];
+vector<int> pth[600], tmp, res;
+priority_queue<p, vector<p>, greater<p>> pq;
+void recursion(int end) {
+    tmp.push_back(end);
+    if(end == 0) {
+        send = back = 0;
+        for(int i = tmp.size() - 2; i >= 0; i--) {
+            if(curnum[tmp[i]] > perfect) {
+                back += curnum[tmp[i]] - perfect;
+            } else if(curnum[tmp[i]] < perfect){
+                if(curnum[tmp[i]] + back > perfect)
+                    back = curnum[tmp[i]] + back - perfect;
+                else {
+                    send += perfect - (curnum[tmp[i]] + back);
+                    back = 0;
+                }
+            }
+        }
+        se = send;
+        ba = back;
+        if(send < minval || (send == minval && back < minmin)) {
+            minmin = back;
+            minval = send;
+            res = tmp;
+        }
+    }
+    for(int i = 0; i < pth[end].size(); i++) {
+        recursion(pth[end][i]);
+    }
+    tmp.pop_back();
+}
+int main(void) {
+    int i, j, k, x, y, z, distance;
+    cin>>ccmax>>N>>Sp>>M;
+    perfect = ccmax/2;
+    for(i = 1; i <= N; i++) {
+        cin>>curnum[i];
+    }
+    p x1, y1, x2, y2;
+    for(i = 0; i < M; i++) {
+        cin>>x>>y>>z;
+        x1.first = z;
+        x1.second = y;
+        v[x].push_back(x1);
+        x1.second = x;
+        v[y].push_back(x1);
+    }
+    fill(status, status + 600, 0);
+    fill(dis, dis + 600, inf);
+    x1.first = dis[0] = 0;
+    x1.second = 0;
+    pq.push(x1);
+    while(!pq.empty()) {
+        x1 = pq.top();
+        pq.pop();
+        x = x1.second;
+        if(status[x]==1) continue;
+        status[x] = 1;
+        for(i = 0; i < v[x].size(); i++) {
+            y = v[x][i].second;
+            distance = v[x][i].first;
+            if(status[y]==0 && dis[y] > dis[x] + distance) {
+                dis[y] = dis[x] + distance;
+                pq.push({dis[y], y});
+                pth[y].clear();
+                pth[y].push_back(x);
+            } else if(status[y]==0 && dis[y] == dis[x] + distance) {
+                // pq.push({dis[y], y});
+                pth[y].push_back(x);
+            }
+        }
+    }
+    recursion(Sp);
+    printf("%d 0", minval);
+    for(i = res.size()-2; i >= 0; i--) {
+        printf("->%d", res[i]);
+    }
+    printf(" %d\n", minmin);
+    return 0;
+}
+
 update
 #include<iostream>
 #include<vector>
