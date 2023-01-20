@@ -1,3 +1,46 @@
+update
+#include<iostream>
+#include<vector>
+#include<algorithm>
+using namespace std;
+struct nod {
+    int add, nex;
+    char a;
+};
+int main(void) {
+    int i, j, k, m, n, N, start0, start1, status[100006];
+    nod nd, arr[100006];
+    vector<nod> v0, v1;
+    cin>>start0>>start1>>N;
+    fill(status, status + 100006, 0);
+    for(i = 0; i < N; i++) {
+        cin>>nd.add>>nd.a>>nd.nex;
+        arr[nd.add] = nd;
+    }
+    while(true) {
+        if(start0==-1) break;
+        v0.push_back(arr[start0]);
+        start0=arr[start0].nex;
+    }
+    while(true) {
+        if(start1==-1) break;
+        v1.push_back(arr[start1]);
+        start1=arr[start1].nex;
+    }
+    for(i = 0; i < v0.size(); i++) {
+        status[v0[i].add] = 1;
+    }
+    for(j = 0; j < v1.size(); j++) {
+        if(status[v1[j].add]==1) {
+            printf("%05d\n", v1[j].add);
+            return 0;
+        }
+    }
+    printf("-1\n");
+    return 0;
+}
+
+old before
 #include<iostream>
 #include<vector>
 #include<bits/stdc++.h>
