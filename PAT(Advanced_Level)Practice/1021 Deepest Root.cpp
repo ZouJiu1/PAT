@@ -1,3 +1,67 @@
+update
+#include<iostream>
+#include<vector>
+#include<algorithm>
+#include<set>
+using namespace std;
+int status[10001], maxmax = -999999999;
+vector<int> v0[10001], tmp, res;
+void recursion(int start, int depth) {
+    if(maxmax < depth) {
+        tmp.clear();
+        tmp.push_back(start);
+        maxmax = depth;
+    } else if(maxmax==depth){
+        tmp.push_back(start);
+    }
+    status[start] = 1;
+    for(int i = 0; i < v0[start].size(); i++) {
+        if(status[v0[start][i]]==0) {
+            recursion(v0[start][i], depth + 1);
+        }
+    }
+}
+int main(void) {
+    int i, j, k, m, N, y, z, cnt = 0;
+    cin>>N;
+    for(i = 0; i < N-1; i++) {
+        cin>>y>>z;
+        v0[y].push_back(z);
+        v0[z].push_back(y);
+    }
+    fill(status, status + 10001, 0);
+    set<int> kt;
+    for(i = 1; i <= N; i++) {
+        if(status[i]==0) {
+            recursion(i, 1);
+            cnt++;
+            if(i==1) {
+                if(tmp.size()!=0) z = tmp[0];
+                for(j = 0; j < tmp.size(); j++)
+                    kt.insert(tmp[j]);
+            }
+        }
+    }
+    if(cnt > 1) {
+        printf("Error: %d components\n", cnt);
+        return 0;
+    }
+    fill(status, status + 10001, 0);
+    tmp.clear();
+    maxmax = -999999999;
+    recursion(z, 1);
+    for(i = 0; i < tmp.size(); i++) {
+        kt.insert(tmp[i]);
+    }
+    for(set<int>::iterator it=kt.begin(); it!=kt.end(); it++) {
+        res.push_back(*it);
+    }
+    sort(res.begin(), res.end());
+    printf("%d\n", res[0]);
+    for(i = 1; i < res.size(); i++) printf("%d\n", res[i]);
+    return 0;
+}
+
 /*
 并查集查看树的棵树；迪杰特斯拉方式寻找最远的路径
 */
