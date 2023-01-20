@@ -1,3 +1,60 @@
+update2
+#include<iostream>
+#include<vector>
+#include<algorithm>
+using namespace std;
+int cnt = 0;
+vector<int> tmp, pth[106];
+struct nod {
+    int w;
+    vector<int> child;
+};
+nod v[106];
+void recursion(int start, int sum, int K) {
+    if(sum > K) return;
+    tmp.push_back(v[start].w);
+    if(sum==K) {
+        if(v[start].child.size()!=0) {
+            tmp.pop_back();
+            return;
+        }
+        printf("%d", tmp[0]);
+        for(int j = 1; j < tmp.size(); j++) printf(" %d", tmp[j]);
+        printf("\n");
+        tmp.pop_back();
+        return;
+    }
+    for(int i = 0; i < v[start].child.size(); i++) {
+        int h = v[start].child[i];
+        recursion(h, sum + v[h].w, K);
+    }
+    tmp.pop_back();
+}
+bool compare(int a, int c) {
+    return v[a].w > v[c].w;
+}
+int main(void) {
+    int i, j, m, n, k, N, M, K;
+    cin>>N>>M>>K;
+    for(i = 0; i < N; i++) {
+        cin>>v[i].w;
+    }
+    for(i = 0; i < M; i++) {
+        cin>>m>>k;
+        for(j = 0; j < k; j++) {
+            cin>>n;
+            v[m].child.push_back(n);
+        }
+    }
+    for(i = 0; i < N; i++) {
+        if(v[i].child.size()!=0) {
+            sort(v[i].child.begin(), v[i].child.end(), compare);
+        }
+    }
+    recursion(0, v[0].w, K);
+    return EXIT_SUCCESS;
+}
+
 update
 #include <iostream>
 #include <vector>
