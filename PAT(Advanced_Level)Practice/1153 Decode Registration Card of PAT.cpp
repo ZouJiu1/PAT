@@ -1,3 +1,61 @@
+update
+#include<iostream>
+#include<vector>
+#include<string>
+#include<unordered_map>
+#include<algorithm>
+using namespace std;
+struct nod {
+    string id;
+    int score;
+};
+bool cmp(nod &a, nod &c) {
+    return a.score!=c.score? a.score > c.score : a.id < c.id;
+}
+int main(void) {
+    int i, j, N, M, k, y, z;
+    nod nd;
+    vector<nod> v;
+    string t;
+    cin>>N>>M;
+    for(i = 0; i < N; i++) {
+        cin>>nd.id>>nd.score;
+        v.push_back(nd);
+    }
+    for(i = 0; i < M; i++) {
+        cin>>y>>t;
+        printf("Case %d: %d %s\n", i+1, y, t.c_str());
+        vector<nod> vt;
+        if(y==1) {
+            for(j = 0; j < N; j++) {
+                if(v[j].id[0]==t[0]) vt.push_back(v[j]);
+            }
+        }else if(y==2) {
+            int sum = 0, num = 0;
+            for(j = 0; j < N; j++) {
+                if(v[j].id.substr(1, 3)==t) {
+                    num++;
+                    sum += v[j].score;
+                }
+            }
+            if(num!=0) printf("%d %d\n", num, sum);
+            else printf("NA\n");
+            continue;
+        }else if(y==3) {
+            unordered_map<string, int> ump;
+            for(j = 0; j < N; j++) {
+                if(v[j].id.substr(4, 6)==t) ump[v[j].id.substr(1, 3)]++;
+            }
+            for(auto it:ump) vt.push_back({it.first, it.second});
+        }
+        if(vt.size()==0) printf("NA\n");
+        sort(vt.begin(), vt.end(), cmp);
+        for(j = 0; j < vt.size(); j++) printf("%s %d\n", vt[j].id.c_str(), vt[j].score);
+    }
+    return 0;
+}
+
+old before
 #include<iostream>
 #include<algorithm>
 #include<vector>
