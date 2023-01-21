@@ -1,3 +1,37 @@
+update
+#include<iostream>
+#include<algorithm>
+#include<vector>
+#include<string>
+#include<unordered_map>
+using namespace std;
+struct nod {int add, val, nex;};
+int main(void) {
+    int i, j, k, m, n, x, y, z, rot, N, K;
+    cin>>rot>>N>>K;
+    unordered_map<int, nod> arr;
+    vector<nod> gK, neg, lK, res;
+    nod nd;
+    for(i = 0; i < N; i++) {
+        cin>>nd.add>>nd.val>>nd.nex;
+        arr[nd.add] = nd;
+    }
+    while(true) {
+        if(rot==-1) break;
+        if(arr[rot].val < 0) neg.push_back(arr[rot]);
+        else if(arr[rot].val <= K) lK.push_back(arr[rot]);
+        else gK.push_back(arr[rot]);
+        rot = arr[rot].nex;
+    }
+    for(i = 0; i < neg.size(); i++) res.push_back(neg[i]);
+    for(i = 0; i < lK.size(); i++) res.push_back(lK[i]);
+    for(i = 0; i < gK.size(); i++) res.push_back(gK[i]);
+    for(i = 0; i < res.size() - 1; i++) printf("%05d %d %05d\n", res[i].add, res[i].val, res[i+1].add);
+    printf("%05d %d -1\n", res[i].add, res[i].val);
+    return 0;
+}
+
+old before
 #include<iostream>
 #include<algorithm>
 #include<vector>
