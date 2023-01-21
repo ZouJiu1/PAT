@@ -1,3 +1,67 @@
+update
+#include<iostream>
+#include<vector>
+#include<string>
+#include<cstring>
+using namespace std;
+int main(void) {
+    //小数点的地方（初始化数组长度）；不是0不是.的地方
+    int i, j, k, m=0, n=0, N, leA, leK, pointA, pointK, notzeroA=0, notzeroK=0, pxA, pxK; 
+    //123.456, 0.0000123456 123456
+    cin>>N;
+    char A[10006], K[10006];
+    scanf("%s %s", &A, &K);
+    leA = pointA = strlen(A)/sizeof(*A);
+    leK = pointK = strlen(K)/sizeof(*K);
+    for(i = 0; i < pointA; i++) {
+        if(A[i]=='.') {
+            pointA = i;
+            break;
+        }
+    }
+    for(i = 0; i < pointK; i++) {
+        if(K[i]=='.') {
+            pointK = i;
+            break;
+        }
+    }
+    while(A[notzeroA]=='0'||A[notzeroA]=='.') notzeroA++;
+    while(K[notzeroK]=='0'||K[notzeroK]=='.') notzeroK++;
+    if(pointA >= notzeroA) pxA = pointA - notzeroA;
+    else pxA = pointA - notzeroA + 1;
+    if(pointK >= notzeroK) pxK = pointK - notzeroK;
+    else pxK = pointK - notzeroK + 1;
+    if(notzeroA==leA) pxA = 0;
+    if(notzeroK==leK) pxK = 0;
+    string reA, reK;
+    m = notzeroA;
+    while(reA.length() < N) {
+        if(A[m]!='.'&&m < leA) 
+            reA += A[m];
+        else if(m >= leA)
+            reA += '0';
+        m++;
+    }
+    m = notzeroK;
+    while(reK.length() < N) {
+        if(K[m]!='.'&&m < leK) 
+            reK += K[m];
+        else if(m >= leK)
+            reK += '0';
+        m++;
+    }
+    if(reA==reK && pxA==pxK) {
+        printf("YES 0.");
+        cout<<reA<<"*"<<"10^"<<pxA<<endl;
+    }else{
+        printf("NO 0.");
+        cout<<reA<<"*"<<"10^"<<pxA<<" 0.";
+        cout<<reK<<"*"<<"10^"<<pxK<<endl;
+    }
+    return EXIT_SUCCESS;
+}
+
+old before
 #include<iostream>
 #include<vector>
 #include<string>
