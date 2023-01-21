@@ -1,3 +1,40 @@
+update
+#include<iostream>
+#include<set>
+#include<unordered_map>
+#include<algorithm>
+using namespace std;
+struct nod {
+    int val, cnt;
+    bool operator < (const nod &a) const{
+        return cnt != a.cnt? cnt > a.cnt : val < a.val;
+    }
+};
+int main(void) {
+    int i, j, k, m, n, N, K, x, y, z, arr;
+    unordered_map<int, int> ump;
+    cin>>N>>K;
+    set<nod> te;
+    for(i = 0; i < N; i++) {
+        scanf("%d", &arr);
+        if(i!=0) {
+            printf("%d:", arr);
+            int ind = 0;
+            for(auto it=te.begin(); it!=te.end() && ind < K; it++) {
+                printf(" %d", it->val);
+                ind++;
+            }
+        }
+        auto it = te.find(nod{arr, ump[arr]});
+        if(it!=te.end()) te.erase(it);
+        ump[arr]++;
+        te.insert(nod{arr, ump[arr]});
+        if(i!=0) printf("\n");
+    }
+    return 0;
+}
+
+old before
 #include<iostream>
 #include<vector>
 #include<map>
