@@ -1,3 +1,59 @@
+update
+#include<iostream>
+#include<vector>
+#include<algorithm>
+using namespace std;
+struct nod {
+    int Ge, Gi, Gf, id;
+    vector<int> app;
+};
+bool compare(nod &a, nod &c) {
+    if(a.Gf != c.Gf) return a.Gf > c.Gf;
+    else return a.Ge > c.Ge;
+}
+bool cmp(nod &a, nod &c) {
+    return a.id < c.id;
+}
+int main(void) {
+    int i, j, k, m, n, N, M, K, Ge, Gi, choose, quota[106], num_admit[106];
+    cin>>N>>M>>K;
+    nod nd;
+    vector<nod> v, admit[106];
+    for(i = 0; i < M; i++) cin>>quota[i];
+    for(i = 0; i < N; i++) {
+        cin>>nd.Ge>>nd.Gi;
+        nd.Gf = nd.Ge + nd.Gi;
+        nd.app.resize(K);
+        nd.id = i;
+        for(j = 0; j < K; j++) cin>>nd.app[j];
+        v.push_back(nd);
+    }
+    fill(num_admit, num_admit + 106, 0);
+    sort(v.begin(), v.end(), compare);
+    for(i = 0; i < N; i++) {
+        for(j = 0; j < K; j++) {
+            choose = v[i].app[j];
+            if(num_admit[choose] < quota[choose]||
+            (v[i].Gf==admit[choose][admit[choose].size() - 1].Gf && 
+            v[i].Ge==admit[choose][admit[choose].size() - 1].Ge)) {
+                num_admit[choose]++;
+                admit[choose].push_back(v[i]);
+                break;
+            }
+        }
+    }
+    for(i = 0; i < M; i++) {
+        sort(admit[i].begin(), admit[i].end(), cmp);
+        for(j = 0; j < admit[i].size(); j++) {
+            printf("%d", admit[i][j].id);
+            if(j!=admit[i].size()-1) printf(" ");
+        }
+        printf("\n");
+    }
+    return 0;
+}
+
+old before
 #include<iostream>
 #include<vector>
 #include<string>
