@@ -1,3 +1,108 @@
+堆优化
+#include<iostream>
+#include<vector>
+#include<queue>
+#include<unordered_map>
+#include<string>
+#include<algorithm>
+using namespace std;
+typedef pair<int, int> p;
+p r0, r1, r2;
+priority_queue<p, vector<p>, greater<p>> pq;
+int main(void) {
+    int i, j, k, m, n, N, K, x, y, z, cnt = 0, ww[202], status[202];
+    int inf = 999999999, dit[202], hap[202], num[202], sam[202], end;
+    vector<int> pth[202];
+    float avg[202];
+    unordered_map<string, int> ump;
+    unordered_map<int, string> rev;
+    string tg0, tg1, start;
+    vector<p> v[202];
+    cin>>N>>K>>start;
+    ump[start] = cnt;
+    rev[cnt++] = start; 
+    for(i = 0; i < N-1; i++) {
+        cin>>tg0>>m;
+        if(ump[tg0]==0) {
+            ump[tg0] = cnt;
+            rev[cnt++] = tg0;
+        }
+        if(tg0=="ROM") end = ump[tg0];
+        ww[ump[tg0]] = m;
+    }
+    for(i = 0; i < K; i++) {
+        cin>>tg0>>tg1>>m;
+        r0.first = m;
+        r0.second = ump[tg0];
+        v[ump[tg1]].push_back(r0);
+        r0.second = ump[tg1];
+        v[ump[tg0]].push_back(r0);
+    }
+    fill(status, status + 202, 0);
+    fill(dit, dit + 202, inf);
+    fill(hap, hap + 202, 0);
+    fill(num, num + 202, 0);
+    fill(avg, avg + 202, 0.0);
+    fill(sam, sam + 202, 0.0);
+    dit[0] = 0;
+    sam[0] = 1;
+    r0.first = 0;
+    r0.second = 0;
+    pq.push(r0);
+    while(!pq.empty()) {
+        r0 = pq.top();
+        pq.pop();
+        x = r0.second;
+        if(status[x]==1) continue;
+        status[x] = 1;
+        for(i = 0; i < v[x].size(); i++) {
+            r1 = v[x][i];
+            y = r1.second;
+            m = r1.first;
+            if(status[y]==0 && dit[y] > dit[x] + m) {
+                dit[y] = dit[x] + m;
+                pq.push({dit[y], y});
+                hap[y] = hap[x] + ww[y];
+                num[y] = num[x] + 1;
+                sam[y] = sam[x];
+                avg[y] = hap[y] / (float)num[y];
+                pth[y].clear();
+                pth[y].push_back(x);
+            }else if(status[y]==0 && dit[y] == dit[x] + m) {
+                sam[y] = sam[x] + sam[y];
+                if(hap[y] < hap[x] + ww[y]) {
+                    hap[y] = hap[x] + ww[y];
+                    num[y] = num[x] + 1;
+                    avg[y] = hap[y] / (float)num[y];
+                    pth[y].clear();
+                    pth[y].push_back(x);
+                }else if(hap[y] == hap[x] + ww[y]) {
+                    if(avg[y] < ((hap[x] + ww[y]) / (float)(num[x] + 1))) {
+                        num[y] = num[x] + 1;
+                        avg[y] = hap[y] / (float)num[y];
+                        pth[y].clear();
+                        pth[y].push_back(x);
+                    }
+                }
+            }
+        }
+    }
+    printf("%d %d %d %d\n", sam[end], dit[end], hap[end], (int)avg[end]);
+    vector<string> vt;
+    vt.push_back(rev[end]);
+    while(true) {
+        if(end==0) break;
+        vt.push_back(rev[pth[end][0]]);
+        end = pth[end][0];
+    }
+    reverse(vt.begin(), vt.end());
+    for(i = 0; i < vt.size(); i++) {
+        printf("%s", vt[i].c_str());
+        if(i!=vt.size() - 1) printf("->");
+    }
+    return 0;
+}
+
 update2
 #include<iostream>
 #include<vector>
