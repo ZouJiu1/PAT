@@ -1,3 +1,92 @@
+堆优化
+#include<iostream>
+#include<vector>
+#include<string>
+#include<algorithm>
+#include<queue>
+#include<cmath>
+using namespace std;
+typedef pair<int, int> p;
+p r0, r1, r2;
+priority_queue<p, vector<p>, greater<p>> pq;
+struct nod {
+    int mindit, idk, sum;
+};
+bool cmp(nod &a, nod &c) {
+    if(a.mindit > c.mindit) return true;
+    else if(a.mindit == c.mindit) {
+        if(a.sum < c.sum) return true;
+        else return a.idk < c.idk;
+    }else return false;
+}
+int main(void) {
+    int i, j, k, m, n, N, M, K, x, y, z, inf = 999999999;
+    int Ds, cnt = 0, status[1300], ditance[1300], minmin = inf, maxmax = -inf;
+    cin>>N>>M>>K>>Ds;
+    string t0, t1;
+    vector<p> v[1300];
+    nod nd;
+    for(i = 0; i < K; i++) {
+        cin>>t0>>t1>>m;
+        if(t0[0]=='G') y = N + stoi(t0.substr(1));
+        else y = stoi(t0);
+        if(t1[0]=='G') z = N + stoi(t1.substr(1));
+        else z = stoi(t1);
+        r0.first = m;
+        r0.second = y;
+        v[z].push_back(r0);
+        r0.second = z;
+        v[y].push_back(r0);
+    }
+    vector<nod> res;
+    for(i = N + 1; i <= N + M; i++) {  //等号要记得加
+        fill(status, status + 1300, 0);
+        fill(ditance, ditance + 1300, inf);
+        ditance[i] = 0;
+        r0.first = 0;
+        r0.second = i;
+        pq.push(r0);
+        while(!pq.empty()) {
+            r0 = pq.top();
+            pq.pop();
+            x = r0.second;
+            if(status[x]==1) continue;
+            status[x] = 1;
+            for(j = 0; j < v[x].size(); j++) {
+                r0 = v[x][j];
+                y = r0.second;
+                z = r0.first;
+                if(status[y]==0 && ditance[y] > ditance[x] + z) {
+                    ditance[y] = ditance[x] + z;
+                    pq.push({ditance[y], y});
+                }
+            }
+        }
+        int sum = 0, mindit = inf, avg = 0.0f, mr = -9;
+        for(j = 1; j <=N; j++) {
+            if(ditance[j] > Ds) {
+                mr = 9;
+                break;
+            }
+            sum += ditance[j];
+            if(ditance[j] < mindit) mindit = ditance[j];
+        }
+        if(mr < 0) {
+            nd.mindit = mindit;
+            nd.sum = sum;
+            nd.idk = i-N;
+            res.push_back(nd);
+        }
+    }
+    if(res.size()==0) {
+        printf("No Solution\n");
+        return 0;
+    }
+    sort(res.begin(), res.end(), cmp);
+    printf("G%d\n%.1f %.1f", res[0].idk, (float)res[0].mindit, round(res[0].sum*10/(float)N)/10.0);
+    return 0;
+}
+
 update
 #include<iostream>
 #include<vector>
@@ -82,8 +171,6 @@ int main(void){
     printf("%.1f %.1f\n", v[0].min, round(v[0].avg*10)/(float)10.0);
     return 0;
 }
-
-
 
 before old
 /*
