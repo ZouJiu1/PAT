@@ -1,3 +1,90 @@
+update2
+
+要使用i/2来遍历根节点，在递归左节点的时候送入栈，右节点可能不是叶子节点左节点也没有才是叶子节点 
+
+#include<iostream>
+#include<vector>
+using namespace std;
+vector<int> res[1006], v;
+int N, cnt = 0;
+void recursion(int index, vector<int> tmp) {
+    if(index > N) {
+        if(index%2==0) res[cnt++] = tmp;
+        return;
+    }
+    tmp.push_back(v[index]);
+    recursion(index * 2 + 1, tmp);
+    recursion(index * 2, tmp);
+}
+int main(void) {
+    int i, j, k, m, n, maxmax = 9, minmin = 9;
+    cin>>N;
+    vector<int> tmp;
+    v.resize(N+1);
+    for(i = 1; i <= N; i++) cin>>v[i];
+    for(i = 2; i <= N; i++) {
+        if(v[i] > v[i/2]) maxmax = -9;
+        if(v[i] < v[i/2]) minmin = -9;
+    }
+    recursion(1, tmp);
+    for(i = 0; i < cnt; i++) {
+        for(j = 0; j < res[i].size(); j++) {
+            printf("%d", res[i][j]);
+            if(j!=res[i].size() - 1) printf(" ");
+        }
+        printf("\n");
+    }
+    if(maxmax==9) printf("Max Heap\n");
+    else if(minmin==9) printf("Min Heap\n");
+    else printf("Not Heap\n");
+    return 0;
+}
+
+update
+
+#include<iostream>
+#include<vector>
+using namespace std;
+vector<int> res[1006], v;
+int N, cnt = 0;
+void recursion(int index, vector<int> tmp) {
+    if(index >= N) {
+        if(index%2==1) res[cnt++] = tmp;
+        return;
+    }
+    tmp.push_back(v[index]);
+    recursion(index * 2 + 2, tmp);
+    recursion(index * 2 + 1, tmp);
+}
+int main(void) {
+    int i, j, k, m, n;
+    cin>>N;
+    vector<int> tmp;
+    v.resize(N);
+    for(i = 0; i < N; i++) cin>>v[i];
+    recursion(0, tmp);
+    if(v[0] >= v[N-1]) m = 9;
+    else m = -9;
+    for(i = 0; i < cnt; i++) {
+        for(j = 0; j < res[i].size(); j++) {
+            printf("%d", res[i][j]);
+            if(m > 0 && j!=0 && res[i][j - 1] < res[i][j]) m = -100; //存在一条路径不满足条件
+            if(m < 0 && j!=0 && res[i][j - 1] > res[i][j]) m = -100;
+            if(j!=res[i].size() - 1) printf(" ");
+        }
+        printf("\n");
+    }
+    if(m==9) printf("Max Heap\n");
+    else if(m==-9) printf("Min Heap\n");
+    else printf("Not Heap\n");
+    return 0;
+}
+
+可用    for(i = 2; i <= m; i++) {
+        if(v[i] > v[i/2]) maxmax = -9;
+        if(v[i] < v[i/2]) minmin = -9;
+    }    i/2   拿到根节点的数值 
+
 #include<iostream>
 #include<vector>
 using namespace std;
