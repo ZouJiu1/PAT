@@ -1,3 +1,149 @@
+堆优化2
+#include<iostream>
+#include<vector>
+#include<algorithm>
+#include<queue>
+#include<unordered_map>
+using namespace std;
+typedef pair<int, int> p;
+priority_queue<p, vector<p>, greater<p>> pq;
+p r0, r1, r2;
+unordered_map<int, int> ump;
+int main(void) {
+    int i, j, k, m, n, x, y, z, N, M, S, D, sum = 0, status[505], dit[505], cot[505], inf = 999999999;
+    cin>>N>>M>>S>>D;
+    int tmpend = D;
+    vector<p> v[505];
+    for(i = 0; i < M; i++) {
+        cin>>x>>y>>z>>m;
+        r0.first = z;
+        r0.second = y;
+        v[x].push_back(r0);
+        r0.second = x;
+        v[y].push_back(r0);
+        ump[x * 1000 + y] = ump[y * 1000 + x] = m;
+    }
+    fill(status, status + 505, 0);
+    fill(cot, cot + 505, 0);
+    fill(dit, dit + 505, inf);
+    dit[S] = 0;
+    r0.first = 0;
+    r0.second = S;
+    pq.push(r0);
+    vector<int> pth[505], res;
+    while(!pq.empty()) {
+        r0 = pq.top();
+        pq.pop();
+        x = r0.second;
+        if(status[x]==1) continue;
+        status[x] = 1;
+        for(i = 0; i < v[x].size(); i++) {
+            r1 = v[x][i];
+            y = r1.second;
+            z = r1.first;
+            if(status[y]==0 && dit[y] > dit[x] + z) {
+                dit[y] = dit[x] + z;
+                pq.push({dit[y], y});
+                cot[y] = cot[x] + ump[x*1000 + y];
+                pth[y].clear();
+                pth[y].push_back(x);
+            }else if(status[y]==0 && dit[y] == dit[x] + z && cot[y] > cot[x] + ump[x*1000 + y]) {
+                cot[y] = cot[x] + ump[x*1000 + y];
+                pth[y].clear();
+                pth[y].push_back(x);
+            }
+        }
+    }
+    while(true) {
+        res.push_back(D);
+        if(D==S) break;
+        D = pth[D][0];
+    }
+    for(int i = res.size() - 1; i >= 0; i--) {
+        printf("%d ", res[i]);
+        if(i!=0) sum += ump[res[i]*1000 + res[i-1]];
+    }
+    printf("%d %d\n", dit[tmpend], sum);
+    return 0;
+}
+
+堆优化1
+#include<iostream>
+#include<vector>
+#include<algorithm>
+#include<queue>
+#include<unordered_map>
+using namespace std;
+typedef pair<int, int> p;
+priority_queue<p, vector<p>, greater<p>> pq;
+p r0, r1, r2;
+vector<int> pth[505], res, tmp;
+unordered_map<int, int> ump;
+int minmin = 999999999;
+void recursion(int start, int end) {
+    tmp.push_back(end);
+    if(end==start) {
+        int cot = 0;
+        for(int i = tmp.size() - 1; i > 0; i--) {
+            cot += ump[tmp[i] * 1000 + tmp[i-1]];
+        }
+        if(cot < minmin) {
+            minmin = cot;
+            res = tmp;
+        }
+        tmp.pop_back();
+        return;
+    }
+    for(int i = 0; i < pth[end].size(); i++) {
+        recursion(start, pth[end][i]);
+    }
+    tmp.pop_back();
+}
+int main(void) {
+    int i, j, k, m, n, x, y, z, N, M, S, D, status[505], dit[505], inf = 999999999;
+    cin>>N>>M>>S>>D;
+    vector<p> v[505];
+    for(i = 0; i < M; i++) {
+        cin>>x>>y>>z>>m;
+        r0.first = z;
+        r0.second = y;
+        v[x].push_back(r0);
+        r0.second = x;
+        v[y].push_back(r0);
+        ump[x * 1000 + y] = ump[y * 1000 + x] = m;
+    }
+    fill(status, status + 505, 0);
+    fill(dit, dit + 505, inf);
+    dit[S] = 0;
+    r0.first = 0;
+    r0.second = S;
+    pq.push(r0);
+    while(!pq.empty()) {
+        r0 = pq.top();
+        pq.pop();
+        x = r0.second;
+        if(status[x]==1) continue;
+        status[x] = 1;
+        for(i = 0; i < v[x].size(); i++) {
+            r1 = v[x][i];
+            y = r1.second;
+            z = r1.first;
+            if(status[y]==0 && dit[y] > dit[x] + z) {
+                dit[y] = dit[x] + z;
+                pq.push({dit[y], y});
+                pth[y].clear();
+                pth[y].push_back(x);
+            }else if(status[y]==0 && dit[y] == dit[x] + z) {
+                pth[y].push_back(x);
+            }
+        }
+    }
+    recursion(S, D);
+    for(int i = res.size() - 1; i >= 0; i--) printf("%d ", res[i]);
+    printf("%d %d\n", dit[D], minmin);
+    return 0;
+}
+
 update
 #include<iostream>
 #include<vector>
