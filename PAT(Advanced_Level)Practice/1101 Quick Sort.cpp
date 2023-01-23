@@ -1,3 +1,35 @@
+update2 
+
+#include<iostream>
+#include<vector>
+using namespace std;
+int main(void) {
+    int i, j, k, m, n, N, minval = 999999999, maxval = -999999999;
+    cin>>N;
+    vector<int> v(N), res, maxmax(N), minmin(N);
+    for(i = 0; i < N; i++) {
+        scanf("%d", &v[i]);
+        if(maxval < v[i]) maxval = v[i];
+        maxmax[i] = maxval;
+    }
+    for(i = N-1; i >= 0; i--) {
+        if(minval > v[i]) minval = v[i];
+        minmin[i] = minval;
+    }
+    for(i = 0; i < N; i++) {
+        if(v[i] >= maxmax[i] && v[i] <= minmin[i]) res.push_back(v[i]);
+    }
+    printf("%d\n", res.size());
+    for(i = 0; i < res.size(); i++) {
+        printf("%d", res[i]);
+        if(i!=res.size()-1) printf(" ");
+    }
+    printf("\n");
+    return 0;
+}
+
+update1
+
 #include<iostream>
 #include<vector>
 #include<algorithm>
