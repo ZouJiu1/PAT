@@ -1,3 +1,76 @@
+update202301
+#include<iostream> 
+using namespace std;
+int pre[31], pot[31], unique = 1, in[31], cnt=0;
+struct nod {nod *l=NULL, *r=NULL; int val;};
+void recursionv1(int prel, int prer, int potl, int potr) { //前序第二个划开  根左右
+    if(prel > prer || potl > potr) return;
+    if(pre[prel]!=pot[potr]){
+        printf("can not gen\n");
+        return;
+    }
+    if(prel==prer) {
+        in[cnt++] = pre[prel];
+        return;
+    }
+    int kk = potl;
+    while(kk <= potr && pre[prel+1]!=pot[kk]) kk++;
+    if(kk > potr) {
+        printf("can not gen\n");
+        return;
+    }
+    if(potr - kk > 1) {
+        recursionv1(prel + 1, prel + (kk - potl + 1), potl, kk);
+        in[cnt++] = pre[prel];
+        recursionv1(prel + (kk - potl + 2), prer, kk+1, potr-1);
+    }else {
+        unique = -1;
+        recursionv1(prel + 1, prel + (kk - potl + 1), potl, kk);
+        in[cnt++] = pre[prel];
+    }
+}
+// void recursionv2(int prel, int prer, int potl, int potr) { //前序第二个划开  根左右
+//     if(prel > prer || potl > potr) return;
+//     if(pre[prel]!=pot[potr]){
+//         printf("can not gen\n");
+//         return;
+//     }
+//     if(prel==prer) {
+//         in[cnt++] = pre[prel];
+//         return;
+//     }
+//     int kk = prel;
+//     while(kk <= prer && pre[kk]!=pot[potr - 1]) kk++;
+//     if(kk > prer) {
+//         printf("can not gen\n");
+//         return;
+//     }
+//     if(kk - prel > 1) {
+//         recursionv2(prel+1, kk-1, potl, potl + (kk - prel - 2));
+//         in[cnt++] = pre[prel];
+//         recursionv2(kk, prer, potl + (kk-prel-1), potr - 1);
+//     }else {
+//         unique = -1;
+//         recursionv2(kk, prer, potl + (kk-prel-1), potr - 1);
+//         in[cnt++] = pre[prel];
+//     }
+// }
+int main() {
+    int i, j, k, m, n;
+    cin>>m;
+    for(i = 0; i < m; i++) cin>>pre[i];
+    for(i = 0; i < m; i++) cin>>pot[i];
+    recursionv1(0, m-1, 0, m-1);
+    // recursionv2(0, m-1, 0, m-1);
+    if(unique > 0) printf("Yes\n");
+    else printf("No\n");
+    for(i = 0; i < cnt; i++) {
+        printf("%d", in[i]);
+        if(i!=cnt-1) printf(" ");
+    }
+    printf("\n");
+}
+
 //输出层序遍历节点
 //generate tree
 #include<iostream> 
