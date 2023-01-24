@@ -1,3 +1,63 @@
+update202301
+#include<iostream>
+#include<queue>
+#include<cmath>
+using namespace std;
+int pre[31], mr;
+struct nod {
+    nod *l=NULL, *r = NULL;
+    int val;
+};
+nod *gentree(nod *rot, int val) {
+    if(rot==NULL) {
+        rot = new(nod);
+        rot->val = val;
+    }
+    else if(abs(val) <= abs(rot->val)) rot->l = gentree(rot->l, val);   //多次gentree，要用else if
+    else if(abs(val) > abs(rot->val)) rot->r = gentree(rot->r, val);
+    return rot;
+}
+void preorder(nod *rot) {
+    if(rot==NULL) return;
+    if(rot->val < 0) {
+        if((rot->l!=NULL && rot->l->val < 0) || (rot->r!=NULL && rot->r->val < 0)) mr = -9;
+    }
+    preorder(rot->l);
+    preorder(rot->r);
+}
+int getnum(nod *rot) {
+    if(rot==NULL) return 0;
+    int a = getnum(rot->l);
+    int c = getnum(rot->r);
+    return rot->val > 0? max(a, c) + 1 : max(a, c); //可能存在只有一个孩子节点，0, 1最大值
+}
+bool recursion(nod *rot) {
+    if(rot==NULL) return true;
+    int a = getnum(rot->l);
+    int c = getnum(rot->r);
+    if(a!=c) return false;
+    return recursion(rot->l) && recursion(rot->r);
+}
+int main(int argc, char **argv) {
+    int i, j, k, m, n, x, y, z;
+    cin>>k;
+    for(i = 0; i < k; i++) {
+        cin>>n;
+        nod *rot = NULL;
+        for(j = 0; j < n; j++) {
+            scanf("%d", &pre[j]);
+            rot = gentree(rot, pre[j]);
+        }
+        mr = 9;
+        preorder(rot);
+        if(rot->val < 0 || mr < 0 || recursion(rot)==false) {
+            printf("No\n");
+            continue;
+        }else printf("Yes\n");
+    }
+    return 0;
+}
+
 old before
 
 #include<iostream>
