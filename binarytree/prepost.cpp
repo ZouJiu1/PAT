@@ -1,3 +1,25 @@
+// 通过前序的第二个划开后序左右branch，第二个给左branch，主要是：前序：根左 右
+
+// 或者
+
+// 通过后序的倒数第二个划开前序左右branch，倒数第二个给右branch，主要后序是：左 右根
+
+// not unique，不是独一无二的树，可能存在某个节点只有一个子节点，该子节点可能在左也可能在右
+
+// 来判断是否可以产生树
+
+// 可能存在不能产生树的情况
+
+// 例：
+
+// //不能产生树的情况
+
+// int post[] = {6, 7, 5, 4, 3, 2, 1};
+
+// int pre[] = {1, 2, 3, 4, 6, 7, 5};
+
+// 不能产生一棵树
+
 #include <cstdio>
 #include<iostream>
 #include<vector>
@@ -9,6 +31,10 @@ struct nod {
 };
 int post[] = {3, 4, 2, 6, 5, 1};
 int pre[] = {1, 2, 3, 4, 5, 6};
+
+//不能产生树的情况
+// int post[] = {6, 7, 5, 4, 3, 2, 1};
+// int pre[] = {1, 2, 3, 4, 6, 7, 5};
 void printvec(vector<int> a, string t){
     cout<<t<<"\t";
     for(int i=0; i<a.size();i++){
@@ -33,7 +59,7 @@ string not_unique_LeftRight;
 void prepost_inorder_v1(int prel, int prer, int postl, int postr) {
     if(prel > prer || postl > postr) return;
     if(pre[prel]!=post[postr]) { //判断前序第一个和后序最后一个是否相等，来判断是否可以产生树要放在最前面, 树不全
-        printf("not tree pre[prel]!=post[postr]\n");
+        printf("//不能产生树的\n");
         return;
     }
     if(prel==prer && postl==postr) {//保存inorder
@@ -44,7 +70,7 @@ void prepost_inorder_v1(int prel, int prer, int postl, int postr) {
     //通过前序的第二个划开后序左右branch，第二个给左branch，主要是：前序：根左 右
     while(kk <= postr && pre[prel + 1]!=post[kk]) kk++;
     if(kk > postr) {//来判断是否可以产生树
-        printf("not tree kk > postr\n");
+        printf("//不能产生树的\n");
         return;
     } else {
         if(postr - kk > 1) {
@@ -79,7 +105,7 @@ nod* gentree_v1(nod *root, int prel, int prer, int postl, int postr) {
         root->val = pre[prel];
     }
     if(pre[prel]!=post[postr]) { //判断前序第一个和后序最后一个是否相等，来判断是否可以产生树要放在最前面, 树不全
-        printf("not tree pre[prel]!=post[postr]\n");
+        printf("//不能产生树的\n");
         return NULL;
     }
     if(prel==prer && postl==postr) {//保存inorder
@@ -90,7 +116,7 @@ nod* gentree_v1(nod *root, int prel, int prer, int postl, int postr) {
     //通过前序的第二个划开后序左右branch，第二个给左branch，主要是：前序：根左 右
     while(kk <= postr && pre[prel + 1]!=post[kk]) kk++;
     if(kk > postr) {//来判断是否可以产生树
-        printf("not tree kk > postr\n");
+        printf("//不能产生树的\n");
         return NULL;
     } else {
         if(postr - kk > 1) {
@@ -123,7 +149,7 @@ nod* gentree_v1(nod *root, int prel, int prer, int postl, int postr) {
 void prepost_inorder_v2(int prel, int prer, int postl, int postr) {
     if(prel > prer || postl > postr) return;
     if(pre[prel]!=post[postr]) { //判断前序第一个和后序最后一个是否相等，来判断是否可以产生树要放在最前面, 树不全
-        printf("not tree pre[prel]!=post[postr]\n");
+        printf("//不能产生树的\n");
         return;
     }
     if(prel==prer && postl==postr) {//保存inorder
@@ -134,7 +160,7 @@ void prepost_inorder_v2(int prel, int prer, int postl, int postr) {
     //通过后序的倒数第二个划开前序左右branch，倒数第二个给右branch，主要后序是：左 右根
     while(kk <= prer && pre[kk]!=post[postr - 1]) kk++;
     if(kk > prer) {//来判断是否可以产生树
-        printf("not tree kk > postr\n");
+        printf("//不能产生树的\n");
         return;
     } else {
         if(kk - prel > 1) {
@@ -169,7 +195,7 @@ nod* gentree_v2(nod *root, int prel, int prer, int postl, int postr) {
         root->val = pre[prel];
     }
     if(pre[prel]!=post[postr]) { //判断前序第一个和后序最后一个是否相等，来判断是否可以产生树要放在最前面, 树不全
-        printf("not tree pre[prel]!=post[postr]\n");
+        printf("//不能产生树的\n");
         return NULL;
     }
     if(prel==prer && postl==postr) {//保存inorder
@@ -180,7 +206,7 @@ nod* gentree_v2(nod *root, int prel, int prer, int postl, int postr) {
     //通过后序的倒数第二个划开前序左右branch，倒数第二个给右branch，主要后序是：左 右根
     while(kk <= prer && pre[kk]!=post[postr - 1]) kk++;
     if(kk > prer) {//来判断是否可以产生树
-        printf("not tree kk > postr\n");
+        printf("//不能产生树的\n");
         return NULL;
     } else {
         if(kk - prel > 1) {
@@ -279,3 +305,14 @@ int main() {
     printvec(inarr, "postorder:");
     return 0;
 }
+
+// v1 not_unique_LeftRight: Left, inarr:   3 2 4 1 6 5
+// v1 not_unique_LeftRight: Right, inarr:  3 2 4 1 5 6
+// preorder:       1 2 3 4 5 6
+// inorder:        3 2 4 1 5 6
+// postorder:      3 4 2 6 5 1
+// v2 not_unique_LeftRight: Left, inarr:   3 2 4 1 6 5
+// v2 not_unique_LeftRight: Right, inarr:  3 2 4 1 5 6
+// preorder:       1 2 3 4 5 6
+// inorder:        3 2 4 1 5 6
+// postorder:      3 4 2 6 5 1
