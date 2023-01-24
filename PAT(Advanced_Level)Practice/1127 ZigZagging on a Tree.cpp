@@ -1,3 +1,69 @@
+update202301
+#include<iostream>
+#include<vector>
+#include<queue>
+#include<algorithm>
+using namespace std;
+int in[31], pot[31], cnt = 0;
+vector<int> v[31], res;
+struct nod {
+    nod *l=NULL, *r = NULL;
+    int val;
+};
+nod* gentree(nod *rot, int potright, int inl, int inr) {
+    if(inl > inr) return NULL;
+    if(rot==NULL) {
+        rot = new(nod);
+        rot->val = pot[potright];
+    }
+    int kk = inl;
+    while(inl <= inr && pot[potright]!=in[kk]) kk++;
+    rot->l = gentree(rot->l, potright - (inr - kk + 1), inl, kk-1);
+    rot->r = gentree(rot->r, potright - 1, kk + 1, inr);
+    return rot;
+}
+void width_firstly_search(nod *rot) {
+    queue<nod*> q;
+    queue<int> lev;
+    nod *nd;
+    q.push(rot);
+    lev.push(0);
+    int level;
+    while(!q.empty()) {
+        nd = q.front();
+        level = lev.front();
+        lev.pop();
+        q.pop();
+        if(nd->l!=NULL) {
+            q.push(nd->l);
+            lev.push(level + 1);
+        }
+        if(nd->r!=NULL) {
+            q.push(nd->r);
+            lev.push(level + 1);
+        }
+        if(level%2==1) v[level].push_back(nd->val);
+        else v[level].insert(v[level].begin(), nd->val);
+    }
+}
+int main(void) {
+    int i, j, n, m, k;
+    cin>>m;
+    for(i = 0; i < m; i++) scanf("%d", &in[i]);
+    for(i = 0; i < m; i++) scanf("%d", &pot[i]);
+    nod *rot = NULL;
+    rot = gentree(rot, m-1, 0, m-1);
+    width_firstly_search(rot);
+    for(i = 0; i < 31; i++) {
+        for(j = 0; j < v[i].size(); j++) res.push_back(v[i][j]);
+    }
+    for(i = 0; i < res.size(); i++) {
+        printf("%d", res[i]);
+        if(i!=res.size() - 1) printf(" ");
+    }
+    return 0;
+}
+
 old before
 
 #include<iostream>
