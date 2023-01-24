@@ -1,3 +1,55 @@
+update202302
+#include<iostream>
+#include<unordered_map>
+using namespace std;
+unordered_map<int, int> ump, inump;
+int pre[10006], in[10006], y, z, mr;
+void recursion(int rot, int inl, int inr) {
+    if(inl > inr || mr > 0) return;
+    int kk = inump[pre[rot]];
+    // int kk = inl;
+    // while(kk <= inr && pre[rot]!=in[kk]) kk++;
+    if(kk > inr) {
+        printf("can not gen\n");
+        return;
+    }
+    if((kk > inump[y] && kk < inump[z]) || (kk < inump[y] && kk > inump[z])) {
+        printf("LCA of %d and %d is %d.\n", y, z, pre[rot]);
+        mr = 9;
+    } else if(kk == inump[y]) {
+        printf("%d is an ancestor of %d.\n", y, z);
+        mr = 9;
+    } else if(kk == inump[z]) {
+        printf("%d is an ancestor of %d.\n", z, y);
+        mr = 9;
+    }
+    recursion(rot + 1, inl, kk-1);
+    recursion(rot + (kk - inl + 1), kk+1, inr);
+}
+int main(int argc, char **argv) {
+    int i, j, k, zeros, m, n, x, N, M;
+    cin>>M>>N;
+    for(i = 0; i< N; i++) {
+        scanf("%d", &in[i]);
+        inump[in[i]] = i;
+    }
+    for(i = 0; i< N; i++) {
+        scanf("%d", &pre[i]);
+        ump[pre[i]] = 9;
+    }
+    for(i = 0; i< M; i++) {
+        cin>>y>>z;
+        mr = -9;
+        if(ump[y]==0&&ump[z]!=0) printf("ERROR: %d is not found.\n", y);
+        else if(ump[y]!=0&&ump[z]==0) printf("ERROR: %d is not found.\n", z);
+        else if(ump[y]==0&&ump[z]==0) printf("ERROR: %d and %d are not found.\n", y, z);
+        else {
+            recursion(0, 0, N-1);
+        }
+    }
+    return 0;
+}
+
 old before 
 
 #include<iostream>
