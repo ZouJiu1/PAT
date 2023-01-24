@@ -1,3 +1,81 @@
+update202301
+#include<iostream>
+#include<vector>
+#include<string>
+#include<unordered_map>
+using namespace std;
+struct nod {
+    nod *l=NULL, *r=NULL, *par = NULL;
+    int val, lev;
+};
+
+
+int ful = 9, pot[31], in[31];
+unordered_map<int, nod*> ump;
+nod* recursion(nod* rot, nod *par, int index, int level, int potright, int inl, int inr) {
+    if(inl > inr) return NULL;
+    if(rot == NULL) {
+        rot = new(nod);
+        rot->val = pot[potright];
+        rot->par = par;
+        rot->lev = level;
+    }
+    int kk = inl;
+    while(kk <= inr && pot[potright]!=in[kk]) kk++;
+    if(kk > inr) {
+        printf("can not gen\n");
+        return NULL;
+    }
+    rot->l = recursion(rot->l, rot, index * 2, level + 1, potright - (inr - kk + 1), inl, kk - 1);
+    rot->r = recursion(rot->r, rot, index * 2 + 1, level + 1, potright - 1, kk + 1, inr);
+    ump[rot->val] = rot;
+    if((rot->l==NULL&&rot->r!=NULL) || (rot->l!=NULL&&rot->r==NULL)) ful = -9;
+    return rot;
+}
+int main(void) {
+    int i, j, k, m, n, x, y, z, mr = -9;
+    cin>>m;
+    for(i = 0; i < m; i++) scanf("%d", &pot[i]);
+    for(i = 0; i < m; i++) scanf("%d", &in[i]);
+    cin>>n;
+    nod *rot = NULL;
+    rot = recursion(rot, NULL, 1, 1, m-1, 0, m-1);
+    string t0, t1, t2, t3, t4, t5, t6;
+    for(i = 0; i < n; i++) {
+        cin>>t1>>t0;
+        if(t1=="It") {
+            cin>>t1>>t1>>t1;
+            printf("%s\n", ful>0? "Yes":"No");
+            continue;
+        }
+        k = stoi(t1);
+        if(t0=="and") {
+            cin>>x>>t0>>t0;
+            if(t0=="siblings"){
+                printf("%s\n", ump[k]->par==ump[x]->par? "Yes":"No");
+            }else if(t0=="on"){
+                cin>>t0>>t0>>t0;
+                printf("%s\n", ump[k]->lev==ump[x]->lev? "Yes":"No");
+            }
+        }else if(t0=="is") {
+            cin>>t0>>t0;
+            if(t0=="root"){
+                printf("%s\n", ump[k]->par==NULL? "Yes":"No");
+            }else if(t0=="parent"){
+                cin>>t0>>z;
+                printf("%s\n", ump[z]->par!=NULL&&ump[z]->par->val==k? "Yes":"No");
+            }else if(t0=="left"){
+                cin>>t0>>t0>>z;
+                printf("%s\n", ump[z]->l!=NULL&&ump[z]->l->val==k? "Yes":"No");
+            }else if(t0=="right"){
+                cin>>t0>>t0>>z;
+                printf("%s\n", ump[z]->r!=NULL&&ump[z]->r->val==k? "Yes":"No");
+            }
+        }
+    }
+    return 0;
+}
+
 old before
 
 #include<iostream>
