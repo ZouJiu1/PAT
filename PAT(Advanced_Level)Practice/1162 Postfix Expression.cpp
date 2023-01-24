@@ -1,5 +1,41 @@
-old before
+update2
+#include<iostream>
+#include<string>
+#include<algorithm>
+#include<vector>
+using namespace std;
+struct nod {
+    string t;
+    int l, r;
+};
+vector<nod> v(21);
+bool status[26] = {false};
+string recursion(int rot) {
+    string tmp = "(";
+    if(v[rot].l > 0) tmp += recursion(v[rot].l);
+    if(v[rot].l * v[rot].r < 0) tmp += v[rot].t;
+    if(v[rot].r > 0) tmp += recursion(v[rot].r);
+    if(v[rot].l * v[rot].r > 0) tmp += v[rot].t;
+    return tmp + ")";
+}
+int main(int argc, char **argv) {
+    int i, j, k, m, n, rot = 1;
+    nod nd;
+    cin>>n;
+    string t0, t1, t2;
+    for(i = 1; i <= n; i++) {
+        cin>>nd.t>>nd.l>>nd.r;
+        if(nd.l > 0) status[nd.l] = true;
+        if(nd.r > 0) status[nd.r] = true;
+        v[i] = nd;
+    }
+    while(status[rot]==true) rot++;
+    t0 = recursion(rot);
+    cout<<t0<<endl;
+    return 0;
+}
 
+old before
 #include<iostream>
 #include<vector>
 #include<string>
@@ -33,7 +69,6 @@ int main(void) {
 }
 
 update
-
 #include<iostream>
 #include<string>
 #include<algorithm>
