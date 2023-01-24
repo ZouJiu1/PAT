@@ -1,3 +1,15 @@
+// 可能存在不能产生树的情况
+
+// 例：
+
+// //不能产生树的情况
+
+// int post[] = {6, 7, 5, 4, 3, 2, 1};
+
+// int in[] = {2, 3, 1, 7, 4, 5, 6};
+
+// 不能产生一棵树
+
 #include <cstdio>
 #include<iostream>
 #include<vector>
@@ -9,6 +21,10 @@ struct nod {
 };
 int post[] = {3, 4, 2, 6, 5, 1};
 int in[] = {3, 2, 4, 1, 6, 5};
+
+//不能产生树的情况
+// int post[] = {6, 7, 5, 4, 3, 2, 1};
+// int in[] = {2, 3, 1, 7, 4, 5, 6};
 void printvec(vector<int> a, string t){
     cout<<t<<"\t";
     for(int i=0; i<a.size();i++){
@@ -28,9 +44,10 @@ vector<int> prearr;
 void pre(int root, int start, int end) {
     if(start > end) return;
     int kk = start;
-    while(post[root]!=in[kk]) kk++;
+    while(kk <=end && post[root]!=in[kk]) kk++;
     if(kk > end) {
-        printf("can not gen");
+        printf("//不能产生树的\n"); //来判断是否可以产生树
+        return;
     } else {
         prearr.push_back(post[root]);
         pre(root - (end - kk + 1), start, kk-1);
@@ -44,7 +61,11 @@ nod* gentree(nod *root, int postroot, int start, int end) {
         root->val = post[postroot];
     }
     int kk = start;
-    while(post[postroot]!=in[kk]) kk++;
+    while(kk <=end && post[postroot]!=in[kk]) kk++;
+    if(kk > end) {
+        printf("//不能产生树的\n"); //来判断是否可以产生树
+        return NULL;
+    }
     root->l = gentree(root->l, postroot - (end - kk + 1), start, kk-1);
     root->r = gentree(root->r, postroot - 1, kk+1, end);
     return root;
@@ -95,3 +116,8 @@ int main() {
     printvec(prearr, "postorder:");
     return 0;
 }
+
+// generate prearr:        1 2 3 4 5 6
+// preorder:       1 2 3 4 5 6        
+// inorder:        3 2 4 1 6 5        
+// postorder:      3 4 2 6 5 1
