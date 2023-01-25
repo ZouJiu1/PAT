@@ -1,3 +1,24 @@
+update202301
+https://www.liuchuo.net
+#include<iostream>
+#include<string>
+using namespace std;
+int arr[1000];
+int main(void) {
+    int i, j, k, m, n, ned = 0;
+    string t0, t1;
+    cin>>t0>>t1;
+    for(i = 0; i < t0.length(); i++) arr[t0[i]]++;
+    for(i = 0; i < t1.length(); i++) {
+        if(arr[t1[i]] > 0) arr[t1[i]]--;
+        else ned++;
+    }
+    if(ned > 0) printf("No %d", ned);
+    else printf("Yes %d", t0.length() - t1.length());
+    return 0;
+}
+
+
 #include<iostream>
 #include<vector>
 #include<map>
