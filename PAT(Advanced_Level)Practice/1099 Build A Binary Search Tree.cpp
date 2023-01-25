@@ -3,6 +3,7 @@
 
 不能AC的codes仅作错误示例，层序用index会出错可能越界 > long long最大值，主要是2的100次方太大了，所以这题不能用index!!!，直接保存每层的数值
 
+/*
 不能AC的codes仅作错误示例，层序用index会出错可能越界 
 > long long最大值，主要是2的100次方太大了，
 所以这题不能用index!!!，直接保存每层的数值
@@ -32,7 +33,7 @@ int main(void) {
     for(auto it:lev) printf("%d%s", it.second, it.first==ind? "\n":" ");
     return 0;
 }
-
+*/
 
 update2
 
