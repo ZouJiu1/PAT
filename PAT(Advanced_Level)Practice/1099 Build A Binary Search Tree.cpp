@@ -1,3 +1,39 @@
+二叉搜索树，左<根<=右，中序遍历是“左根右”，所以中序遍历一定是从小到大排列的
+或者左>=根>右，从大到小排列
+
+不能AC的codes仅作错误示例，层序用index会出错可能越界 > long long最大值，主要是2的100次方太大了，所以这题不能用index!!!，直接保存每层的数值
+
+不能AC的codes仅作错误示例，层序用index会出错可能越界 
+> long long最大值，主要是2的100次方太大了，
+所以这题不能用index!!!，直接保存每层的数值
+#include<iostream>
+#include<vector>
+#include<algorithm>
+#include<map>
+using namespace std;
+map<long long, long long, less<long long>> lev;
+int arr[200][2] = {0}, tmp[200]={0}, cnt = 0, N, ind = -999999999;
+void inorder(int rot, long long index) {
+    if(rot == -1) return;
+    if(index > ind) ind = index;
+    inorder(arr[rot][0], index * 2);
+    lev[index] = tmp[cnt++];
+    inorder(arr[rot][1], index * 2 + 1);
+}
+int main(void) {
+    int i, j, m, n, k;
+    cin>>N;
+    for(i = 0; i < N; i++) {
+        cin>>arr[i][0]>>arr[i][1];
+    }
+    for(i = 0; i < N; i++) scanf("%d", &tmp[i]);
+    sort(tmp, tmp + N);
+    inorder(0, 1);
+    for(auto it:lev) printf("%d%s", it.second, it.first==ind? "\n":" ");
+    return 0;
+}
+
+
 update2
 
 #include<iostream>
