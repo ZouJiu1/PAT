@@ -1,3 +1,36 @@
+update202301  使用int层数判断是否相等，而不是判断价格double是否相等会更好
+#include<iostream>
+#include<vector>
+#include<cmath>
+using namespace std;
+vector<int> arr[100006];
+int maxmax = -999999999, num = 0;
+void recursion(int rot, int lev) {
+    if(arr[rot].size()==0) {
+        if(lev > maxmax) {
+            maxmax = lev;
+            num = 0;
+        }
+        if(maxmax == lev) num++;
+    }
+    for(int i = 0; i < arr[rot].size(); i++) {
+        recursion(arr[rot][i], lev + 1);
+    }
+}
+int main(void) {
+    int i, j, k, m, n, N, rot;
+    double P, r, sum;
+    cin>>N>>P>>r;
+    for(i = 0; i < N; i++) {
+        cin>>k;
+        if(k==-1) rot = i;
+        else arr[k].push_back(i);
+    }
+    recursion(rot, 0);
+    printf("%.2f %d\n", P * pow(1+r/100.0, maxmax), num);
+    return 0;
+}
+
 update
 #include<vector>
 #include<iostream>
