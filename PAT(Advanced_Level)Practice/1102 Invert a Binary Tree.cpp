@@ -1,3 +1,41 @@
+update202301
+#include<iostream>
+#include<algorithm>
+#include<string>
+#include<vector>
+#include<map>
+using namespace std;
+string arr[20][2], t0, t1;
+map<int, int> lev;
+int inord[20], status[20], innum = 0, ind;
+void inorder(string rot, int index) {
+    if(rot=="-") return;
+    int kk = stoi(rot);
+    lev[index] = kk;
+    ind = index;
+    inorder(arr[kk][0], index * 2 + 1);
+    inord[innum++] = kk;
+    inorder(arr[kk][1], index * 2 + 2);
+}
+int main(void){
+    int i, j, k, m, n, N, M, rot=0;
+    cin>>N;
+    for(i = 0; i < N; i++) {
+        cin>>t0>>t1;
+        arr[i][0] = t1;
+        arr[i][1] = t0;
+        if(t1!="-") status[stoi(t1)] = 1;
+        if(t0!="-") status[stoi(t0)] = 1;
+    }
+    while(status[rot]!=0) rot++;
+    inorder(to_string(rot), 0);
+    for(auto it:lev) printf("%d%s", it.second, it.first==ind? "\n":" ");
+    for(i = 0; i < innum; i++) {
+        printf("%d", inord[i]);
+        if(i!=innum-1) printf(" ");
+    }
+}
+
 update
 #include<iostream>
 #include<algorithm>
