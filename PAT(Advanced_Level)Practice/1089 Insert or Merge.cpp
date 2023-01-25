@@ -1,3 +1,56 @@
+update202301  直接使用的sort进行归并排序
+
+#include<iostream>
+#include<algorithm>
+#include<vector>
+using namespace std;
+int arr[106], rra[106];
+int main(void) {
+    int i, j, y, k=1, m, mr, n, N, M;
+    cin>>N;
+    for(i = 0; i < N; i++) scanf("%d", &arr[i]);
+    for(i = 0; i < N; i++) scanf("%d", &rra[i]);
+    while(rra[k] >= rra[k-1]) k++;
+    y = k;
+    while(rra[y] == arr[y] && y < N) y++;
+    if(y==N) {
+        printf("Insertion Sort\n");
+        sort(rra, rra+k+1);
+        for(i = 0; i < N; i++) {
+            printf("%d", rra[i]);
+            if(i!=N-1) printf(" ");
+        }
+    } else {
+        printf("Merge Sort\n");
+        k = 1;
+        int fl = -9;
+        while(true) {
+            k *= 2;
+            for(i = 0; i < (int)N/k; i++)
+                sort(arr + k * i, arr + k * (i + 1));
+            sort(arr + k * i, arr + N);
+            if(fl > 0) break;
+            mr = -9;
+            for(i = 0; i < N; i++) {
+                if(arr[i]!=rra[i]) {
+                    mr = 9;
+                    break;
+                }
+            }
+            if(mr < 0) fl = 9;
+        }
+        for(i = 0; i < N; i++) {
+            printf("%d", arr[i]);
+            if(i!=N-1) printf(" ");
+        }
+    }
+    return 0;
+}
+
+
+
+old before
+
 #include<iostream>
 #include<vector>
 #include<string>
