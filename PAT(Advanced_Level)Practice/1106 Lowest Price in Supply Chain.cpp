@@ -1,3 +1,37 @@
+update202301
+#include<iostream>
+#include<vector>
+#include<cmath>
+using namespace std;
+vector<int> v[100006];
+bool retaile[100006] = {false};
+int num = 0, minmin= 999999999;
+void recursion(int start, int lev) {
+    if(retaile[start]==true && lev < minmin) {
+        minmin = lev;
+        num = 1;
+    }else if(lev == minmin && retaile[start]==true) num++;
+    for(int i = 0; i < v[start].size(); i++) {
+        recursion(v[start][i], lev + 1);
+    }
+}
+int main(void) {
+    int i, j, k, y, m, n, N;
+    double r, P;
+    cin>>N>>P>>r;
+    for(i = 0; i < N; i++) {
+        cin>>k;
+        if(k==0) retaile[i] = true;
+        for(j = 0;  j < k; j++) {
+            cin>>y;
+            v[i].push_back(y);
+        }
+    }
+    recursion(0, 0);
+    printf("%.4f %d\n", P * pow(r/100.0 + 1, minmin), num);
+    return 0;
+}
+
 update
 #include<iostream>
 #include<vector>
