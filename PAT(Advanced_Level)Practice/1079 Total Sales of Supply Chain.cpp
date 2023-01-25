@@ -1,3 +1,41 @@
+update202301
+#include<iostream>
+#include<vector>
+#include<cmath>
+using namespace std;
+vector<int> v[100006];
+double sum = 0, P, r;
+bool status[100006];
+void recursion(int rot, int lev) {
+    if(v[rot].size()==1 && status[rot] == true) {
+        sum += P * pow(1 + r/100.0, lev) * v[rot][0];
+    }
+    for(int i = 0; i < v[rot].size(); i++) {
+        if(status[rot]==false) recursion(v[rot][i], lev + 1);
+    }
+}
+
+
+int main(void) {
+    int i, j, k, m, n, N, M, K;
+    cin>>N>>P>>r;
+    for(i = 0; i < N; i++) {
+        cin>>k;
+        if(k==0) {
+            cin>>m;
+            status[i] = true;
+            v[i].push_back(m);
+        }
+        for(j = 0; j < k; j++) {
+            cin>>m;
+            v[i].push_back(m);
+        }
+    }
+    recursion(0, 0);
+    printf("%.1f\n", sum);
+    return 0;
+}
+
 update
 #include<iostream>
 #include<vector>
