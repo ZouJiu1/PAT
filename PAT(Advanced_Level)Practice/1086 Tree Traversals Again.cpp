@@ -1,3 +1,46 @@
+update202301
+#include<iostream>
+#include<vector>
+#include<string>
+#include<stack>
+using namespace std;
+int pre[36], in[36], pot[36], cnt = 0;
+//pre 1 2 3 4 5 6
+//in  3 2 4 1 6 5
+void prein(int preleft, int inl, int inr) {
+    if(inl > inr) return;
+    int kk = inl;
+    while(inl <= inr && pre[preleft]!=in[kk]) kk++;
+    prein(preleft + 1, inl, kk - 1);
+    prein(preleft + (kk - inl + 1), kk + 1, inr);
+    pot[cnt++] = pre[preleft];
+}
+int main(void) {
+    int i, j, k, m, n, N, M, x, y = 0, z = 0;
+    cin>>N;
+    string t0, t1, t2;
+    stack<int> tk;
+    for(i = 0; i < 2 * N; i++) {
+        cin>>t0;
+        if(t0[1]=='u') {
+            cin>>k;
+            pre[y++] = k;
+            tk.push(k);
+        }else {
+            k = tk.top();
+            tk.pop();
+            in[z++] = k;
+        }
+    }
+    prein(0, 0, y - 1);
+    for(i = 0; i < cnt; i++) {
+        printf("%d", pot[i]);
+        if(i!=cnt - 1) printf(" ");
+    }
+    return 0;
+}
+
+
 update
 #include<stack>
 #include<vector>
