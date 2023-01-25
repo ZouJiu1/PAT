@@ -1,3 +1,34 @@
+update202301
+#include<iostream>
+#include<vector>
+using namespace std;
+vector<int> v[200];
+int num[200] = {0}, maxmax = -999999999, ind;
+void recursion(int rot, int lev) {
+    num[lev]++;
+    if(num[lev] > maxmax) { //maxmax和ind意义不相同的
+        maxmax = num[lev];
+        ind = lev;
+    }
+    for(int i = 0; i < v[rot].size(); i++) {
+        recursion(v[rot][i], lev + 1);
+    }
+}
+int main(void) {
+    int i, j, k, m, n, y, z, N, M;
+    cin>>N>>M;
+    for(i = 0; i < M; i++) {
+        cin>>n>>k;
+        for(j = 0; j < k; j++) {
+            cin>>y;
+            v[n].push_back(y);
+        }
+    }
+    recursion(1, 1);
+    printf("%d %d\n", num[ind], ind);
+    return 0;
+}
+
 dfs
 #include<iostream>
 #include<vector>
