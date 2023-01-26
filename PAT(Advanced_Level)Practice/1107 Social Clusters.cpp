@@ -1,3 +1,48 @@
+update202301，直接用map进行计数不用单独看根节点个数
+#include<iostream>
+#include<algorithm>
+#include<unordered_map>
+#include<vector>
+using namespace std;
+int arr[1006], hob[1006];
+unordered_map<int, int> ump, res;
+int findfather(int a) {
+    int tmp = a;
+    while(a!=arr[a]) a = arr[a];
+    arr[tmp] = a;
+    return a;
+}
+void unionjoin(int a, int c) {
+    int A = findfather(a);
+    int C = findfather(c);
+    if(A >= C) arr[A] = C;
+    else arr[C] =A;
+}
+int main(void) {
+    int i, j, k, m, N, K, y, z, pre;
+    cin>>N;
+    for(i = 0; i < 1006; i++) arr[i] = i;
+    for(i = 1; i <= N; i++) {
+        scanf("%d:", &k);
+        for(j = 0; j < k; j++) {
+            cin>>z;
+            if(ump[z]==0) ump[z] = i;
+            unionjoin(ump[z], i);
+        }
+    }
+    for(i = 1; i <= N; i++) res[findfather(i)]++;
+    vector<int> v;
+    for(auto it:res) v.push_back(it.second);
+    printf("%d\n", v.size());
+    sort(v.begin(), v.end());
+    for(i = v.size() - 1; i >= 0; i--) {
+        printf("%d", v[i]);
+        if(i!=0) printf(" ");
+    }
+    return 0;
+}
+
+
 old before
 #include<iostream>
 #include<vector>
