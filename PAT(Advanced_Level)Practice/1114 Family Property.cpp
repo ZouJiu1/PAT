@@ -1,3 +1,161 @@
+update202301   并查集或者DFS：使用map，用数组存好set和areas，并查集路径化简对应到同一个根节点
+update202301  并查集，全局变量默认自动初始化0，所以累加时只会加id处的值，其他的都是0，主要是赋值时只给id赋值了
+//         mp[findfather(it)].sett += allset[it];
+//         mp[findfather(it)].are += allarea[it];
+//         allset[id] = Mestate;
+//         allarea[id] = Areas;
+#include<iostream>
+#include<vector>
+#include<map>
+#include<algorithm>
+#include<set>
+#include<cmath>
+using namespace std;
+int arr[10006], allset[10006], allarea[10006];
+int findfather(int a) {
+    int t = a;
+    while(a!=arr[a]) a = arr[a];
+    arr[t] = a;
+    return a;
+}
+void unionjoin(int a, int c) {
+    int A = findfather(a);
+    int C = findfather(c);
+    if(A >= C) arr[A] = C;
+    else arr[C] = A;
+}
+struct don{
+    int sett=0, are=0, num=0, id;
+};
+bool cmp(don &a, don &c) {
+    if(a.are/(float)a.num > c.are/(float)c.num) return true;
+    else if(fabs(a.are/(float)a.num - c.are/(float)c.num)<0.000000001) {
+        return a.id < c.id;
+    }else return false;
+}
+int main(void) {
+    int i, j, N, id, fa, mo, k, chi, Mestate, Areas, num = 0;
+    cin>>N;
+    for(i = 0; i < 10006; i++) arr[i] = i;
+    set<int> idcol;
+    map<int, don> mp;
+    for(i = 0; i < N; i++) {
+        cin>>id>>fa>>mo>>k;
+        if(fa!=-1) {
+            unionjoin(id, fa);
+            idcol.insert(fa);
+        }
+        if(mo!=-1) {
+            unionjoin(id, mo);
+            idcol.insert(mo);
+        }
+        for(j = 0; j < k; j++) {
+            cin>>chi;
+            unionjoin(id, chi);
+            idcol.insert(chi);
+        }
+        cin>>Mestate>>Areas;
+        allset[id] = Mestate;
+        allarea[id] = Areas;
+        idcol.insert(id);
+    }
+    for(auto it:idcol) {
+        mp[findfather(it)].num++;
+        mp[findfather(it)].id = findfather(it);
+        mp[findfather(it)].sett += allset[it];
+        mp[findfather(it)].are += allarea[it];
+    }
+    vector<don> v;
+    for(auto it:mp) {v.push_back(it.second);}
+    sort(v.begin(), v.end(), cmp);
+    printf("%d\n", v.size());
+    for(i = 0; i < v.size(); i++) {
+        printf("%04d %d %.3f %.3f\n", v[i].id, v[i].num, v[i].sett/(float)v[i].num, v[i].are/(float)v[i].num);
+    }
+    return 0;
+}
+
+update202301  DFS，全局变量默认自动初始化0，所以累加时只会加id处的值，其他的都是0，主要是赋值时只给id赋值了
+//     setal += allset[start];
+//     areaal += allarea[start];
+//     allset[id] = Mestate;
+//     allarea[id] = Areas;
+#include<iostream>
+#include<vector>
+#include<map>
+#include<algorithm>
+#include<set>
+using namespace std;
+int allset[10006], allarea[10006], status[10006], setal, areaal, num, minmin;
+struct don{
+    int sett=0, are=0, num=0, id;
+};
+bool cmp(don &a, don &c) {
+    if(a.are/(float)a.num > c.are/(float)c.num) return true;
+    else if(a.are/(float)a.num == c.are/(float)c.num) {
+        return a.id < c.id;
+    }else return false;
+}
+vector<int> v[10006];
+void recursion(int start) {
+    if(status[start]==1) return;
+    setal += allset[start];
+    areaal += allarea[start];
+    num++;
+    if(minmin > start) minmin = start;
+    status[start] = 1;
+    for(int i = 0; i < v[start].size(); i++) {
+        if(status[v[start][i]]==0) {
+            recursion(v[start][i]);
+        }
+    }
+}
+int main(void) {
+    int i, j, N, id, fa, mo, k, chi, Mestate, Areas;
+    cin>>N;
+    set<int> idcol;
+    for(i = 0; i < N; i++) {
+        cin>>id>>fa>>mo>>k;
+        idcol.insert(id);
+        if(fa!=-1) {
+            v[id].push_back(fa);
+            v[fa].push_back(id);
+            idcol.insert(fa);
+        }
+        if(mo!=-1) {
+            v[id].push_back(mo);
+            v[mo].push_back(id);
+            idcol.insert(mo);
+        }
+        for(j = 0; j < k; j++) {
+            cin>>chi;
+            v[id].push_back(chi);
+            v[chi].push_back(id);
+            idcol.insert(chi);
+        }
+        cin>>Mestate>>Areas;
+        allset[id] = Mestate;
+        allarea[id] = Areas;
+        idcol.insert(id);
+    }
+    vector<don> v;
+    for(auto it:idcol) {
+        if(status[it]==0) {
+            num = setal = areaal = 0;
+            minmin = 999999999;
+            recursion(it);
+            v.push_back(don{setal, areaal, num, minmin});
+        }
+    }
+    sort(v.begin(), v.end(), cmp);
+    printf("%d\n", v.size());
+    for(i = 0; i < v.size(); i++) {
+        printf("%04d %d %.3f %.3f\n", v[i].id, v[i].num, v[i].sett/(float)v[i].num, v[i].are/(float)v[i].num);
+    }
+
+    return 0;
+}
+
 old before
 #include<iostream>
 #include<vector>
