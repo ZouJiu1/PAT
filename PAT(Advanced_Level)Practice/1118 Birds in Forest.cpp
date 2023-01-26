@@ -1,3 +1,98 @@
+update202301 并查集或者DFS
+update202301 DFS，先将鸟看作图节点，遍历看有几个不连通的区块，每个区块就是一颗树，然后将鸟加上区块index，鸟的index相同就是在同一颗树
+#include<iostream>
+#include<vector>
+#include<set>
+using namespace std;
+int arr[10006], status[10006], cnt = 0;
+vector<int> v[10006];
+void recursion(int rot) {
+    if(status[rot]==1) return;
+    arr[rot] = cnt;
+    status[rot] = 1;
+    for(int i = 0; i < v[rot].size(); i++) {
+        if(status[v[rot][i]]==0) recursion(v[rot][i]);
+    }
+}
+int main(void) {
+    int i, j, k, m, n, N, K, M, pre, y, z;
+    cin>>N;
+    set<int> st;
+    for(i = 0; i < N; i++) {
+        cin>>K;
+        for(j = 0; j < K; j++) {
+            cin>>m;
+            st.insert(m);
+            if(j!=0) {
+                v[m].push_back(pre);
+                v[pre].push_back(m);
+            }
+            pre = m;
+        }
+    }
+    for(auto it:st) {
+        if(status[it]==0) {
+            recursion(it);
+            cnt++;
+        }
+    }
+    printf("%d %d\n", cnt, st.size());
+    cin>>M;
+    for(i = 0; i < M; i++) {
+        cin>>y>>z;
+        if(arr[y]==arr[z]) printf("Yes\n");
+        else printf("No\n");
+    }
+    return 0;
+}
+
+update202301 并查集，先将鸟送到并查集，然后数根节点个数即可，鸟的根节点相同就是在同一棵树
+#include<iostream>
+#include<vector>
+#include<set>
+using namespace std;
+int arr[10006];
+int findfather(int a) {
+    int t = a;
+    while(a!=arr[a]) a = arr[a];
+    arr[t] = a;
+    return a;
+}
+void unionjoin(int a, int c) {
+    int A = findfather(a);
+    int C = findfather(c);
+    if(A >= C) arr[A] = C;
+    else arr[C] = A;
+}
+int main(void) {
+    int i, j, k, m, n, N, K, M, pre, y, cnt = 0, z, maxmax = -999999999;
+    cin>>N;
+    set<int> st;
+    vector<int> v[10006];
+    for(i = 0; i < 10006; i++) arr[i] = i;
+    for(i = 0; i < N; i++) {
+        cin>>K;
+        for(j = 0; j < K; j++) {
+            cin>>m;
+            if(maxmax < m) maxmax = m;
+            if(j!=0) unionjoin(pre, m);
+            pre = m;
+            v[i].push_back(m);
+        }
+    }
+    for(i = 1; i <= maxmax; i++) {
+        if(findfather(i)==i) cnt++;
+    }
+    printf("%d %d\n", cnt, maxmax);
+    cin>>M;
+    for(i = 0; i < M; i++) {
+        cin>>y>>z;
+        if(findfather(y)==findfather(z)) printf("Yes\n");
+        else printf("No\n");
+    }
+    return 0;
+}
+
 old before
 #include<iostream>
 #include<vector>
