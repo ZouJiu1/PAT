@@ -1,3 +1,56 @@
+update202301   gentree正反可以用bool判断并合并，递归遍历可以同时保存前序遍历、后序遍历或者中序遍历的序列
+不用写多个函数的，使用递归的前序序列和输入序列是否相等判断
+#include<iostream>
+#include<vector>
+using namespace std;
+vector<int> arr, pot, pre;
+int cnt = 0;
+struct nod {
+    nod *l = NULL, *r = NULL;
+    int val;
+};
+nod* gentree(nod *rot, int val, bool r) {
+    if(rot==NULL) {
+        rot = new(nod);
+        rot->val = val;
+    } else if((r==false && val < rot->val)||(r==true && val >= rot->val)) {
+        rot->l = gentree(rot->l, val, r);
+    } else if((r==false && val >= rot->val)||(r==true && val < rot->val)) {
+        rot->r = gentree(rot->r, val, r);
+    }
+    return rot;
+}
+
+void postorder(nod *rot) {
+    if(rot==NULL) return;
+    pre.push_back(rot->val);
+    postorder(rot->l);
+    postorder(rot->r);
+    pot.push_back(rot->val);
+}
+
+int main(void) {
+    int i, j, k, m, n, N;
+    cin>>N;
+    for(i = 0; i < N; i++) {
+        scanf("%d", &k);
+        arr.push_back(k);
+    }
+    nod *rot = NULL;
+    for(i = 0; i < N; i++) rot = gentree(rot, arr[i], (bool)(arr[0] > arr[N-1]));
+    postorder(rot);
+    if(pre!=arr) {
+        printf("NO\n");
+        return 0;
+    }
+    printf("YES\n");
+    for(i = 0; i <N; i++) {
+        printf("%d", pot[i]);
+        if(i!=N-1) printf(" ");
+    }
+    return 0;
+}
+
 update
 #include<iostream>
 #include<vector>
