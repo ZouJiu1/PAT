@@ -1,4 +1,4 @@
-update202301 并查集或者DFS
+update202301 问题是对鸟进行提问，看鸟所在簇的个数，并查集或者DFS
 update202301 DFS，先将鸟看作图节点，遍历看有几个不连通的区块，每个区块就是一颗树，然后将鸟加上区块index，鸟的index相同就是在同一颗树
 #include<iostream>
 #include<vector>
