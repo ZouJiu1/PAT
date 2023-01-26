@@ -1,3 +1,46 @@
+update202301 status[m]==0 意指不存在的，空节点没被填充
+#include<iostream>
+#include<vector>
+using namespace std;
+bool isprime(int a) {
+    if(a==1) return false;
+    for(int i = 2; i*i <= a; i++) {
+        if(a%i==0) return false;
+    }
+    return true;
+}
+int status[10006], arr[10006];
+int main(void) {
+    int i, j, k, m, n, H, MSize, N, M;
+    cin>>MSize>>N>>M;
+    while(!isprime(MSize)) MSize++;
+    for(i = 0; i < N; i++) {
+        cin>>k;
+        H = -9;
+        for(j = 0; j < MSize; j++) {
+            m = (k + j * j) % MSize;
+            if(status[m]==0) {
+                arr[m] = k;
+                status[m] = 1;
+                H = 9;
+                break;
+            }
+        }
+        if(H < 0) printf("%d cannot be inserted.\n", k);
+    }
+    H = 0;
+    for(i = 0; i < M; i++) {
+        cin>>k;
+        for(j = 0; j <= MSize; j++) {
+            m = (k + j * j)%MSize;
+            H++;
+            if(status[m]==0 || arr[m]==k) break; //status[m]==0 意指不存在的，空节点没被填充
+        }
+    }
+    printf("%.1f\n", H/(float)M);
+    return 0;
+}
+
 update2
 #include<iostream>
 #include<unordered_map>
