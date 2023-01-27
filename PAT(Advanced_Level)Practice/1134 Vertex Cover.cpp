@@ -1,4 +1,4 @@
-update202301   set集合查找比循环比对要好，边只要有一个顶点在set集合就可以，一个O(n)一个是O(n^2)
+update202301   set集合查找比循环比对要好，边只要有一个顶点在set集合就可以，一个O(n)一个是O(n^2) 
 #include<iostream>
 #include<set>
 #include<algorithm>
