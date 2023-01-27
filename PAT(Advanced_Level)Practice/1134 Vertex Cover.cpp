@@ -62,6 +62,43 @@ int main(void) {
     return 0;
 }
 
+https://www.liuchuo.net
+#include<iostream>
+#include<vector>
+#include<algorithm>
+using namespace std;
+int main(void) {
+    int i, j, ij, k, m, n, K, N, M, y, z, res;
+    vector<int> arr[10006];
+    cin>>N>>M;
+    for(i = 0; i < M; i++) {
+        cin>>y>>z;
+        arr[y].push_back(i);
+        arr[z].push_back(i);
+    }
+    cin>>K;
+    for(i = 0; i < K; i++) {
+        cin>>y;
+        vector<bool> status(M, false);
+        res = 9;
+        for(j = 0; j < y; j++) { //O(n^2)
+            cin>>z;
+            for(ij = 0; ij < arr[z].size(); ij++) {
+                status[arr[z][ij]] = true;
+            }
+        }
+        for(ij = 0; ij < M; ij++) {
+            if(status[ij]==0){
+                printf("No\n");
+                res = -9;
+                break;
+            }
+        }
+        if(res > 0) printf("Yes\n");
+    }
+    return 0;
+}
+
 old before 
 #include<set>
 #include<iostream>
