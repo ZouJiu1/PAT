@@ -5,6 +5,8 @@ complete binary tree最后一层的个数<pow(2, 最后一层层数)
 pseudo-complete binary tree层序遍历最后index > 节点的个数，最后一层不是依次从左到右填充的；
 others从根节点到倒数第二层，存在不满的的情况，也就是pow(2，第几层)!=该层节点数
 
+
+
 #include<iostream>
 #include<cmath>
 using namespace std;
