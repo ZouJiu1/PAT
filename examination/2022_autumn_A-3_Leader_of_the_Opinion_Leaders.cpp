@@ -1,6 +1,8 @@
 不想超时加内存，不要因内存而导致耗时变多
 尽量不要使用map，set遍历，速度会很慢，直接用大数组，vector<vector<int>>推荐，不推荐vector<set<int>>！ 
-Map或者set的嵌套循环比for嵌套循环更慢，所以尽量用数组存储, 多使用status数组来判断状态
+Map或者set的嵌套循环比for嵌套循环更慢
+所以尽量用数组存储, 多使用status数组来判断状态
+考试用vector<set<int>>来存数组超时了，最开始最后两个测试点内存也超了
 
 vector版本 
 #include<iostream>
