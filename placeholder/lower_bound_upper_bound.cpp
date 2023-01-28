@@ -6,7 +6,6 @@ lower_bound: 7 11
 upper_bound: greater()8 9
 lower_bound: greater()7 11
 
-
 auto it = lower_bound(v.begin(), v.end(), (long long)v[j] * p, greater<long long>());
 加入greater<long long>());，则是<=，或者upper_bound <，此时v从大到小排列
 默认lower_bound >=   upper_bound >    v从小到大排列
