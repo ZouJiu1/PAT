@@ -1,3 +1,51 @@
+update202302，素数定义是在10进制，所以要转到10进制判断是否是素数
+#include<iostream>
+#include<vector>
+#include<cmath>
+#include<algorithm>
+using namespace std;
+bool isprime(int a) {
+    if(a<=1) return false;
+    for(int i = 2; i * i <= a; i++) {
+        if(a%i==0) return false;
+    }
+    return true;
+}
+vector<int> v;
+void radix(int a, int r) {
+    int tmp;
+    while(a!=0){
+        tmp = a%r;
+        a = a/r;
+        v.push_back(tmp);
+    }
+}
+int to_ten_radix(int r) {
+    int l = v.size(), sum=0;
+    for(int i = 0; i < l; i++) {
+        sum += (int)pow(r, l - i - 1) * v[i];
+    }
+    return sum;
+}
+int main(void) {
+    int i, j, k, m, n;
+    cin>>m;
+    while(m >= 0) {
+        cin>>n;
+        if(!isprime(m)) printf("No\n");
+        else {
+            v.clear();
+            radix(m, n);
+            k = to_ten_radix(n);
+            if(!isprime(k)) printf("No\n");
+            else printf("Yes\n");
+        }
+        cin>>m;
+    }
+    return 0;
+}
+
+old before
 #include<iostream>
 #include<algorithm>
 #include<vector>
