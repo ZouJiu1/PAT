@@ -21,6 +21,30 @@ int main(void) {
     }
     return 0;
 }
+or
+#include<iostream>
+#include<vector>
+using namespace std;
+int main(void) {
+    int i, j, k, N, M, K, y, z, r;
+    cin>>N;
+    vector<int> v(N+1), arr(N+2, 0);
+    for(i = 1; i <= N; i++) {
+        scanf("%d", &v[i]);
+        arr[i+1] = v[i] + arr[i];
+    }
+    cin>>M;
+    for(i = 0; i < M; i++) {
+        cin>>y>>z;
+        r = y > z? y : z;
+        y = y + z - r;
+        int sum = arr[r] - arr[y];
+        printf("%d\n", min(sum, arr[N+1] - sum));
+    }
+    return 0;
+}
+
+
 
 old before
 #include<iostream>
