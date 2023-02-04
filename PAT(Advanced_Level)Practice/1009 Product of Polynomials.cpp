@@ -1,3 +1,45 @@
+update202302
+#include<iostream>
+#include<map>
+using namespace std;
+int     arr0[60], arr1[60];
+double  flt0[60], flt1[60];
+int main(void){
+    int i, j, k, m, n, N, M, K0, K1, y, z, minmin = 999999999;
+    double f0, f1, f2;
+    map<int, double, greater<int>> m0, m1, m2;
+    cin>>K0;
+    for(i = 0; i < K0; i++) {
+        scanf("%d", &arr0[i]);
+        cin>>flt0[i];
+    }
+    cin>>K1;
+    for(i = 0; i < K1; i++) {
+        scanf("%d", &arr1[i]);
+        cin>>flt1[i];
+    }
+    for(i = 0; i < K0; i++) {
+        for(j = 0; j < K1; j++) {
+            y  = arr0[i] + arr1[j];
+            f0 = flt0[i] * flt1[j];
+            m2[y] += f0;
+            if(y < minmin) minmin = y;
+        }
+    }
+    for(auto it:m2) {   //存在相互抵消的情况， 3x - 1    和    3x + 1  多项式相乘会相互抵消，草稿纸！！！
+        if(it.second==0) continue;
+        m1[it.first] = it.second;
+    }
+    printf("%d ", m1.size());
+    for(auto it:m1) {
+        printf("%d %.1f", it.first, it.second);
+        if(it.first!=minmin) printf(" ");
+    }
+    return 0;
+}
+
+
+old before
 #include<iostream>
 #include<algorithm>
 #include<vector>
