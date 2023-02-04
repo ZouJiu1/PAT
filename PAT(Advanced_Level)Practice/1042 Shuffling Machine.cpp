@@ -1,3 +1,39 @@
+update202302
+#include<iostream>
+#include<vector>
+#include<string>
+using namespace std;
+int arr[60];
+int main(void) {
+    int i, j, k, m, n, N, M, K;
+    cin>>K;
+    for(i = 0; i < 54; i++) scanf("%d", &arr[i]);
+    vector<string> v, vt(54);
+    string t0, t1;
+    for(i = 0; i < 4; i++) {
+        for(j = 1; j <= 13; j++) {
+            t1 = to_string(j);
+            if(i==0) t0 = "S" + t1;
+            else if(i==1) t0 = "H" + t1;
+            else if(i==2) t0 = "C" + t1;
+            else if(i==3) t0 = "D" + t1;
+            v.push_back(t0);
+        }
+    }
+    v.push_back("J1");
+    v.push_back("J2");
+    for(i = 0; i < K; i++) {
+        for(j = 0; j < 54; j++) vt[arr[j]-1] = v[j];
+        v = vt;
+    }
+    for(i = 0; i < 54; i++) {
+        cout<<vt[i];
+        if(i!=54-1) printf(" ");
+    }
+    return 0;
+}
+
+old before
 #include<iostream>
 #include<vector>
 #include<map>
