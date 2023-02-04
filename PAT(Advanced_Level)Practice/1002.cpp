@@ -1,3 +1,36 @@
+update202302
+#include<iostream>
+#include<map>
+using namespace std;
+int N0[20], N1[20];
+double a0[20], a1[20];
+int main(void) {
+    int i, j, k, N, M, K0, K1, y, z;
+    double d0, d1;
+    cin>>K0;
+    map<int, double, greater<int>> mp, res;
+    for(i = 0; i < K0; i++) {
+        scanf("%d", &N0[i]);
+        cin>>a0[i];
+        mp[N0[i]] += a0[i];
+    }
+    cin>>K1;
+    for(i = 0; i < K1; i++) {
+        scanf("%d", &N1[i]);
+        cin>>a1[i];
+        mp[N1[i]] += a1[i];
+    }
+    for(auto it:mp) {
+        if(it.second==0) continue;
+        res[it.first] = it.second;
+    }
+    printf("%d", res.size());
+    for(auto it:res)    printf(" %d %.1f", it.first, it.second);
+    return 0;
+}
+
+
+old before
 #include<iostream>
 #include<algorithm>
 #include<vector>
