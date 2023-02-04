@@ -1,3 +1,23 @@
+update202302    long long输入要使用 scanf(“%lld”)，不能用cin
+#include<iostream>
+using namespace std;
+int main(void) {
+    int i, j, N, M, n, m, y, z;
+    long long a, b, c, k;
+    cin>>N;
+    for(i = 1; i <= N; i++) {
+        scanf("%lld %lld %lld", &a, &b, &c);
+        // cin>>a>>b>>c; //wrong
+        k = a + b;
+        if(a > 0 && b > 0 &&  k < 0) printf("Case #%d: true\n", i);
+        else if(a < 0 && b < 0 && k >= 0) printf("Case #%d: false\n", i);
+        else if(k <= c) printf("Case #%d: false\n", i);
+        else printf("Case #%d: true\n", i); 
+    }
+    return 0;
+}
+
+old before
 #include<iostream>
 #include<vector>
 #include<bits/stdc++.h>
