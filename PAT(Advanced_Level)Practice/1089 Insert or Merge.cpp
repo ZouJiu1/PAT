@@ -1,5 +1,62 @@
-update202301  直接使用的sort进行归并排序
+update202302 归并排序不使用sort
+rot[z] <= rot[z + 1]，要加=号，排序要注意=，sort的第二个参数是后面的一个position，不是所处的position
+#include<iostream>
+#include<vector>
+#include<algorithm>
+#include<cmath>
+using namespace std;
+int main(void) {
+    int i, j, m, N, M, y=0, z=0, k, pl, pr, pm, pk;
+    cin>>N;
+    vector<int> v, tmp, rot(N), arr(N);
+    for(i = 0; i < N; i++) scanf("%d", &arr[i]);
+    for(i = 0; i < N; i++) {
+        scanf("%d", &rot[i]);
+        v.push_back(rot[i]);
+    }
+    while(rot[z] <= rot[z + 1] && z + 1 < N) z++;
+    k = ++z;
+    while(arr[k]==rot[k] && k < N) k++;
+    if(k==N) {
+        printf("Insertion Sort\n");
+        sort(rot.begin(), min(rot.begin() + z + 1, rot.end()));
+        for(i = 0; i < N; i++) {
+            printf("%d", rot[i]);
+            if(i!=N-1) printf(" ");
+        }
+    } else {
+        printf("Merge Sort\n");
+        k = 1;
+        int mr = -9;
+        while(true) {
+            k = k * 2;
+            for(i = 0; i < N; i += k) {
+                pl = i;
+                pk = pm = min(N, i + k/2);
+                pr = min(N, i + k);
+                while(pl < pm && pk < pr) {
+                    if(arr[pl] < arr[pk]) tmp.push_back(arr[pl++]);
+                    else tmp.push_back(arr[pk++]);
+                }
+                while(pl < pm) tmp.push_back(arr[pl++]);
+                while(pk < pr) tmp.push_back(arr[pk++]);
+            }
+            if(mr > 0) break;
+            arr = tmp;
+            if(tmp==v) mr = 9;
+            if(k > N) break;
+            tmp.clear();
+        }
+        for(i = 0; i < N; i++) {
+            printf("%d", tmp[i]);
+            if(i!=N-1) printf(" ");
+        }
+    }
+    return 0;
+}
 
+
+update202301  直接使用的sort进行归并排序
 #include<iostream>
 #include<algorithm>
 #include<vector>
