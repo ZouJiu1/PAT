@@ -1,3 +1,57 @@
+update202302
+#include<iostream>
+#include<string>
+#include<set>
+#include<unordered_map>
+#include<vector>
+using namespace std;
+int main(void) {
+    int i, j, k, m, n, N, M, y, z;
+    cin>>N;
+    string id, _title_, _author_, _pub_, _yea_, t0, t1;
+    set<string> tr;
+    unordered_map<string, set<string>> title, author, key, pub, yea;
+    for(i = 0; i < N; i++) {
+        cin>>id;
+        getchar(); //cin.get();
+        getline(cin, _title_);
+        getline(cin, _author_);
+        getline(cin, t0);
+        auto it = t0.find(" ");
+        while(it!=string::npos){
+            t1 = t0.substr(0, it);
+            t0 = t0.substr(it+1);
+            it = t0.find(" ");
+            key[t1].insert(id);
+        }
+        if(t0.size() > 0) key[t0].insert(id);
+        getline(cin, _pub_);
+        cin>>_yea_;
+        title[_title_].insert(id);
+        author[_author_].insert(id);
+        pub[_pub_].insert(id);
+        yea[_yea_].insert(id);
+    }
+    cin>>M;
+    getchar();
+    for(i = 0; i < M; i++) {
+        scanf("%d: ", &k);
+        getline(cin, t0);
+        if(k==1) tr = title[t0];
+        else if(k==2) tr = author[t0];
+        else if(k==3) tr = key[t0];
+        else if(k==4) tr = pub[t0];
+        else if(k==5) tr = yea[t0];
+        cout<<k<<": "<<t0<<endl;
+        if(tr.size() > 0) {
+            for(auto it: tr) cout<<it<<endl;
+        }else printf("Not Found\n");
+    }
+    return 0;
+}
+
+
+old before
 /*
 要注意使用map dictionary，使用vector保存完整数据，使用map 创立索引目录保证速度符合要求
 */
