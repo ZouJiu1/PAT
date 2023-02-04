@@ -1,4 +1,4 @@
-双指针方式一个行一个列，用来做递推的
+双指针方式一个行一个列，用来做递推的，理解方式是令k=0看最外面一圈是怎么顺时针填充的
 #include<iostream>
 #include<vector>
 #include<algorithm>
