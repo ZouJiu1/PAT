@@ -1,3 +1,49 @@
+双指针方式一个行一个列，用来做递推的
+#include<iostream>
+#include<vector>
+#include<algorithm>
+#include<cmath>
+using namespace std;
+bool cmp(int &a, int &c) {return a >= c;};
+int main(void) {
+    int i, j, k, m, n, y, z, cnt, N;
+    cin>>N;
+    for(i = (int)sqrt(N) + 1; i >= 0; i--) {
+        if(N%i==0) break;
+    }
+    m = N/i > i? N/i:i;
+    n = N/m;
+    vector<int> v(N);
+    vector<vector<int>> matrix(m);
+    for(i = 0; i < m; i++) matrix[i].resize(n);
+    for(i = 0; i < N; i++) scanf("%d", &v[i]);
+    sort(v.begin(), v.end(), cmp);
+    cnt = j = y = z = k = 0;
+    while(cnt!=N) {
+        for(i = k; i < n - k && cnt < N; i++)
+            matrix[j][i] = v[cnt++];
+        i--;
+        for(j = 1 + k; j < m - k && cnt < N; j++)
+            matrix[j][i] = v[cnt++];
+        j--;
+        for(i = n-2-k; i >=k && cnt < N; i--)
+            matrix[j][i] = v[cnt++];
+        i++;
+        for(j = m-2-k; j >=1+k && cnt < N; j--)
+            matrix[j][i] = v[cnt++];
+        j++;
+        k++;
+    }
+    for(i = 0; i < m; i++) {
+        for(j = 0; j < n; j++) {
+            printf("%d%s", matrix[i][j], j==n-1? "\n":" ");
+        }
+    }
+    return 0;
+}
+
+
+old before
 #include<iostream>
 #include<algorithm>
 #include<vector>
