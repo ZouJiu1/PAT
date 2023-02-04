@@ -1,3 +1,60 @@
+update202302         clique内的任意两点都有边连接
+#include<iostream>
+#include<vector>
+using namespace std;
+bool status[206][206];
+int main(void) {
+    int i, j, k, K, m, n, N, M, Nv, Ne, y, z;
+    cin>>Nv>>Ne;
+    vector<int> v[206];
+    for(i = 0; i < Ne; i++) {
+        cin>>y>>z;
+        status[y][z] = status[z][y] = true;
+    }
+    cin>>M;
+    for(i = 0; i < M; i++) {
+        cin>>K;
+        vector<int> tp(K);
+        for(j = 0; j < K; j++) scanf("%d", &tp[j]);
+        int mr = 9;
+        for(j = 0; j < K; j++) {
+            for(int ij = j+1; ij < K; ij++) {
+                if(status[tp[ij]][tp[j]]==false) {
+                    mr = -9;
+                    break;
+                }
+            }
+            if(mr < 0) break;
+        }
+        if(mr < 0) {
+            printf("Not a Clique\n");
+            continue;
+        }
+        int kk = 9;
+        for(j = 1; j <= Nv; j++) {
+            mr = 9;
+            for(int ij = 0; ij < K; ij++) {
+                if(j==tp[ij] || status[j][tp[ij]]==false) {
+                    mr = -9;
+                    break;
+                }
+            }
+            if(mr > 0) {
+                kk = -9;
+                break;
+            }
+        }
+        if(kk < 0) {
+            printf("Not Maximal\n");
+            continue;
+        }
+        printf("Yes\n");
+    }
+    return 0;
+}
+
+
+old before
 #include<iostream>
 #include<vector>
 #include<string>
