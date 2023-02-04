@@ -1,3 +1,28 @@
+update202302    累加，两种情况一种从小到大，一种从大到小
+#include<iostream>
+#include<vector>
+using namespace std;
+int main(void) {
+    int i, j, k, N, M, K, y, z, r;
+    cin>>N;
+    vector<int> v(N+1), arr(N+2, 0);
+    for(i = 1; i <= N; i++) {
+        scanf("%d", &v[i]);
+        arr[i+1] = v[i] + arr[i];
+    }
+    cin>>M;
+    for(i = 0; i < M; i++) {
+        cin>>y>>z;
+        r = y > z? y : z;
+        y = y + z - r;
+        int sum2 = arr[N] - arr[r] + arr[y] - arr[1] + v[N];
+        int sum1 = arr[r] - arr[y];
+        printf("%d\n", sum1<sum2? sum1:sum2);
+    }
+    return 0;
+}
+
+old before
 #include<iostream>
 #include<vector>
 #include<bits/stdc++.h>
