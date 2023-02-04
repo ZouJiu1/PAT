@@ -1,3 +1,31 @@
+update202302
+#include<iostream>
+#include<vector>  
+#include<stack>                                                                                            
+using namespace std;
+int main(void) {
+    int i, j, k, m, n, N, M, K, y, z;
+    cin>>M>>N>>K;
+    for(i = 0; i < K; i++) {
+        vector<int> v(N);
+        stack<int> t;
+        for(j = 0; j < N; j++) scanf("%d", &v[j]);
+        int cnt = 0;
+        for(j = 1; j <= N; j++) {
+            t.push(j);
+            if(t.size() > M) break;
+            while(t.size() > 0 && v[cnt]==t.top()) {
+                t.pop();
+                cnt++;
+            }
+        }
+        if(t.size()!=0) printf("NO\n");
+        else printf("YES\n");
+    }
+    return 0;
+}
+
+old before
 #include<iostream>
 #include<vector>
 #include<stack>
