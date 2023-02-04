@@ -1,3 +1,56 @@
+update202302 simple cycle经过每个节点且仅经过依次    cycle经过每个节点可能多次
+#include<iostream>
+#include<set>
+#include<vector>
+#include<algorithm>
+
+using namespace std;
+
+int mat[206][206];
+bool vertex[206];
+
+int main(void) {
+    int i, j, k, m, n, N, M, K, y, z, minmin = 999999999;
+    cin>>N>>M;
+    for(i = 0; i < M; i++) {
+        cin>>y>>z>>k;
+        mat[y][z]=mat[z][y] = k;
+    }
+    cin>>K;
+    for(i = 0; i < K; i++) {
+        cin>>n;
+        vector<int> v(n);
+        set<int> tk;
+        fill(vertex, vertex + 206, false);
+        int mr = 9, kk = 9, sum = 0;
+        for(j = 0; j < n; j++) {
+            scanf("%d", &v[j]);
+            tk.insert(v[j]);
+            if(j!=n-1 && vertex[v[j]]==true) kk = -9;
+            if(j > 0) {
+                if(mat[v[j]][v[j-1]]==0) mr = -9;
+                sum += mat[v[j]][v[j-1]];
+            }
+            vertex[v[j]] = true;
+        }
+        printf("Path %d: ", i+1);
+        if(mr < 0) cout<<"NA (";
+        else printf("%d (", sum);
+        if(tk.size()!=N||v[n-1]!=v[0]||mr < 0) printf("Not a TS cycle)\n");
+        else {
+            if(kk < 0) printf("TS cycle)\n");
+            else printf("TS simple cycle)\n");
+            if(minmin > sum) {
+                minmin = sum;
+                z = i+1;
+            }
+        }
+    }
+    printf("Shortest Dist(%d) = %d\n", z, minmin);
+    return 0;
+}
+
+old before
 #include<iostream>
 #include<vector>
 using namespace std; 
