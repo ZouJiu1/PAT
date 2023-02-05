@@ -1,3 +1,64 @@
+update202302
+#include<iostream>
+#include<unordered_map>
+#include<vector>
+using namespace std;
+int arr[206][206];
+int main(void) {
+    int i, j, k, m, n, N, M, K, L, y, z, h;
+    cin>>N>>M;
+    for(i = 0; i < M; i++) {
+        cin>>y>>z;
+        arr[y][z] = arr[z][y] = 1;
+    }
+    cin>>K;
+    for(i = 1; i<=K; i++) {
+        cin>>L;
+        vector<int> v(L);
+        unordered_map<int, int> ump;
+        for(j = 0; j < L; j++) {
+            scanf("%d", &v[j]);
+            ump[v[j]] = 1;
+        }
+        int mr = 9, kk = 9;
+        for(j = 0; j < L; j++) {
+            for(h = j + 1; h < L; h++) {
+                if(arr[v[j]][v[h]]==0) {
+                    mr = -9;
+                    break;
+                }
+            }
+            if(mr < 0) break;
+        }
+        if(mr < 0) {
+            printf("Area %d needs help.\n", i);
+            continue;
+        }
+        for(j = 1; j <= N; j++) {
+            if(ump[j] == 1) continue;
+            mr = 9;
+            for(h = 0; h < L; h++) {
+                if(arr[j][v[h]]==0) {
+                    mr = -9;
+                    break;
+                }
+            }
+            if(mr > 0) {
+                kk = -9;
+                break;
+            }
+        }
+        if(kk < 0) {
+            printf("Area %d may invite more people, such as %d.\n", i, j);
+            continue;;
+        }
+        printf("Area %d is OK.\n", i);
+    }
+    return 0;
+}
+
+
+old before
 #include<iostream>
 #include<vector>
 #include<set>
