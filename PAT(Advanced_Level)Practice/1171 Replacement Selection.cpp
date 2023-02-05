@@ -1,6 +1,6 @@
 堆优化的队列，priority_queue最开始的那个值就是最小值，产生最小的堆greater<int>
 进来值<pop出去值，进来值run加一暂时不参加排序，也就是queue数组的index + 1
-while(!pq[run].empty())循环内不存在for或者while等循环，所以当前的pq[run]个数+pq[run+1]的个数一直都是固定的M
+while(!pq[run].empty())循环内不存在for或者while等循环，所以当前的pq[run]个数+pq[run+1]的最大个数一直都是固定的M
   
 #include<iostream>
 #include<vector>
