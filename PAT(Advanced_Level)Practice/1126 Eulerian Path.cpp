@@ -1,3 +1,46 @@
+update202302
+#include<iostream>
+#include<vector>
+using namespace std;
+int deg[600], status[600];
+vector<int> v[600];
+void recursion(int tat) {
+    status[tat] = 1;
+    for(int i = 0; i < v[tat].size(); i++) {
+        if(status[v[tat][i]]==0) recursion(v[tat][i]);
+    }
+}
+int main(void) {
+    int i, j, k, N, M, K, y, z, h, odd=0, even=0, sum=0;
+    cin>>N>>M;
+    for(i = 0; i < M; i++) {
+        cin>>y>>z;
+        deg[y]++;
+        deg[z]++;
+        v[y].push_back(z);
+        v[z].push_back(y);
+    }
+    for(i = 1; i <= N; i++) {
+        if(deg[i]%2==0) even++;
+        else odd++;
+        printf("%d%s", deg[i], i==N? "\n":" ");
+    }
+    recursion(1);  //判断是否是connected
+    for(i = 1; i <= N; i++) {
+        sum += status[i];
+    }
+    if(sum!=N) {
+        printf("Non-Eulerian\n");
+        return 0;
+    }
+    if(even==N) printf("Eulerian\n");
+    else if(odd==2) printf("Semi-Eulerian\n");
+    else printf("Non-Eulerian\n");
+    return 0;
+}
+
+
+old before
 #include<iostream>
 #include<vector>
 #include<bits/stdc++.h>
