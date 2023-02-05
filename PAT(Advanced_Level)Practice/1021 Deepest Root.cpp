@@ -1,3 +1,67 @@
+update202302   存在两端的最深节点都>1的情况
+/*
+6
+1 2
+1 3
+1 4
+2 5
+2 6
+*/
+#include<iostream>
+#include<vector>
+#include<set>
+#include<algorithm>
+using namespace std;
+vector<int> v[10006];
+bool status[10006];
+int level[10006], maxmax = -999999999, ind;
+void recursion(int ta, int lev) {
+    status[ta] = true;
+    level[ta] = lev;
+    if(maxmax < lev) {
+        ind = ta;
+        maxmax = lev;
+    }
+    for(int i = 0; i < v[ta].size(); i++) {
+        if(status[v[ta][i]]==false) recursion(v[ta][i], lev + 1);
+    }
+}
+int main(void) {
+    int i, j, k, m, n, N, M, K, y, z, sum=0;
+    cin>>N;
+    for(i = 0; i < N - 1; i++) {
+        scanf("%d %d", &y, &z);
+        v[y].push_back(z);
+        v[z].push_back(y);
+    }
+    set<int> te;
+    for(i = 1; i <= N; i++) {
+        if(status[i]==false) {
+            recursion(i, 1);  //找到一个相对“最深”的vertex 和 是否connected，找到某些最深的点
+            sum++;
+        }
+    }
+    if(sum!=1) {
+        printf("Error: %d components\n", sum);
+        return 0;
+    }
+    for(i = 1; i <= N; i++) {   //先放入某一端“最深”的点
+        if(maxmax==level[i]) te.insert(i);
+    }
+    fill(status, status+10006, false);
+    k = ind;
+    maxmax = -999999999;
+    recursion(k, 1);     //从相对“最深”的遍历，就可以拿到其他最深的点，然后拿到并集
+    level[k] = maxmax;
+    vector<int> v;
+    for(i = 1; i <= N; i++) {
+        if(maxmax==level[i]) te.insert(i);
+    }
+    for(auto it:te) printf("%d\n", it);
+    return 0;
+}
+
+
 update
 #include<iostream>
 #include<vector>
@@ -62,6 +126,7 @@ int main(void) {
     return 0;
 }
 
+old before
 /*
 并查集查看树的棵树；迪杰特斯拉方式寻找最远的路径
 */
