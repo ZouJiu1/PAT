@@ -1,4 +1,5 @@
-update202302
+update202302       for(j = 1; j <= N; j++)   编号从1~N，要记得加上<=
+
 #include<iostream>
 #include<unordered_map>
 #include<vector>
