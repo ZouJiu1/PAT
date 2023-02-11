@@ -1,3 +1,32 @@
+update202302
+#include<iostream>
+using namespace std;
+int arr[1006];
+int main(void) {
+    int i, j, k, M, N, K;
+    cin>>K;
+    for(i = 0; i < K; i++) {
+        cin>>N;
+        for(j = 1; j <= N; j++) scanf("%d", &arr[j]);
+        int mr = -9;
+        for(j = 1; j <= N; j++) {
+            for(k = j+1; k<=N; k++) {
+                if( arr[j]==arr[k] || (abs(arr[j]-arr[k])==abs(j - k)) ) {
+                    mr = 9;
+                    break;
+                }
+            }
+            if(mr > 0) {
+                printf("NO\n");
+                break;
+            }
+        }
+        if(mr < 0) printf("YES\n");
+    }
+    return 0;
+}
+
+old before
 #include<iostream>
 #include<vector>
 #include<cmath>
