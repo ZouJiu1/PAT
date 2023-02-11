@@ -2,7 +2,7 @@ update202302
 不能存在多的空行，测试案例是--H--EL1LO--，空字符串不放入列表，最后一个字符可能是alpha，要特殊处理，
 最后一行要输出\n，\n不是空行是nextline，两个\n\n才是空行的
 #include<iostream>
-#include<string>
+#include<string> 
 #include<vector>
 using namespace std;
 string arr[26][7];
