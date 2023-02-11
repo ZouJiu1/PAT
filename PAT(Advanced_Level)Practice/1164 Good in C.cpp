@@ -1,3 +1,51 @@
+update202302
+不能存在多的空行，测试案例是--H--EL1LO--，空字符串不放入列表，最后一个字符可能是alpha，要特殊处理，
+最后一行要输出\n，\n不是空行是nextline，两个\n\n才是空行的
+#include<iostream>
+#include<string>
+#include<vector>
+using namespace std;
+string arr[26][7];
+int main(void) {
+    int i, j, k, m, n, N, M, K;
+    string t0, t1="", t2;
+    for(i = 0; i < 26; i++) {
+        for(j = 0; j < 7; j++) {
+            getline(cin, t0);
+            arr[i][j] = t0;
+        }
+    }
+    getline(cin, t0);
+    vector<string> v, r;
+    for(i = 0; i < t0.length(); i++) {
+        if(isalpha(t0[i])&&isupper(t0[i])) {
+            t1 += t0[i];
+            if(i==t0.length()-1) v.push_back(t1);
+        }
+        else {
+            if(t1.length()!=0) v.push_back(t1);
+            t1.clear();
+        }
+    }
+    for(i = 0; i < v.size(); i++) {
+        for(k = 0; k < 7; k++) {
+            t2.clear();
+            for(j = 0; j < v[i].length(); j++) {
+                t2 += arr[v[i][j]-'A'][k];
+                if(j!=v[i].length()-1) t2 += " ";
+            }
+            r.push_back(t2);
+        }
+        if(i!=v.size()-1) r.push_back("plt");
+    }
+    for(i = 0; i < r.size(); i++) {
+        if(r[i]!="plt") cout<<r[i]<<endl;
+        if(r[i]=="plt") printf("\n");
+    }
+    return 0;
+}
+
+old before
 #include<iostream>
 #include<vector>
 #include<unordered_map>
