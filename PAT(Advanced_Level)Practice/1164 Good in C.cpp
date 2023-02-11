@@ -45,6 +45,50 @@ int main(void) {
     return 0;
 }
 
+update202302  双指针方式
+#include<iostream>
+#include<string>
+using namespace std;
+char arr[26][7][6], out[7][100];
+string t;
+int main(void) {
+    int i, j, k, m, n, N, M, K, flg=-1;
+    for(i = 0; i < 26; i++) {
+        for(j = 0; j < 7; j++) { 
+            scanf("%s", arr[i][j]);
+        }
+    }
+    getchar();
+    getline(cin, t);
+    for(i = 0; i < t.length();) {
+        j = i;
+        while(j < t.length() && t[j] <= 'Z' && t[j] >= 'A') j++;
+        if(i==j) {
+            i++;
+            continue;
+        }
+        for(k = i; k < j; k++) {
+            for(int ij = 0; ij < 7; ij++) {
+                for(int kk = 0; kk < 5; kk++) {
+                    out[ij][kk + (k - i) * 6] = arr[t[k] - 'A'][ij][kk];
+                }
+            }
+        }
+        if(flg > 0) printf("\n");
+        for(int ij = 0; ij < 7; ij++) {
+            for(k = 0; k < (j-i)*6-1; k++) {
+                if(out[ij][k]=='.'||out[ij][k]=='C') printf("%c", out[ij][k]);
+                else printf(" ");
+            }
+            flg = 1;
+            printf("\n");
+        }
+        i = j+1;
+    }
+    return 0;
+}
+
+
 old before
 #include<iostream>
 #include<vector>
