@@ -1,6 +1,28 @@
 /*
 依次执行的，不要考虑最优，而且存在相邻指令相同的情况这个时候要+5 
 */
+update202302
+#include<iostream>
+using namespace std;
+int main(void) {
+    int i, j, k, N, M, K, sum = 0, pre;
+    cin>>N;
+    for(i = 0; i < N; i++) {
+        cin>>k;
+        if(i==0) sum += k * 6 + 5;
+        else {
+            if(k > pre) sum += (k - pre) * 6 + 5;
+            else if(k == pre) sum += 5;
+            else sum += (pre - k) * 4 + 5;
+        }
+        pre = k;
+    }
+    printf("%d", sum);
+    return 0;
+}
+
+
+old before
 #include<iostream>
 #include<algorithm>
 #include<vector>
