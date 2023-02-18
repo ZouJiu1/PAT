@@ -43,6 +43,55 @@ int main(void) {
     return 0;
 }
 
+update202302 并查集
+#include<iostream>
+#include<vector>
+#include<algorithm>
+using namespace std;
+int arr[1000006], v[1000006][2];
+int findfather(int a) {
+    int tmp = a;
+    while(a!=arr[a]) a=arr[a];
+    arr[tmp] = a;
+    return a;
+}
+void unionjoin(int a, int c) {
+    int aa = findfather(a);
+    int cc = findfather(c);
+    if(aa > cc) arr[aa] = cc;    //correct
+    else arr[cc] = aa;
+    /*
+    if(aa > cc) arr[a] = cc;     //wrong
+    else arr[c] = aa;
+    11 2    unionjoin(11, 2)
+    11 --> 2
+    11 3    unionjoin(11, 3)
+    11 --> 2 <-- 3
+    1 3     unionjoin(1 , 3)
+    1 <-- 3  and    11 --> 2
+    */
+}
+int main(void) {
+    int i, j, k, m, n, N, M, K, y, z, sum;
+    cin>>N>>M>>K;
+    for(i = 0; i < M; i++) cin>>v[i][0]>>v[i][1];
+    for(i = 0; i < K; i++) {
+        cin>>y;
+        for(j = 0; j < 1000006; j++) arr[j] = j;
+        sum = 0;
+        for(j = 0; j < M; j++) {
+            if(v[j][0] == y || v[j][1] == y) continue;
+            unionjoin(v[j][0], v[j][1]);
+        }
+        for(j = 1; j <= N; j++) {
+            if(j==y) continue;
+            if(j==arr[j]) sum++;
+        }
+        printf("%d\n", sum - 1);
+    }
+    return 0;
+}
+
 
 old before
 并查集：
