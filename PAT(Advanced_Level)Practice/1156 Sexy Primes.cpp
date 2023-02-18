@@ -1,3 +1,35 @@
+update202302
+#include<iostream>
+using namespace std;
+bool isprime(long long a) {
+    if(a<=1) return false;
+    for(long long i = 2; i * i <= a; i++) {
+        if(a%i==0) return false;
+    }
+    return true;
+}
+int main(void) {
+    long long i, j, k, m, n, K, M, N;
+    bool r0, r1, r2;
+    cin>>N;
+    r0 = isprime(N);
+    if(N - 6 >= 2 && r0 && isprime(N - 6)) printf("Yes\n%d", N-6);
+    else if(r0 && isprime(N + 6)) printf("Yes\n%d", N+6);
+    else {
+        while(true) {
+            N++;
+            r0 = isprime(N);
+            r1 = isprime(N + 6);
+            r2 = isprime(N - 6);
+            if(r0 && r1) break;
+            if(r0 && r2 && N-6 >= 2) break;
+        }
+        printf("No\n%d", N);
+    }
+    return 0;
+}
+
+old before
 #include<iostream>
 #include<algorithm>
 #include<vector>
