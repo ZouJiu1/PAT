@@ -5,9 +5,47 @@
 
 连通集的最少连通边数是节点数 - 1，这里就是根节点个数（树个数）- 1 
 */
+update202302   depth_first
+#include<iostream>
+#include<vector>
+#include<algorithm>
+using namespace std;
+vector<int> v[100006];
+bool status[100006];
+void recursion(int tat, int no) {
+    if(tat==no||status[tat]==true) return;
+    status[tat] = true;
+    for(int i = 0; i < v[tat].size(); i++) {
+        recursion(v[tat][i], no);
+    }
+}
+int main(void) {
+    int i, j, k, m, n, N, M, K, y, z, sum;
+    cin>>N>>M>>K;
+    for(i = 0; i < M; i++) {
+        cin>>y>>z;
+        v[y].push_back(z);
+        v[z].push_back(y);
+    }
+    for(i = 0; i < K; i++) {
+        cin>>y;
+        fill(status, status + 100006, false);
+        sum = 0;
+        for(j = 1; j <= N; j++) {
+            if(j==y) continue;
+            if(status[j]==false) {
+                recursion(j, y);
+                sum++;
+            }
+        }
+        printf("%d\n", sum-1);
+    }
+    return 0;
+}
 
+
+old before
 并查集：
-
 #include<iostream>
 #include<algorithm>
 #include<vector>
