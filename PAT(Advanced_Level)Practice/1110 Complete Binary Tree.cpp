@@ -1,3 +1,40 @@
+update202302
+#include<iostream>
+#include<string>
+#include<algorithm>
+using namespace std;
+int arr[26][2], findrot[26], num = 0, maxmax = -999999999, lastnum;
+void recursion(int r, int index) {
+    if(maxmax < index) {
+        maxmax = index;
+        lastnum = r;
+    }
+    if(arr[r][0] >= 0) recursion(arr[r][0], 2 * index + 1);
+    if(arr[r][1] >= 0) recursion(arr[r][1], 2 * index + 2);
+}
+int main(void) {
+    int i, j, k, rot=0, m, n, N, M, K;
+    cin>>N;
+    string t0, t1;
+    fill(arr[0], arr[0] + 26*2, -9);
+    for(i = 0; i < N; i++) {
+        cin>>t0>>t1;
+        if(t0!="-") {
+            arr[i][0] = stoi(t0);
+            findrot[stoi(t0)] = 1;
+        }
+        if(t1!="-") {
+            arr[i][1] = stoi(t1);
+            findrot[stoi(t1)] = 1;
+        }
+    }
+    while(findrot[rot]!=0) rot++;
+    recursion(rot, 0);
+    if(maxmax==N-1) printf("YES %d", lastnum);
+    else printf("NO %d", rot);
+    return 0;
+}
+
 /*
 5
 - -
