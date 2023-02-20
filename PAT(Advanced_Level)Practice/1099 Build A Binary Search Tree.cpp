@@ -2,6 +2,40 @@
 或者左>=根>右，从大到小排列
 
 不能AC的codes仅作错误示例，层序用index会出错可能越界 > long long最大值，主要是2的100次方太大了，所以这题不能用index!!!，直接保存每层的数值
+update202302
+#include<iostream>
+#include<vector>
+#include<algorithm>
+using namespace std;
+int arr[106][2], key[106], cnt = 0, maxmax = -999999999;
+vector<int> v[106], re;
+struct nod{int val, l, r;};
+nod nodarr[106];
+void recursion(int tat, int lev) {
+    if(tat < 0) return;
+    recursion(arr[tat][0], lev + 1);
+    nodarr[tat] = {key[cnt++], arr[tat][0], arr[tat][1]};
+    if(lev > maxmax) maxmax = lev;
+    recursion(arr[tat][1], lev + 1);
+}
+int main(void) {
+    int i, j, k, N, M, K, y, z;
+    cin>>N;
+    for(i = 0; i < N; i++) cin>>arr[i][0]>>arr[i][1];
+    for(i = 0; i < N; i++) scanf("%d", &key[i]);
+    sort(key, key + N);
+    recursion(0, 0);
+    v[0].push_back(0);
+    for(i = 0; i <= maxmax; i++) {
+        for(j = 0; j < v[i].size(); j++) {
+            if(i!=0) printf(" ");
+            printf("%d", nodarr[v[i][j]].val);
+            if(nodarr[v[i][j]].l != -1) v[i + 1].push_back(nodarr[v[i][j]].l);
+            if(nodarr[v[i][j]].r != -1) v[i + 1].push_back(nodarr[v[i][j]].r);
+        }
+    }
+    return 0;
+}
 
 /*
 不能AC的codes仅作错误示例，层序用index会出错可能越界 
