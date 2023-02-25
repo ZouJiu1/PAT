@@ -196,6 +196,187 @@ int main(void) {
     return 0;
 }
 
+
+update20230225  recursion
+#include<iostream>
+#include<vector>
+#include<unordered_map>
+#include<algorithm>
+using namespace std;
+unordered_map<int, int> ump;
+vector<int> res, tmp, route[10006];
+int status[10006], start, endkk, mintra, mindik;
+int gettransfer() {
+    int num = 0, pretran = 0;
+    for(int i = 0; i < tmp.size(); i++) {
+        if(i > 0) {
+            if(pretran!=ump[tmp[i-1]*10000 + tmp[i]]) num++;
+            pretran = ump[tmp[i-1]*10000 + tmp[i]];
+        }
+    }
+    return num;
+}
+void recursion(int station) {
+    if(station == endkk) {
+        int num = gettransfer();
+        if(tmp.size() < mindik || (tmp.size()==mindik && num < mintra)) {
+            mindik = tmp.size();
+            mintra = num;
+            res = tmp;
+        }
+        return;
+    }
+    for(int i = 0; i < route[station].size(); i++) {
+        int kk = route[station][i];
+        if(status[kk] == 0) {
+            status[kk] = 1;
+            tmp.push_back(kk);
+            recursion(kk);
+            tmp.pop_back();
+            status[kk] = 0;
+        }
+    }
+}
+int main(void) {
+    int i, j, k, m, n, N, M, K, x, y, z, cnt, pre;
+    cin>>N;
+    for(i = 1; i <= N; i++) {
+        cin>>M;
+        for(j = 1; j <= M; j++) {
+            cin>>y;
+            if(j > 1) {
+                ump[pre * 10000 + y] = ump[y * 10000 + pre] = i;
+                route[pre].push_back(y);
+                route[y].push_back(pre);
+            }
+            pre = y;
+        }
+    }
+    cin>>K;
+    for(i = 0; i < K; i++) {
+        cin>>start>>endkk;
+        tmp.clear();
+        res.clear();
+        tmp.push_back(start);
+        mintra = mindik = 999999999;
+        fill(status, status + 10006, 0);
+        status[start] = 1;
+        recursion(start);
+        printf("%d\n", res.size() - 1);
+        int pretra = ump[res[0] * 10000 + res[1]], now = res[0];
+        for(j = 1; j < res.size(); j++) {
+            if(pretra != ump[res[j - 1] * 10000 + res[j]]) {
+                printf("Take Line#%d from %04d to %04d.\n", pretra, now, res[j-1]);
+                now = res[j - 1];
+            }
+            pretra = ump[res[j-1]*10000 + res[j]];
+        }
+        printf("Take Line#%d from %04d to %04d.\n", pretra, now, res[j-1]);
+    }
+    return 0;
+}
+
+
+update20230225  priority_queue heapify Dijkstra
+#include<iostream>
+#include<queue>
+#include<vector>
+#include<algorithm>
+#include<unordered_map>
+using namespace std;
+typedef pair<int, int> p;
+int status[10006], mintra, start, endkk, dik[10006], inf = 999999999;
+vector<int> route[10006], tmp, res;
+unordered_map<int, int> ump;
+int gettranfer() {
+    int num = 0, pretra = 0;
+    for(int i = 0; i < tmp.size(); i++) {
+        if(i > 0) {
+            if(pretra != ump[tmp[i-1] * 10000 + tmp[i]]) num++;
+        }
+        pretra = ump[tmp[i-1] * 10000 + tmp[i]];
+    }
+    return num;
+}
+void recursion(int station) {
+    tmp.push_back(station);
+    if(station==start) {
+        int num = gettranfer();
+        if(mintra > num) {
+            res = tmp;
+            mintra = num;
+        }
+        tmp.pop_back();
+        return;
+    }
+    for(int i = 0; i < route[station].size(); i++) {
+        recursion(route[station][i]);
+    }
+    tmp.pop_back();
+}
+int main(void) {
+    int i, j, k, m, n, N, M, K, x, y, z, pre;
+    priority_queue<p, vector<p>, greater<p>> pq;
+    p p0, p1, p2;
+    vector<p> v[10006];
+    cin>>N;
+    for(i = 1; i <= N; i++) {
+        cin>>M;
+        for(j = 0; j < M; j++) {
+            cin>>y;
+            if(j > 0) {
+                v[y].push_back({1, pre});
+                v[pre].push_back({1, y});
+                ump[pre * 10000 + y] = ump[y * 10000 + pre] = i;
+            }
+            pre = y;
+        }
+    }
+    cin>>K;
+    for(i = 0; i < K; i++) {
+        cin>>start>>endkk;
+        fill(status, status + 10006, 0);
+        fill(dik, dik + 10006, inf);
+        mintra = inf;
+        dik[start] = 0;
+        pq.push({0, start});
+        while(!pq.empty()) {
+            p0 = pq.top();
+            x = p0.second;
+            pq.pop();
+            if(status[x] == 1) continue;
+            status[x] = 1;
+            for(j = 0; j < v[x].size(); j++) {
+                p1 = v[x][j];
+                y = p1.second;
+                z = p1.first;
+                if(status[y] == 0 && dik[y] > dik[x] + z) {
+                    dik[y] = dik[x] + z;
+                    pq.push({dik[y], y});
+                    route[y].clear();
+                    route[y].push_back(x);
+                } else if(status[y] == 0 && dik[y] == dik[x] + z) {
+                    route[y].push_back(x);           
+                }
+            }
+        }
+        tmp.clear();
+        recursion(endkk);
+        reverse(res.begin(), res.end());
+        printf("%d\n", res.size() - 1);
+        int pretra = ump[res[0] * 10000 + res[1]], now=res[0];
+        for(j = 1; j < res.size(); j++) {
+            if(pretra!=ump[res[j]*10000 + res[j-1]]) {
+                printf("Take Line#%d from %04d to %04d.\n", pretra, now, res[j-1]);
+                now = res[j-1];
+            }
+            pretra = ump[res[j]*10000 + res[j-1]];
+        }
+        printf("Take Line#%d from %04d to %04d.\n", pretra, now, res[j-1]);
+    }
+    return 0;
+}
+
 update 
 #include<iostream>
 #include<vector>
