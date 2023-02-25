@@ -1,7 +1,4 @@
 堆优化
-
-
-
 #include<iostream>
 #include<vector>
 #include<queue>
@@ -299,6 +296,91 @@ int main(void) {
         cout<<rmp[res[i]];
         if(i!=res.size()-1) cout<<"->";
     }
+    return 0;
+}
+
+
+update202302
+#include<iostream>
+#include<unordered_map>
+#include<algorithm>
+#include<string>
+#include<vector>
+using namespace std;
+int mat[206][206], status[206], cot[206], hap[206], route[206], num[206];
+int inf = 999999999, happiness[206], pre[206];
+float avghap[206];
+
+int main(void) {
+    int i, j, k, n, m, M, N, K, x, y, z, endkk, start, cnt = 0;
+    string t0, t1, t2;
+    cin>>N>>K>>t0;
+    unordered_map<string, int> ump;
+    unordered_map<int, string> revump;
+    ump[t0] = cnt;
+    revump[cnt++] = t0;
+    fill(mat[0], mat[0] + 206 * 206, inf);
+    fill(cot, cot + 206, inf);
+    cot[0] = 0;
+    route[0] = 1;
+    for(i = 0; i < N - 1; i++) {
+        cin>>t0>>y;
+        ump[t0] = cnt;
+        happiness[cnt] = y;
+        if(t0=="ROM") endkk = cnt;
+        revump[cnt++] = t0;
+    }
+    for(i = 0; i < K; i++) {        
+        cin>>t0>>t1>>y;
+        mat[ump[t0]][ump[t1]] = mat[ump[t1]][ump[t0]] = y;
+    }
+    for(i = 0; i < cnt; i++) {
+        int minmin = inf, ind;
+        for(j = 0; j < cnt; j++) {
+            if(status[j]==0 && minmin > cot[j]) {
+                minmin = cot[j];
+                ind = j;
+            }
+        }
+        status[ind] = 1;
+        for(j = 0; j < cnt; j++) {
+            if(status[j] == 1) continue;
+            if(cot[j] > cot[ind] + mat[ind][j]) {
+                cot[j] = cot[ind] + mat[ind][j];
+                hap[j] = hap[ind] + happiness[j];
+                route[j] = route[ind]; //route num
+                num[j] = num[ind] + 1;  // nod num
+                pre[j] = ind;
+                avghap[j] = hap[j] / (float)num[j];
+            } else if(cot[j] == cot[ind] + mat[ind][j]) {
+                route[j] = route[ind] + route[j];
+                if(hap[j] < hap[ind] + happiness[j]) {
+                    cot[j] = cot[ind] + mat[ind][j];
+                    hap[j] = hap[ind] + happiness[j];
+                    num[j] = num[ind] + 1;  // nod num
+                    pre[j] = ind;
+                    avghap[j] = hap[j] / (float)num[j];
+                } else if(hap[j] == hap[ind] + happiness[j]) {
+                    if( avghap[j] < ((hap[ind] + happiness[j])/(float)(num[ind] + 1)) ) {
+                        cot[j] = cot[ind] + mat[ind][j];
+                        hap[j] = hap[ind] + happiness[j];
+                        num[j] = num[ind] + 1;  // nod num
+                        pre[j] = ind;
+                        avghap[j] = hap[j] / (float)num[j];
+                    }
+                }
+            }
+        }
+    }
+    printf("%d %d %d %d\n", route[endkk], cot[endkk], hap[endkk], (int)avghap[endkk]);
+    n = endkk;
+    vector<int> v;
+    while(true) {
+        v.push_back(n);
+        if(n==start) break;
+        n = pre[n];
+    }
+    for(i = v.size() - 1; i >= 0; i--) printf("%s%s", revump[v[i]].c_str(), i==0? "":"->");
     return 0;
 }
 
