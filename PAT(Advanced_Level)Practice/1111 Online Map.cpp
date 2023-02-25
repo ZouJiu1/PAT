@@ -117,7 +117,102 @@ int main(void) {
     return 0;
 }
 
-
+update202302
+#include<iostream>
+#include<vector>
+using namespace std;
+int inf = 999999999, mat[2][600][600], status[2][600], res[2][600], start, endkk;
+int main(void) {
+    int i, j, k, m, n, N, M, K, x, y, z, v1, v2, one, length, tim;
+    cin>>N>>M;
+    int v0[600], v6[600];
+    fill(mat[0][0], mat[0][0] + 2 * 600 *600, inf);
+    for(i = 0; i < M; i++) {
+        cin>>v1>>v2>>one>>length>>tim;
+        if(one==0) {
+            mat[0][v1][v2] = mat[0][v2][v1] = length;
+            mat[1][v1][v2] = mat[1][v2][v1] = tim;
+        } else {
+            mat[0][v1][v2] = length;
+            mat[1][v1][v2] = tim;
+        }
+    }
+    cin>>start>>endkk;
+    fill(res[0], res[0] + 2 * 600, inf);
+    res[1][start] = res[0][start] = 0;
+    for(i = 0; i < N; i++) {
+        int minmin = inf, ind;
+        for(j = 0; j < N; j++) {
+            if(status[0][j] == 0 && minmin > res[0][j]) {
+                minmin = res[0][j];
+                ind = j;
+            }
+        }
+        status[0][ind] = 1;
+        for(j = 0; j < N; j++) {
+            if(status[0][j]==0 && res[0][j] > res[0][ind] + mat[0][ind][j]) {
+                res[0][j] = res[0][ind] + mat[0][ind][j];
+                res[1][j] = res[1][ind] + mat[1][ind][j];
+                v0[j] = ind;
+            } else if(status[0][j]==0 && res[0][j] == res[0][ind] + mat[0][ind][j]) {
+                if(res[1][j] > res[1][ind] + mat[1][ind][j]) {
+                    res[0][j] = res[0][ind] + mat[0][ind][j];
+                    res[1][j] = res[1][ind] + mat[1][ind][j];
+                    v0[j] = ind;
+                }
+            }
+        }
+    }
+    vector<int> r0, r1;
+    m = endkk;
+    while(true) {
+        r0.push_back(m);
+        if(m==start) break;
+        m = v0[m];
+    }
+    n = res[0][endkk];
+    fill(res[0], res[0] + 2 * 600, inf);
+    res[1][start] = res[0][start] = 0;
+    for(i = 0; i < N; i++) {
+        int minmin = inf, ind;
+        for(j = 0; j < N; j++) {
+            if(status[1][j] == 0 && minmin > res[1][j]) {
+                minmin = res[1][j];
+                ind = j;
+            }
+        }
+        status[1][ind] = 1;
+        for(j = 0; j < N; j++) {
+            if(status[1][j]==0 && res[0][j] > res[0][ind] + mat[1][ind][j]) {
+                res[0][j] = res[0][ind] + mat[1][ind][j];
+                res[1][j] = res[1][ind] + 1;
+                v6[j] = ind;
+            } else if(status[1][j]==0 && res[0][j] == res[0][ind] + mat[1][ind][j]) {
+                if(res[1][j] > res[1][ind] + 1) {
+                    res[0][j] = res[0][ind] + mat[1][ind][j];
+                    res[1][j] > res[1][ind] + 1;
+                    v6[j] = ind;
+                }
+            }
+        }
+    }
+    m = endkk;
+    while(true) {
+        r1.push_back(m);
+        if(m==start) break;
+        m = v6[m];
+    }
+    if(r0==r1) {
+        printf("Distance = %d; Time = %d: ", n, res[0][endkk]);
+        for(i = r0.size()-1; i >=0; i--) printf("%d%s", r0[i], i==0? "\n":" -> ");
+        return 0;
+    }
+    printf("Distance = %d: ", n);
+    for(i = r0.size()-1; i >=0; i--) printf("%d%s", r0[i], i==0? "\n":" -> ");
+    printf("Time = %d: ", res[0][endkk]);
+    for(i = r1.size()-1; i >=0; i--) printf("%d%s", r1[i], i==0? "\n":" -> ");
+    return 0;
+}
 
 ///before
 #include<iostream>
