@@ -1,6 +1,25 @@
 update2
 
 要使用i/2来遍历根节点，在递归左节点的时候送入栈，右节点可能不是叶子节点左节点也没有才是叶子节点 
+0开始  dx~dx+d
+1开始   dx – (d-2) ~ dx+1
+index     从0开始
+      0            0  
+    1   2       1  2  3
+d=2   x=0   子节点：1 2  2x+1  2x+2
+d=3   x=0   子节点：1 2 3  dx+1  dx+2  dx+d
+同样可以用子节点的index拿到父节点的index
+d=2      x = 2   父节点：(2-1)//2 = 0
+d = 3    x = 3   父节点：(3-1)//d = 0
+
+index     从1开始
+      1            1  
+    2   3       2  3  4
+d=2   x=1   子节点：2 3  2x+(2-2):2x  2x+(2-2)+1:2x+1
+d=3   x=1   子节点：2 3 4 d*x - (d-2) dx-(d-2)+1 ...  dx+1...   子节点index
+同样可以用子节点的index拿到父节点的index
+d=2      x = 3   父节点：3+(2-2)//2 = 1
+d = 3    x = 3   父节点：3+(d-2)//d = 1
 
 #include<iostream>
 #include<vector>
@@ -40,8 +59,47 @@ int main(void) {
     return 0;
 }
 
-update
+update202302
+#include<iostream>
+#include<algorithm>
+#include<vector>
+using namespace std;
+int arr[1006], cnt=0, N;
+vector<int> v[1000], vt;
+void recursion(int index, vector<int> vec) {
+    if(index >= N) {
+        if(index%2==1) v[cnt++] = vec;
+        return;
+    }
+    vec.push_back(arr[index]);
+    recursion(2*index + 2, vec);
+    recursion(2*index + 1, vec);
+}
+int main(void) {
+    int i, j, k, m, n, M, K, x, y, z, maxheap = 9, minheap = 9;
+    cin>>N;
+    for(i = 0; i < N; i++) scanf("%d", &arr[i]);
+    // for(i = 0; i <= N/2 - 1; i++) {
+    //     if(arr[i] > arr[i*2 + 1] && i*2 + 1 < N) minheap = -9;
+    //     if(arr[i] < arr[i*2 + 1] && i*2 + 1 < N) maxheap = -9;
+    //     if(arr[i] > arr[i*2 + 2] && i*2 + 2 < N) minheap = -9;
+    //     if(arr[i] < arr[i*2 + 2] && i*2 + 2 < N) maxheap = -9;
+    // }
+    for(i = N-1; i >= 1; i--) {
+        if(arr[(i-1)/2] > arr[i]) minheap = -9;
+        if(arr[(i-1)/2] < arr[i]) maxheap = -9;
+    }
+    recursion(0, vt);
+    for(i = 0; i < cnt; i++) {
+        for(j = 0; j < v[i].size(); j++) printf("%d%s", v[i][j], j==v[i].size()-1? "\n":" ");
+    }
+    if(maxheap > 0 && minheap < 0) printf("Max Heap\n");
+    if(maxheap < 0 && minheap > 0) printf("Min Heap\n");
+    if(maxheap < 0 && minheap < 0) printf("Not Heap\n");
+    return 0;
+}
 
+update
 #include<iostream>
 #include<vector>
 using namespace std;
