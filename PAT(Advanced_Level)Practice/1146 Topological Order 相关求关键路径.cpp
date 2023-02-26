@@ -18,6 +18,10 @@ inputs：  9个顶点也就是9个事件，11个边就是11个活动
 4 6 2
 6 8 4
 */
+/*
+output: 1 2 5 7 9
+*/
+*/
 #include<iostream>
 #include<vector>
 #include<unordered_map>
