@@ -141,3 +141,53 @@ int main(void) {
     }
     return 0;
 }
+
+update202302
+#include<iostream>
+#include<vector>
+#include<unordered_map>
+using namespace std;
+int tat[1006], earlytime[1006], lastime[1006];
+int main(void) {
+    int i, j, k, n, m, N, M, K, x, y, z;
+    cin>>N>>M;
+    vector<int> v, pot[1006], deg(1006, 0), result, fin;
+    unordered_map<int, int> ump;
+    for(i = 0; i < M; i++) {
+        cin>>y>>z>>k;
+        ump[y*1000 + z] = k;
+        deg[z]++;
+        pot[y].push_back(z);
+    }
+    while(v.size()!=N) {
+        for(i = 1; i <= N; i++) {
+            if(deg[i]==0 && tat[i]==0) {
+                v.push_back(i);
+                tat[i] = 1;
+                for(j = 0; j < pot[i].size(); j++) {
+                    deg[pot[i][j]]--;
+                    k = pot[i][j];
+                    earlytime[k] = max(earlytime[k], ump[i*1000 + k] + earlytime[i]);
+                }
+                break;
+            }
+        }
+    }
+    lastime[v[N-1]] = earlytime[v[N-1]];
+    for(i = N - 2; i >= 0; i--) {
+        k = v[i];
+        int minmin = 999999999;
+        for(j = 0; j < pot[k].size(); j++) {
+            minmin = min(minmin, lastime[pot[k][j]] - ump[k*1000 + pot[k][j]]);
+        }
+        lastime[k] = minmin;
+    }
+    for(i = 0; i < N; i++) {
+        if(earlytime[v[i]]==lastime[v[i]]) result.push_back(v[i]);
+    }
+    fin.push_back(result[0]);
+    for(i = 1; i < result.size(); i++) {
+        if(ump[result[i-1] *1000 + result[i]] > 0) fin.push_back(result[i]);
+    }
+    for(i = 0; i < fin.size(); i++) printf("%d%s", fin[i], i==fin.size()-1? "":" ");
+}
