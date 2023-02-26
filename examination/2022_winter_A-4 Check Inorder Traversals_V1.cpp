@@ -112,3 +112,76 @@ int main() {
     }
     return 0;
 }
+
+update20230226
+#include<iostream>
+#include<algorithm>
+#include<vector>
+using namespace std;
+int pre[36], pot[36], in[36], tre = 9, tretwo = 9;
+vector<int> postorder, posttwo;
+void recursion(int pel, int per, int ptl, int ptr) {
+    if(pel > per || ptl > ptr || tre < 0) return;
+    if(pre[pel]!=pot[ptr]) {
+        tre = -9;
+        return;
+    }
+    if(pel == per) {
+        //in.push_back(pre[pel]);
+        return;
+    }
+    int ind = ptl;
+    while(ind <= ptr && pot[ind]!=pre[pel+1]) ind++;
+    if(ind > ptr) {
+        tre = -9;
+        return;
+    }
+    if(ind - ptl < 2) { //not unique
+        recursion(pel + 1, pel + (ind - ptl) + 1, ptl, ind);
+    } else {
+        recursion(pel + 1, pel + (ind - ptl) + 1, ptl, ind);
+    }
+    //in.push_back(pre[pel]);
+    recursion(pel + (ind - ptl) + 2, per, ind + 1, ptr-1);
+}
+void preinorder(int tat, int inl, int inr) {
+    if(inl > inr || tretwo < 0) return;
+    int ind = inl;
+    while(ind <= inr && in[ind]!=pre[tat]) ind++;
+    if(ind > inr) {
+        tretwo = -9;
+        return;
+    }
+    preinorder(tat + 1, inl, ind - 1);
+    preinorder(tat + ind - inl +1, ind + 1, inr);
+    posttwo.push_back(pre[tat]);
+}
+int main(void) {
+    int i, j, k, n, m, M, N, K, x, y, z, endkk, start, cnt = 0;
+    cin>>N;
+    for(i = 0; i < N; i++) scanf("%d", &pre[i]);
+    for(i = 0; i < N; i++) {
+        scanf("%d", &pot[i]);
+        postorder.push_back(pot[i]);
+    }
+    cin>>K;
+    recursion(0, N-1, 0, N-1);
+    if(tre < 0) printf("Are you kidding me?\n");
+    for(i = 0; i < K; i++) {
+        tretwo = 9;
+        posttwo.clear();
+        for(j = 0; j < N; j++) scanf("%d", &in[j]);
+        preinorder(0, 0, N-1);
+        if(tre < 0) {
+            if(tretwo < 0) {
+                printf("You must be kidding me!\n");
+            } else {
+                for(j = 0; j < N; j++) printf("%d%s", posttwo[j], j==N-1 ? "\n":" ");
+            }
+        } else {
+            if(postorder==posttwo) printf("Yes\n");
+            else printf("No\n");
+        }
+    }
+    return 0;
+}
