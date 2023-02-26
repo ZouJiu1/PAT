@@ -147,3 +147,44 @@ int main() {
     for(i = 1; i < m; i++) printf(" %d", v2[i]);
     return 0;
 }
+
+update202302
+#include<iostream>
+#include<algorithm>
+using namespace std;
+int arr[106], one[106];
+void maxheapify(int ind, int endkk) {
+    int dad = ind;
+    int son = 2 * dad + 1;
+    while(son <= endkk) {
+        if(son + 1 <= endkk && one[son+1] > one[son]) son++;
+        if(one[son] <= one[dad]) {
+            return;
+        }
+        swap(one[dad], one[son]);
+        dad = son;
+        son = dad * 2 + 1;
+    }
+}
+int main(void) {
+    int i, j, k, n, m, N, M, K, x, y = 1, z;
+    cin>>N;
+    for(i = 0; i < N; i++) scanf("%d", &arr[i]);
+    for(i = 0; i < N; i++) scanf("%d", &one[i]);
+    while(y < N && one[y] >= one[y-1]) y++;
+    z = y;
+    while(z < N && arr[z]==one[z]) z++;
+    if(z == N) {
+        printf("Insertion Sort\n");
+        sort(one, one + y + 1);
+        for(i = 0; i < N; i++) printf("%d%s", one[i], i==N-1? "":" ");
+    } else {
+        printf("Heap Sort\n");
+        y = N-1;
+        while(one[y] >= one[0]) y--;
+        swap(one[y], one[0]);
+        maxheapify(0, y-1);
+        for(i = 0; i < N; i++) printf("%d%s", one[i], i==N-1? "":" ");
+    }
+    return 0;
+}
