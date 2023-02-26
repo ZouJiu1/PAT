@@ -105,9 +105,52 @@ int main(void) {
 }
 
 
+update202302
+#include<vector>
+#include<iostream>
+#include<algorithm>
+using namespace std;
+int arr[106], one[106];
+int main(void) {
+    int i, j, k, n, m, N, M, K, x, y = 1, z;
+    cin>>N;
+    vector<int> v0, v1, v2;
+    for(i = 0; i < N; i++) {
+        scanf("%d", &arr[i]);
+        v1.push_back(arr[i]);
+    }
+    
+    for(i = 0; i < N; i++) {
+        scanf("%d", &one[i]);
+        v0.push_back(one[i]);
+    }
+    while(y < N && one[y] >= one[y-1]) y++;   // >=
+    z = y;
+    while(z < N && arr[z]==one[z]) z++;
+    if(z == N) {
+        printf("Insertion Sort\n");
+        sort(one, one + y + 1);
+        for(i = 0; i < N; i++) printf("%d%s", one[i], i==N-1? "":" ");
+    } else {
+        printf("Merge Sort\n");
+        k = 1;
+        int mr = -9;
+        while(true) {
+            for(i = 0; i < (int)N/k; i++) {
+                sort(v1.begin() + i * k, v1.begin() + (i + 1) * k); 
+            }
+            if(N % k > 0) sort(v1.begin() + i * k, v1.end());
+            k = k * 2;
+            if(mr > 0) break;
+            if(v1==v0) mr = 9;
+        }
+        for(i = 0; i < N; i++) printf("%d%s", v1[i], i==N-1? "":" ");
+    }
+    return 0;
+}
+
 
 old before
-
 #include<iostream>
 #include<vector>
 #include<string>
