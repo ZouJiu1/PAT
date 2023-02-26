@@ -1,7 +1,7 @@
-已知是heaporder对inorder排序，然后gen树，要判断在inorder前一个节点的左右，就可以左右依次gen，得到相应的内容；也可以不用gen树直接保存层序遍历，使用map自动排序的特点
+已知是heaporder对inorder排序，然后gen树，要判断在inorder前一个节点的左右，就可以左右依次gen，得到相应的内容；
+也可以不用gen树拿到最小值和index直接保存层序遍历，最小堆，最小值就是根节点划开左右branch，使用map自动排序的特点
 
 不能使用数组存储res(10741824, -999)  res[index] = v[pot];    会越界，要使用map存储并自动排序
-
 update1
 #include<iostream>
 #include<unordered_map>
