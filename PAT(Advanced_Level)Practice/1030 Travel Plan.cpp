@@ -204,6 +204,127 @@ int main(void) {
     return 0;
 }
 
+update202303
+#include<iostream>
+#include<algorithm>
+#include<vector>
+#include<queue>
+#include<unordered_map>
+using namespace std;
+typedef pair<int, int> p;
+priority_queue<p, vector<p>, greater<p>> pq;
+unordered_map<int, int> ump0, ump1;
+p p0, p1, p2;
+vector<p> v[600], v1[600];
+int tat[600], dit[600], cot[600], inf = 999999999, pre[600];
+int main(void) {
+    int i, j, k, n, m, N, M, K, x, z, y, S, D;
+    cin>>N>>M>>S>>D;
+    fill(dit, dit + 600, inf);
+    fill(cot, cot + 600, inf);
+    for(i = 0; i < M; i++) {
+        cin>>m>>n>>y>>z;
+        v[m].push_back({y, n});
+        v[n].push_back({y, m});
+        v1[m].push_back({z, n});
+        v1[n].push_back({z, m});
+    }
+    dit[S] = 0;
+    cot[S] = 0;
+    pq.push({0, S});
+    while(!pq.empty()) {
+        p0 = pq.top();
+        pq.pop();
+        x = p0.second;
+        if(tat[x]==1) continue;
+        tat[x] = 1;
+        for(i = 0; i < v[x].size(); i++) {
+            p1 = v[x][i];
+            y = p1.second;
+            z = p1.first;
+            if(tat[y]==0 && dit[y] > dit[x] + z) {
+                dit[y] = dit[x] + z;
+                pq.push({dit[y], y});
+                cot[y] = cot[x] + v1[x][i].first;
+                pre[y] = x;
+            } else if(tat[y]==0 && dit[y] == dit[x] + z) {
+                if(cot[y] > cot[x] + v1[x][i].first) {
+                    dit[y] = dit[x] + z;
+                    cot[y] = cot[x] + v1[x][i].first;
+                    pre[y] = x;
+                }
+            }
+        }
+    }
+    vector<int> v;
+    m = D;
+    while(true) {
+        v.push_back(m);
+        if(m==S) break;
+        m = pre[m];
+    }
+    reverse(v.begin(), v.end());
+    for(i = 0; i < v.size(); i++) printf("%d ", v[i]);
+    printf("%d %d\n", dit[D], cot[D]);
+    return 0;
+}
+
+
+#include<iostream>
+#include<algorithm>
+#include<vector>
+using namespace std;
+int mat[600][600], mat0[600][600], tat[600], dit[600], cot[600], inf = 999999999, pre[600];
+int main(void) {
+    int i, j, k, n, m, N, M, K, x, z, y, S, D;
+    fill(mat[0], mat[0] + 600 * 600, inf);
+    fill(mat0[0], mat0[0] + 600 * 600, inf);
+    cin>>N>>M>>S>>D;
+    fill(dit, dit + 600, inf);
+    fill(cot, cot + 600, inf);
+    dit[S] = 0;
+    cot[S] = 0;
+    for(i = 0; i < M; i++) {
+        cin>>m>>n>>y>>z;
+        mat[m][n] = mat[n][m] = y;
+        mat0[m][n] = mat0[n][m] = z;
+    }
+    for(i = 0; i < N; i++) {
+        int minmin = inf;
+        for(j = 0; j < N; j++) {
+            if(tat[j]==0 && minmin > dit[j]) {
+                n = j;
+                minmin = dit[j];
+            }
+        }
+        tat[n] = 1;
+        for(j = 0; j < N; j++) {
+            if(tat[j]==0 && dit[j] > dit[n] + mat[n][j]) {
+                dit[j] = dit[n] + mat[n][j];
+                cot[j] = cot[n] + mat0[n][j];
+                pre[j] = n;
+            } else if(tat[j]==0 && dit[j] == dit[n] + mat[n][j]) {
+                if(cot[j] > cot[n] + mat0[n][j]) {
+                    dit[j] = dit[n] + mat[n][j];
+                    cot[j] = cot[n] + mat0[n][j];
+                    pre[j] = n;
+                }
+            }
+        }
+    }
+    vector<int> v;
+    m = D;
+    while(true) {
+        v.push_back(m);
+        if(m==S) break;
+        m = pre[m];
+    }
+    reverse(v.begin(), v.end());
+    for(i = 0; i < v.size(); i++) printf("%d ", v[i]);
+    printf("%d %d\n", dit[D], cot[D]);
+    return 0;
+}
+
 old before
 /*迪杰特斯拉方式，要注意距离相同时，要判断costes并保存相应的路径 */
 #include<iostream>
