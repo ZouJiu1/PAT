@@ -1,3 +1,40 @@
+update202303
+#include<iostream>
+#include<string>
+using namespace std;
+int pre[36], pot[36], in[36], cnt = 0, unique = 9;
+void recursion(int pel, int per, int pol, int por) {
+    if(pel > per || pol > por) return;
+    if(pre[pel]!=pot[por]) {}; //not a tre
+    if(pel==per) {
+        in[cnt++] = pre[pel];
+        return;
+    }
+    int ind = pol;
+    while(ind <= por && pot[ind]!=pre[pel + 1]) ind++;
+    if(ind > por) {}; //not a tre
+    if(por - ind < 2) {
+        unique = -9;
+        recursion(pel + 1, pel + ind - pol + 1, pol, ind);
+    } else {
+        recursion(pel + 1, pel + ind - pol + 1, pol, ind);
+    }
+    in[cnt++] = pre[pel];
+    recursion(pel + ind - pol + 2, per, ind + 1, por-1);
+}
+
+int main(void) {
+    int i, j, k, n, m, N, M, K, x, z, y;
+    cin>>N;
+    for(i = 0; i < N; i++) scanf("%d", &pre[i]);
+    for(i = 0; i < N; i++) scanf("%d", &pot[i]);
+    recursion(0, N-1, 0, N-1);
+    if(unique < 0) printf("No\n");
+    else printf("Yes\n");
+    for(i = 0; i < N; i++) printf("%d%s", in[i], i==N-1?"\n":" ");
+    return 0;
+}
+
 update202301
 #include<iostream> 
 using namespace std;
