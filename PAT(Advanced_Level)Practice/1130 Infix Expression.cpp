@@ -1,3 +1,41 @@
+update202303
+#include<iostream>
+#include<string>
+using namespace std;
+struct nod {
+    string t;
+    int l, r;
+};
+
+nod arr[26];
+int tat[26], y = 1;
+string recursion(int kk) {
+    if(arr[kk].l==-1 && arr[kk].r==-1) return arr[kk].t;
+    string ti = "";
+    if(arr[kk].l!=-1) ti += recursion(arr[kk].l);
+    ti += arr[kk].t;
+    if(arr[kk].r!=-1) ti += recursion(arr[kk].r);
+    return ti = "(" + ti + ")";
+    // if(arr[kk].l==-1 && arr[kk].r==-1) return arr[kk].t;
+    // if(arr[kk].l==-1 && arr[kk].r!=-1) return "(" + arr[kk].t + recursion(arr[kk].r) + ")";
+    // if(arr[kk].l!=-1 && arr[kk].r!=-1) return "(" +recursion(arr[kk].l)+ arr[kk].t + recursion(arr[kk].r) + ")";
+}
+int main(void) {
+    int i, j, k, n, m, N, M, K, x, z;
+    string t0, t1, t2;
+    cin>>N;
+    for(i = 1; i <= N; i++) {
+        cin>>arr[i].t>>arr[i].l>>arr[i].r;
+        if(arr[i].l > 0) tat[arr[i].l] = 1;
+        if(arr[i].r > 0) tat[arr[i].r] = 1;
+    }
+    while(tat[y]==1) y++;
+    t1 = recursion(y);
+    if(t1[0]=='(') t1 = t1.substr(1, t1.length() - 2);
+    cout<<t1<<endl;
+    return 0;
+}
+
 #include<iostream>
 #include<vector>
 #include<string>
