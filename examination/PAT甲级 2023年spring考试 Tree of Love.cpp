@@ -1,3 +1,10 @@
+/*
+考试的时候最后一题花了近两个小时，然后最后一个测试点3分没有做出来，后来又花了一个上午的时间，还是没找到reason。
+判断是否对称要层序遍历，存在节点就vec保存1，不存在vec保存0，若是该层的vec在reverse前后都相等，就是对称的。
+判断是否是tree of love，要depth_first保存叶子节点，然后进行判断。
+输出的Outer contour，保存叶子节点要放在最前面，然后是最左侧的节点，最后是后序遍历的最右侧节点。
+最左侧和最右侧使用节点的地址是否是vec的第一个和最后一个来判断，以及不要重复使用unordered_map来记录是否访问过。
+*/
 #include<iostream>
 #include<vector>
 #include<unordered_map>
