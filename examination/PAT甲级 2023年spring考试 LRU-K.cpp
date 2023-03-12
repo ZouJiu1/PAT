@@ -1,3 +1,17 @@
+/*
+set 运算符重载
+两个queue都不存在
+      若hq size满了，删掉最old的数字，访问次数置0
+      放入historical access queue
+两个queue最少之一存在
+    访问次数是 < K
+        update hq时间戳
+    访问次数是 >= K
+       删掉hq的记录
+       删掉cq的记录
+       若cq size 满了，删掉最old的数字，访问次数置0
+       放入cache queue
+*/
 #include<iostream>
 #include<vector>
 #include<map>
