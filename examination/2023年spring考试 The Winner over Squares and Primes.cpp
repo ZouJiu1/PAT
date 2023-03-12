@@ -1,3 +1,4 @@
+/*模拟题，偶数保存不是平方的数字，奇数次保存不是素数的数字，最后只剩一个，输出就可以了*/
 #include<iostream>
 #include<vector>
 #include<map>
