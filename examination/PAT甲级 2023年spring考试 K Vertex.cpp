@@ -1,3 +1,6 @@
+/*
+直接输出出度>入度的顶点标记
+*/
 #include<iostream>
 #include<vector>
 #include<map>
