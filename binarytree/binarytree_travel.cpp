@@ -75,6 +75,10 @@ void postorder(nod *root) {
     postorder(root->r);
     postarr.push_back(root->val);
 }
+int getheight(nod *root) {
+    if(root==NULL) return 0;
+    return max(getheight(root->l), getheight(root->r)) + 1;
+}
 int main() {
     poster(0, 0, 5); //0pre 0inl 5inr
     printvec(postarr, "generate postarr:");
@@ -92,5 +96,7 @@ int main() {
     postarr.clear();
     postorder(root);
     printvec(postarr, "postorder:");
+
+    int height = getheight(root);
     return 0;
 }
