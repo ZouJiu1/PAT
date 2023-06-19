@@ -33,6 +33,28 @@ void mergesort(int len) {
         arr = tmp;
     }
 }
+void mergesort(int len) {
+    int half = 1, l, mid, r, k, mc, lc;
+    vector<int> v;
+    while(true) {
+        k = half * 2;
+        if(k > len) break;
+        for(int i = 0; i < len; i += k) {
+            lc = l = i;
+            mc = mid = l + half;
+            r = min(mid + half, len);
+            while(lc < mid && mc < r) {
+                if(arr[lc] <= arr[mc]) v.push_back(arr[lc++]);
+                if(arr[lc] > arr[mc]) v.push_back(arr[mc++]);
+            }
+            while(lc < mid) v.push_back(arr[lc++]);
+            while(mc < r) v.push_back(arr[mc++]);
+        }
+        arr = v;
+        v.clear();
+        half *= 2;
+    }
+}
 int main(int argc, char **argv) {
     int len = arr.size();
     if(len==1) {
