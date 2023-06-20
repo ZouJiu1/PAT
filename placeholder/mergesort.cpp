@@ -7,41 +7,45 @@ https://blog.csdn.net/m0_50617544/article/details/128761866?csdn_share_tail=%7B%
 #include<vector>
 #include<cmath>
 using namespace std;
-vector<int> arr = {2, 9, 6, 1, 5, 8, 7, 11, 100, 30, 31, 38, 60, 50, 30};
+vector<int> arr = {2, 9, 6, 1, 5, 8, 7, 11, 100, 30, 31, 38, 60, 50, 30, 1000, 1, -1, -99};
+
 void printvec(int len) {
     printf("%d", arr[0]);
     for(int i = 1; i < len; i++) printf(" %d", arr[i]);
 }
+
 void mergesort(int len) {
-    int i, j, ij, k = 1, start, end, Khalf, in, kk, ll;
+    int half = 1, l, r, mid, lc, rc, mc, length;
+    vector<int> v;
     while(true) {
-        Khalf = k;
-        k = k * 2;
-        if(k >= len) break;
-        vector<int> tmp;
-        for(i = 0; i < len; i+= k) {
-            kk = start = i; // 0
-            ll = in = i + k/2;
-            end = min(i + k, len); //2 
-            while(kk < in && ll < end) {  //归并
-                if(arr[kk] < arr[ll]) tmp.push_back(arr[kk++]);
-                else tmp.push_back(arr[ll++]);
+        length = half * 2;
+        if(half > len) break;
+        for(int i = 0; i < len; i += length) {
+            l = lc = i;
+            mid = mc = min(l + half, len);
+            r = rc = min(mid + half, len);
+            while(lc < mid && mc < r) {
+                if(arr[lc] < arr[mc]) v.push_back(arr[lc++]);
+                else v.push_back(arr[mc++]);
             }
-            while(kk < in) tmp.push_back(arr[kk++]);
-            while(ll < end) tmp.push_back(arr[ll++]);
+            while(lc < mid) v.push_back(arr[lc++]);
+            while(mc < r)   v.push_back(arr[mc++]);
         }
-        arr = tmp;
+        arr = v;
+        v.clear();
+        half = half * 2;
     }
 }
+
 void mergesort(int len) {
     int half = 1, l, mid, r, k, mc, lc;
     vector<int> v;
     while(true) {
         k = half * 2;
-        if(k > len) break;
+        if(half > len) break;
         for(int i = 0; i < len; i += k) {
             lc = l = i;
-            mc = mid = l + half;
+            mc = mid = min(l + half, len);
             r = min(mid + half, len);
             while(lc < mid && mc < r) {
                 if(arr[lc] <= arr[mc]) v.push_back(arr[lc++]);
@@ -80,11 +84,11 @@ void mergesort(int len) {
     while(true) {
         Khalf = k;
         k = k * 2;
-        if(k >= len) break;
+        if(Khalf >= len) break;
         vector<int> tmp;
         for(i = 0; i < len / k + (int)(len%k>0); i++) {
             kk = start = i * k; // 0
-            ll = in = i * k + Khalf;
+            ll = in = min(i * k + Khalf, len);
             end = min((i + 1) * k, len); //2 
             while(kk < in && ll < end) {  //归并
                 if(arr[kk] < arr[ll]) tmp.push_back(arr[kk++]);
