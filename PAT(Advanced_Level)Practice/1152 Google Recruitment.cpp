@@ -1,3 +1,35 @@
+20231010 update
+#include<iostream>
+#include<string>
+using namespace std;
+bool isprime(long long h) {
+    for(long long i = 2; i * i <= h; i++) {
+        if(h%i==0) return false;
+    }
+    return true;
+}
+int main(void) {
+    int i, j, k, n, L, K;
+    long long m;
+    bool ret;
+    string tr, t;
+    cin>>L>>K>>tr;
+    // for(i = 0; i <= tr.length() - K; i++) {  //一个测试点过不去
+    for(i = 0; i < tr.length(); i++) {
+        if(i + K > tr.length()) break;
+        t = tr.substr(i, K);
+        m = stoll(t);
+        ret = isprime(m);
+        if(ret){
+            cout<<t<<endl;
+            return 0;
+        }
+    }
+    cout<<606-202<<endl;
+    return 0;
+}
+
+before
 #include<iostream>
 #include<algorithm>
 #include<vector>
