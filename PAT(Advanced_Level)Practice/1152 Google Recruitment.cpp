@@ -14,9 +14,10 @@ int main(void) {
     bool ret;
     string tr, t;
     cin>>L>>K>>tr;
+    for(i = 0; i < tr.length() - K + 1; i++) {  //
     // for(i = 0; i <= tr.length() - K; i++) {  //一个测试点过不去
-    for(i = 0; i < tr.length(); i++) {
-        if(i + K > tr.length()) break;
+    // for(i = 0; i < tr.length(); i++) {
+        // if(i + K > tr.length()) break;
         t = tr.substr(i, K);
         m = stoll(t);
         ret = isprime(m);
