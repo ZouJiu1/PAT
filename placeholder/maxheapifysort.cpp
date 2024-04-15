@@ -37,3 +37,32 @@ int main(int argc, char **argv) {
     printvec(len);
     return EXIT_SUCCESS;
 }
+
+/*
+    //max heap sort
+    void maxheapify(vector<int>& nums, int i, int len) {
+        int dad = i;
+        int son = i*2;
+        while(son <= len) {
+            if(son + 1 <= len && nums[son] > nums[son-1]) son++;
+            if(nums[dad-1] < nums[son-1]) swap(nums[dad-1], nums[son-1]);
+            dad = son;
+            son = dad * 2;
+        }
+    }
+    int findKthLargest(vector<int>& nums, int k) {
+        int n = nums.size();
+        for(int i = n / 2; i >= 1; i--) {
+            maxheapify(nums, i, nums.size());
+        }
+        for(int i = n-1; i >= 0; i--) {
+            swap(nums[i], nums[0]);
+            maxheapify(nums, 1, i);
+        }
+        return nums[nums.size()-k];
+————————————————
+
+                            版权声明：本文为博主原创文章，遵循 CC 4.0 BY-SA 版权协议，转载请附上原文出处链接和本声明。
+                        
+原文链接：https://blog.csdn.net/m0_50617544/article/details/137790146
+*/
