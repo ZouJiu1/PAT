@@ -14,6 +14,30 @@ void printvec(int len) {
     for(int i = 1; i < len; i++) printf(" %d", arr[i]);
 }
 
+//recursion
+void mergesort(int l, int r) {
+    if(l >= r) return;
+    int mid = l + (r - l) / 2;
+    mergesort(l, mid);
+    mergesort(mid + 1, r);
+
+    vector<int> tmp;
+    int ll = l, rr = mid + 1;
+    while( ll <= mid && rr <= r ) {
+        if(arr[ll] < arr[rr]) tmp.push_back(arr[ll++]);
+        else tmp.push_back(arr[rr++]);
+    }
+    while(ll <= mid) {
+        tmp.push_back(arr[ll++]);
+    }
+    while(rr <= r) {
+        tmp.push_back(arr[rr++]);
+    }
+    for(int i = l; i <= r; i++) {
+        arr[i] = tmp[i - l];
+    }
+}
+
 void mergesort(int len) {
     int half = 1, l, r, mid, lc, rc, mc, length;
     vector<int> v;
